@@ -1,0 +1,11 @@
+# 原始素材与历史归档，不随交付包分发
+_design-archive/
+
+# macOS
+.DS_Store
+.AppleDouble
+
+# 编辑器
+.idea/
+.vscode/
+*.swp

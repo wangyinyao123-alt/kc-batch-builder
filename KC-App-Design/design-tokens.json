@@ -1,0 +1,65 @@
+{
+  "meta": {
+    "name": "KC App UI handoff tokens",
+    "source": "Pixso design gti8TP-GucHUL6Ed2XgaWg",
+    "precision": "approximate implementation guidance; verify exact values in Pixso"
+  },
+  "canvas": {
+    "width": 1280,
+    "height": 800
+  },
+  "fontFamily": {
+    "ui": "Noto Sans TC, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+    "weights": {
+      "regular": 400,
+      "bold": 700
+    }
+  },
+  "colors": {
+    "textPrimary": "#2F2A3A",
+    "textSecondary": "#756C80",
+    "textMuted": "#A39AAA",
+    "surface": "#FFFFFF",
+    "surfaceSoft": "#FFF8FC",
+    "border": "#EADFEA",
+    "accent": "#E879A8",
+    "accentStrong": "#D9558B",
+    "success": "#57B894",
+    "warning": "#E7A64D",
+    "danger": "#D95C72",
+    "info": "#6B9EDB",
+    "overlayWhite": "rgba(255,255,255,0.62)"
+  },
+  "radius": {
+    "window": 24,
+    "card": 16,
+    "control": 10,
+    "pill": 999
+  },
+  "spacing": {
+    "page": 32,
+    "section": 24,
+    "card": 20,
+    "control": 12,
+    "tableRow": 16
+  },
+  "shadow": {
+    "window": "0 18px 48px rgba(93,54,89,0.18)",
+    "card": "0 8px 24px rgba(93,54,89,0.10)"
+  },
+  "backgrounds": {
+    "P1": "assets/backgrounds/background-pink-grid-cat-1280x800.jpg",
+    "P2-P5": "assets/backgrounds/background-sky-cat-1280x800.jpg",
+    "layerOrder": [
+      "illustration",
+      "white-soften-overlay",
+      "content"
+    ]
+  },
+  "statusColors": {
+    "running": "#6B9EDB",
+    "completed": "#57B894",
+    "queued": "#A39AAA",
+    "partialFailure": "#E7A64D"
+  }
+}

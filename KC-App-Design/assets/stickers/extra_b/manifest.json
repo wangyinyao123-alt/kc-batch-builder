@@ -1,0 +1,300 @@
+{
+  "category": "extra_b",
+  "description": "Independent scene cutouts and retro pixel-cat ornaments extracted from the uploaded references. UI component duplicates are kept only in stickers/extra_a.",
+  "sources": {
+    "pink_grid_scene": "/var/folders/8z/m992bvvd1h178v9chb3_lkt40000gn/T/codex-clipboard-430e4549-e89b-4a04-ae62-a7d795202ec1.png",
+    "sky_grid_scene": "/var/folders/8z/m992bvvd1h178v9chb3_lkt40000gn/T/codex-clipboard-e14adc77-42ac-4135-9f3f-80420805bd53.png",
+    "retro_poster": "/var/folders/8z/m992bvvd1h178v9chb3_lkt40000gn/T/codex-clipboard-0fe63c42-c4f1-4270-9ecd-ee4caba3a276.png"
+  },
+  "assets": [
+    {
+      "name": "good-day-cat-card",
+      "file": "good-day-cat-card.png",
+      "source_key": "pink_grid_scene",
+      "source": "codex-clipboard-430e4549-e89b-4a04-ae62-a7d795202ec1.png",
+      "source_box": [
+        135,
+        108,
+        458,
+        335
+      ],
+      "extraction": "smooth",
+      "size": [
+        309,
+        226
+      ]
+    },
+    {
+      "name": "ufo-cat",
+      "file": "ufo-cat.png",
+      "source_key": "pink_grid_scene",
+      "source": "codex-clipboard-430e4549-e89b-4a04-ae62-a7d795202ec1.png",
+      "source_box": [
+        475,
+        65,
+        728,
+        282
+      ],
+      "extraction": "smooth",
+      "size": [
+        238,
+        196
+      ]
+    },
+    {
+      "name": "dream-landscape-window",
+      "file": "dream-landscape-window.png",
+      "source_key": "pink_grid_scene",
+      "source": "codex-clipboard-430e4549-e89b-4a04-ae62-a7d795202ec1.png",
+      "source_box": [
+        1070,
+        102,
+        1400,
+        370
+      ],
+      "extraction": "smooth",
+      "size": [
+        330,
+        263
+      ]
+    },
+    {
+      "name": "loading-progress-window",
+      "file": "loading-progress-window.png",
+      "source_key": "pink_grid_scene",
+      "source": "codex-clipboard-430e4549-e89b-4a04-ae62-a7d795202ec1.png",
+      "source_box": [
+        915,
+        710,
+        1292,
+        958
+      ],
+      "extraction": "smooth",
+      "size": [
+        377,
+        248
+      ]
+    },
+    {
+      "name": "cloud-peeking-cat",
+      "file": "cloud-peeking-cat.png",
+      "source_key": "pink_grid_scene",
+      "source": "codex-clipboard-430e4549-e89b-4a04-ae62-a7d795202ec1.png",
+      "source_box": [
+        1280,
+        450,
+        1528,
+        730
+      ],
+      "extraction": "smooth",
+      "size": [
+        248,
+        280
+      ]
+    },
+    {
+      "name": "playlist-player",
+      "file": "playlist-player.png",
+      "source_key": "sky_grid_scene",
+      "source": "codex-clipboard-e14adc77-42ac-4135-9f3f-80420805bd53.png",
+      "source_box": [
+        350,
+        25,
+        720,
+        285
+      ],
+      "extraction": "smooth",
+      "size": [
+        370,
+        255
+      ]
+    },
+    {
+      "name": "notes-cat-window",
+      "file": "notes-cat-window.png",
+      "source_key": "sky_grid_scene",
+      "source": "codex-clipboard-e14adc77-42ac-4135-9f3f-80420805bd53.png",
+      "source_box": [
+        1224,
+        42,
+        1530,
+        325
+      ],
+      "extraction": "smooth",
+      "size": [
+        306,
+        283
+      ]
+    },
+    {
+      "name": "cat-house-landscape",
+      "file": "cat-house-landscape.png",
+      "source_key": "sky_grid_scene",
+      "source": "codex-clipboard-e14adc77-42ac-4135-9f3f-80420805bd53.png",
+      "source_box": [
+        1095,
+        660,
+        1530,
+        1020
+      ],
+      "extraction": "smooth",
+      "size": [
+        435,
+        360
+      ]
+    },
+    {
+      "name": "retro-cat-mail",
+      "file": "retro-cat-mail.png",
+      "source_key": "retro_poster",
+      "source": "codex-clipboard-0fe63c42-c4f1-4270-9ecd-ee4caba3a276.png",
+      "source_box": [
+        70,
+        86,
+        203,
+        204
+      ],
+      "extraction": "smooth",
+      "size": [
+        124,
+        118
+      ]
+    },
+    {
+      "name": "retro-cat-trash",
+      "file": "retro-cat-trash.png",
+      "source_key": "retro_poster",
+      "source": "codex-clipboard-0fe63c42-c4f1-4270-9ecd-ee4caba3a276.png",
+      "source_box": [
+        76,
+        288,
+        200,
+        419
+      ],
+      "extraction": "smooth",
+      "size": [
+        117,
+        131
+      ]
+    },
+    {
+      "name": "retro-cat-files",
+      "file": "retro-cat-files.png",
+      "source_key": "retro_poster",
+      "source": "codex-clipboard-0fe63c42-c4f1-4270-9ecd-ee4caba3a276.png",
+      "source_box": [
+        72,
+        511,
+        203,
+        648
+      ],
+      "extraction": "smooth",
+      "size": [
+        130,
+        137
+      ]
+    },
+    {
+      "name": "retro-cat-floppy",
+      "file": "retro-cat-floppy.png",
+      "source_key": "retro_poster",
+      "source": "codex-clipboard-0fe63c42-c4f1-4270-9ecd-ee4caba3a276.png",
+      "source_box": [
+        76,
+        690,
+        210,
+        827
+      ],
+      "extraction": "smooth",
+      "size": [
+        116,
+        137
+      ]
+    },
+    {
+      "name": "retro-cat-internet",
+      "file": "retro-cat-internet.png",
+      "source_key": "retro_poster",
+      "source": "codex-clipboard-0fe63c42-c4f1-4270-9ecd-ee4caba3a276.png",
+      "source_box": [
+        65,
+        862,
+        215,
+        977
+      ],
+      "extraction": "smooth",
+      "size": [
+        137,
+        101
+      ]
+    },
+    {
+      "name": "retro-cats-error-combo",
+      "file": "retro-cats-error-combo.png",
+      "source_key": "retro_poster",
+      "source": "codex-clipboard-0fe63c42-c4f1-4270-9ecd-ee4caba3a276.png",
+      "source_box": [
+        285,
+        110,
+        680,
+        425
+      ],
+      "extraction": "smooth",
+      "size": [
+        395,
+        315
+      ]
+    },
+    {
+      "name": "retro-picatsso-canvas",
+      "file": "retro-picatsso-canvas.png",
+      "source_key": "retro_poster",
+      "source": "codex-clipboard-0fe63c42-c4f1-4270-9ecd-ee4caba3a276.png",
+      "source_box": [
+        284,
+        498,
+        640,
+        794
+      ],
+      "extraction": "smooth",
+      "size": [
+        356,
+        296
+      ]
+    },
+    {
+      "name": "retro-cat-notes",
+      "file": "retro-cat-notes.png",
+      "source_key": "retro_poster",
+      "source": "codex-clipboard-0fe63c42-c4f1-4270-9ecd-ee4caba3a276.png",
+      "source_box": [
+        252,
+        868,
+        415,
+        1007
+      ],
+      "extraction": "smooth",
+      "size": [
+        149,
+        135
+      ]
+    },
+    {
+      "name": "retro-cool-cat-window",
+      "file": "retro-cool-cat-window.png",
+      "source_key": "retro_poster",
+      "source": "codex-clipboard-0fe63c42-c4f1-4270-9ecd-ee4caba3a276.png",
+      "source_box": [
+        435,
+        870,
+        675,
+        1007
+      ],
+      "extraction": "smooth",
+      "size": [
+        240,
+        137
+      ]
+    }
+  ]
+}

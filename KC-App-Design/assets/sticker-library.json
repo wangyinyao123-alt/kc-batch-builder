@@ -1,0 +1,1988 @@
+{
+  "generated_from": {
+    "handdrawn": "sticker-sheet-01.png",
+    "pixel": "sticker-sheet-p2.png",
+    "watercolor": "sticker-sheet-pink-handdrawn-2026.png",
+    "pixel_kawaii": "sticker-sheet-pixel-kawaii-2026.png",
+    "extra_a": "window-panel-components.png",
+    "extra_b": "background-pink-grid-cat.png; background-sky-cat.png; codex-clipboard-0fe63c42-c4f1-4270-9ecd-ee4caba3a276.png"
+  },
+  "source_root": "../../_design-archive/ui-reference/",
+  "note": "file 字段相对 assets/ 目录；source 字段指向的原始贴纸大表已移至 _design-archive/ui-reference/。",
+  "assets": [
+    {
+      "category": "handdrawn",
+      "name": "cat-window",
+      "file": "stickers/handdrawn/cat-window.png",
+      "source": "sticker-sheet-01.png",
+      "source_box": [
+        24,
+        42,
+        312,
+        316
+      ],
+      "size": [
+        288,
+        260
+      ]
+    },
+    {
+      "category": "handdrawn",
+      "name": "cat-headphones",
+      "file": "stickers/handdrawn/cat-headphones.png",
+      "source": "sticker-sheet-01.png",
+      "source_box": [
+        328,
+        42,
+        584,
+        318
+      ],
+      "size": [
+        244,
+        262
+      ]
+    },
+    {
+      "category": "handdrawn",
+      "name": "cat-envelope",
+      "file": "stickers/handdrawn/cat-envelope.png",
+      "source": "sticker-sheet-01.png",
+      "source_box": [
+        598,
+        46,
+        856,
+        318
+      ],
+      "size": [
+        254,
+        264
+      ]
+    },
+    {
+      "category": "handdrawn",
+      "name": "cat-books",
+      "file": "stickers/handdrawn/cat-books.png",
+      "source": "sticker-sheet-01.png",
+      "source_box": [
+        862,
+        36,
+        1152,
+        320
+      ],
+      "size": [
+        281,
+        267
+      ]
+    },
+    {
+      "category": "handdrawn",
+      "name": "shooting-star",
+      "file": "stickers/handdrawn/shooting-star.png",
+      "source": "sticker-sheet-01.png",
+      "source_box": [
+        1174,
+        44,
+        1530,
+        294
+      ],
+      "size": [
+        334,
+        234
+      ]
+    },
+    {
+      "category": "handdrawn",
+      "name": "speech-bubble",
+      "file": "stickers/handdrawn/speech-bubble.png",
+      "source": "sticker-sheet-01.png",
+      "source_box": [
+        20,
+        338,
+        246,
+        540
+      ],
+      "size": [
+        214,
+        195
+      ]
+    },
+    {
+      "category": "handdrawn",
+      "name": "cat-plant",
+      "file": "stickers/handdrawn/cat-plant.png",
+      "source": "sticker-sheet-01.png",
+      "source_box": [
+        250,
+        326,
+        442,
+        560
+      ],
+      "size": [
+        189,
+        234
+      ]
+    },
+    {
+      "category": "handdrawn",
+      "name": "cat-camera",
+      "file": "stickers/handdrawn/cat-camera.png",
+      "source": "sticker-sheet-01.png",
+      "source_box": [
+        452,
+        338,
+        724,
+        560
+      ],
+      "size": [
+        265,
+        214
+      ]
+    },
+    {
+      "category": "handdrawn",
+      "name": "sleepy-cat",
+      "file": "stickers/handdrawn/sleepy-cat.png",
+      "source": "sticker-sheet-01.png",
+      "source_box": [
+        746,
+        340,
+        1008,
+        558
+      ],
+      "size": [
+        262,
+        212
+      ]
+    },
+    {
+      "category": "handdrawn",
+      "name": "cat-folder",
+      "file": "stickers/handdrawn/cat-folder.png",
+      "source": "sticker-sheet-01.png",
+      "source_box": [
+        1024,
+        344,
+        1284,
+        558
+      ],
+      "size": [
+        246,
+        210
+      ]
+    },
+    {
+      "category": "handdrawn",
+      "name": "cat-notes",
+      "file": "stickers/handdrawn/cat-notes.png",
+      "source": "sticker-sheet-01.png",
+      "source_box": [
+        1288,
+        332,
+        1528,
+        560
+      ],
+      "size": [
+        229,
+        214
+      ]
+    },
+    {
+      "category": "handdrawn",
+      "name": "cat-laptop",
+      "file": "stickers/handdrawn/cat-laptop.png",
+      "source": "sticker-sheet-01.png",
+      "source_box": [
+        20,
+        556,
+        308,
+        776
+      ],
+      "size": [
+        286,
+        213
+      ]
+    },
+    {
+      "category": "handdrawn",
+      "name": "cherries",
+      "file": "stickers/handdrawn/cherries.png",
+      "source": "sticker-sheet-01.png",
+      "source_box": [
+        336,
+        560,
+        550,
+        786
+      ],
+      "size": [
+        203,
+        215
+      ]
+    },
+    {
+      "category": "handdrawn",
+      "name": "lightbulb-cat",
+      "file": "stickers/handdrawn/lightbulb-cat.png",
+      "source": "sticker-sheet-01.png",
+      "source_box": [
+        562,
+        548,
+        786,
+        784
+      ],
+      "size": [
+        224,
+        233
+      ]
+    },
+    {
+      "category": "handdrawn",
+      "name": "cat-drink",
+      "file": "stickers/handdrawn/cat-drink.png",
+      "source": "sticker-sheet-01.png",
+      "source_box": [
+        818,
+        556,
+        994,
+        782
+      ],
+      "size": [
+        162,
+        225
+      ]
+    },
+    {
+      "category": "handdrawn",
+      "name": "paper-plane",
+      "file": "stickers/handdrawn/paper-plane.png",
+      "source": "sticker-sheet-01.png",
+      "source_box": [
+        1022,
+        556,
+        1234,
+        790
+      ],
+      "size": [
+        212,
+        188
+      ]
+    },
+    {
+      "category": "handdrawn",
+      "name": "cat-box",
+      "file": "stickers/handdrawn/cat-box.png",
+      "source": "sticker-sheet-01.png",
+      "source_box": [
+        1266,
+        550,
+        1532,
+        790
+      ],
+      "size": [
+        256,
+        233
+      ]
+    },
+    {
+      "category": "handdrawn",
+      "name": "cat-cloud",
+      "file": "stickers/handdrawn/cat-cloud.png",
+      "source": "sticker-sheet-01.png",
+      "source_box": [
+        18,
+        802,
+        276,
+        986
+      ],
+      "size": [
+        258,
+        176
+      ]
+    },
+    {
+      "category": "handdrawn",
+      "name": "cat-planet",
+      "file": "stickers/handdrawn/cat-planet.png",
+      "source": "sticker-sheet-01.png",
+      "source_box": [
+        300,
+        792,
+        524,
+        988
+      ],
+      "size": [
+        217,
+        185
+      ]
+    },
+    {
+      "category": "handdrawn",
+      "name": "map-pin",
+      "file": "stickers/handdrawn/map-pin.png",
+      "source": "sticker-sheet-01.png",
+      "source_box": [
+        552,
+        790,
+        772,
+        994
+      ],
+      "size": [
+        220,
+        195
+      ]
+    },
+    {
+      "category": "handdrawn",
+      "name": "photo-stack",
+      "file": "stickers/handdrawn/photo-stack.png",
+      "source": "sticker-sheet-01.png",
+      "source_box": [
+        804,
+        790,
+        1044,
+        992
+      ],
+      "size": [
+        229,
+        197
+      ]
+    },
+    {
+      "category": "handdrawn",
+      "name": "heart-message",
+      "file": "stickers/handdrawn/heart-message.png",
+      "source": "sticker-sheet-01.png",
+      "source_box": [
+        1052,
+        794,
+        1274,
+        992
+      ],
+      "size": [
+        199,
+        180
+      ]
+    },
+    {
+      "category": "handdrawn",
+      "name": "pencil",
+      "file": "stickers/handdrawn/pencil.png",
+      "source": "sticker-sheet-01.png",
+      "source_box": [
+        1270,
+        790,
+        1528,
+        996
+      ],
+      "size": [
+        243,
+        190
+      ]
+    },
+    {
+      "category": "pixel",
+      "name": "cat-trash",
+      "file": "stickers/pixel/cat-trash.png",
+      "source": "sticker-sheet-p2.png",
+      "source_box": [
+        302,
+        32,
+        584,
+        326
+      ],
+      "size": [
+        262,
+        294
+      ]
+    },
+    {
+      "category": "pixel",
+      "name": "cat-globe",
+      "file": "stickers/pixel/cat-globe.png",
+      "source": "sticker-sheet-p2.png",
+      "source_box": [
+        1190,
+        30,
+        1524,
+        320
+      ],
+      "size": [
+        316,
+        256
+      ]
+    },
+    {
+      "category": "pixel",
+      "name": "pixso-canvas",
+      "file": "stickers/pixel/pixso-canvas.png",
+      "source": "sticker-sheet-p2.png",
+      "source_box": [
+        334,
+        348,
+        704,
+        620
+      ],
+      "size": [
+        359,
+        261
+      ]
+    },
+    {
+      "category": "pixel",
+      "name": "cursor",
+      "file": "stickers/pixel/cursor.png",
+      "source": "sticker-sheet-p2.png",
+      "source_box": [
+        764,
+        358,
+        984,
+        612
+      ],
+      "size": [
+        193,
+        228
+      ]
+    },
+    {
+      "category": "pixel",
+      "name": "cat-document",
+      "file": "stickers/pixel/cat-document.png",
+      "source": "sticker-sheet-p2.png",
+      "source_box": [
+        1266,
+        344,
+        1522,
+        618
+      ],
+      "size": [
+        223,
+        261
+      ]
+    },
+    {
+      "category": "pixel",
+      "name": "sun-cloud",
+      "file": "stickers/pixel/sun-cloud.png",
+      "source": "sticker-sheet-p2.png",
+      "source_box": [
+        28,
+        630,
+        310,
+        818
+      ],
+      "size": [
+        255,
+        188
+      ]
+    },
+    {
+      "category": "pixel",
+      "name": "heart",
+      "file": "stickers/pixel/heart.png",
+      "source": "sticker-sheet-p2.png",
+      "source_box": [
+        342,
+        632,
+        554,
+        820
+      ],
+      "size": [
+        179,
+        160
+      ]
+    },
+    {
+      "category": "pixel",
+      "name": "check",
+      "file": "stickers/pixel/check.png",
+      "source": "sticker-sheet-p2.png",
+      "source_box": [
+        586,
+        632,
+        788,
+        818
+      ],
+      "size": [
+        165,
+        163
+      ]
+    },
+    {
+      "category": "pixel",
+      "name": "warning",
+      "file": "stickers/pixel/warning.png",
+      "source": "sticker-sheet-p2.png",
+      "source_box": [
+        802,
+        632,
+        1000,
+        818
+      ],
+      "size": [
+        172,
+        172
+      ]
+    },
+    {
+      "category": "pixel",
+      "name": "message",
+      "file": "stickers/pixel/message.png",
+      "source": "sticker-sheet-p2.png",
+      "source_box": [
+        1032,
+        632,
+        1278,
+        820
+      ],
+      "size": [
+        203,
+        175
+      ]
+    },
+    {
+      "category": "pixel",
+      "name": "search",
+      "file": "stickers/pixel/search.png",
+      "source": "sticker-sheet-p2.png",
+      "source_box": [
+        1270,
+        630,
+        1526,
+        830
+      ],
+      "size": [
+        186,
+        196
+      ]
+    },
+    {
+      "category": "pixel",
+      "name": "bell",
+      "file": "stickers/pixel/bell.png",
+      "source": "sticker-sheet-p2.png",
+      "source_box": [
+        40,
+        822,
+        278,
+        1018
+      ],
+      "size": [
+        209,
+        176
+      ]
+    },
+    {
+      "category": "pixel",
+      "name": "gear",
+      "file": "stickers/pixel/gear.png",
+      "source": "sticker-sheet-p2.png",
+      "source_box": [
+        294,
+        818,
+        518,
+        1018
+      ],
+      "size": [
+        181,
+        178
+      ]
+    },
+    {
+      "category": "pixel",
+      "name": "paper-plane",
+      "file": "stickers/pixel/paper-plane.png",
+      "source": "sticker-sheet-p2.png",
+      "source_box": [
+        556,
+        818,
+        766,
+        1010
+      ],
+      "size": [
+        172,
+        166
+      ]
+    },
+    {
+      "category": "pixel",
+      "name": "cool-cat",
+      "file": "stickers/pixel/cool-cat.png",
+      "source": "sticker-sheet-p2.png",
+      "source_box": [
+        762,
+        806,
+        1046,
+        1008
+      ],
+      "size": [
+        250,
+        174
+      ]
+    },
+    {
+      "category": "pixel",
+      "name": "image",
+      "file": "stickers/pixel/image.png",
+      "source": "sticker-sheet-p2.png",
+      "source_box": [
+        1052,
+        814,
+        1280,
+        1012
+      ],
+      "size": [
+        192,
+        179
+      ]
+    },
+    {
+      "category": "pixel",
+      "name": "upload-cloud",
+      "file": "stickers/pixel/upload-cloud.png",
+      "source": "sticker-sheet-p2.png",
+      "source_box": [
+        1278,
+        812,
+        1530,
+        1016
+      ],
+      "size": [
+        193,
+        185
+      ]
+    },
+    {
+      "category": "watercolor",
+      "name": "makeup-compact",
+      "file": "stickers/watercolor/makeup-compact.png",
+      "source": "sticker-sheet-pink-handdrawn-2026.png",
+      "source_box": [
+        46,
+        52,
+        236,
+        230
+      ],
+      "size": [
+        187,
+        175
+      ]
+    },
+    {
+      "category": "watercolor",
+      "name": "ice-cream",
+      "file": "stickers/watercolor/ice-cream.png",
+      "source": "sticker-sheet-pink-handdrawn-2026.png",
+      "source_box": [
+        332,
+        64,
+        496,
+        286
+      ],
+      "size": [
+        160,
+        217
+      ]
+    },
+    {
+      "category": "watercolor",
+      "name": "floral-browser",
+      "file": "stickers/watercolor/floral-browser.png",
+      "source": "sticker-sheet-pink-handdrawn-2026.png",
+      "source_box": [
+        538,
+        72,
+        972,
+        342
+      ],
+      "size": [
+        406,
+        240
+      ]
+    },
+    {
+      "category": "watercolor",
+      "name": "cat-folder",
+      "file": "stickers/watercolor/cat-folder.png",
+      "source": "sticker-sheet-pink-handdrawn-2026.png",
+      "source_box": [
+        52,
+        326,
+        270,
+        485
+      ],
+      "size": [
+        189,
+        157
+      ]
+    },
+    {
+      "category": "watercolor",
+      "name": "cat-monitor",
+      "file": "stickers/watercolor/cat-monitor.png",
+      "source": "sticker-sheet-pink-handdrawn-2026.png",
+      "source_box": [
+        300,
+        404,
+        508,
+        605
+      ],
+      "size": [
+        201,
+        194
+      ]
+    },
+    {
+      "category": "watercolor",
+      "name": "handwritten-note",
+      "file": "stickers/watercolor/handwritten-note.png",
+      "source": "sticker-sheet-pink-handdrawn-2026.png",
+      "source_box": [
+        548,
+        416,
+        974,
+        708
+      ],
+      "size": [
+        395,
+        269
+      ]
+    },
+    {
+      "category": "watercolor",
+      "name": "sleeping-cat",
+      "file": "stickers/watercolor/sleeping-cat.png",
+      "source": "sticker-sheet-pink-handdrawn-2026.png",
+      "source_box": [
+        42,
+        616,
+        292,
+        798
+      ],
+      "size": [
+        217,
+        176
+      ]
+    },
+    {
+      "category": "watercolor",
+      "name": "tablet-pen",
+      "file": "stickers/watercolor/tablet-pen.png",
+      "source": "sticker-sheet-pink-handdrawn-2026.png",
+      "source_box": [
+        320,
+        732,
+        500,
+        906
+      ],
+      "size": [
+        160,
+        174
+      ]
+    },
+    {
+      "category": "watercolor",
+      "name": "drawing-app",
+      "file": "stickers/watercolor/drawing-app.png",
+      "source": "sticker-sheet-pink-handdrawn-2026.png",
+      "source_box": [
+        546,
+        742,
+        976,
+        1112
+      ],
+      "size": [
+        413,
+        370
+      ]
+    },
+    {
+      "category": "watercolor",
+      "name": "triangle-sticker",
+      "file": "stickers/watercolor/triangle-sticker.png",
+      "source": "sticker-sheet-pink-handdrawn-2026.png",
+      "source_box": [
+        54,
+        916,
+        250,
+        1055
+      ],
+      "size": [
+        184,
+        139
+      ]
+    },
+    {
+      "category": "watercolor",
+      "name": "pink-tag",
+      "file": "stickers/watercolor/pink-tag.png",
+      "source": "sticker-sheet-pink-handdrawn-2026.png",
+      "source_box": [
+        318,
+        1002,
+        498,
+        1118
+      ],
+      "size": [
+        162,
+        110
+      ]
+    },
+    {
+      "category": "watercolor",
+      "name": "cool-cat-laptop",
+      "file": "stickers/watercolor/cool-cat-laptop.png",
+      "source": "sticker-sheet-pink-handdrawn-2026.png",
+      "source_box": [
+        42,
+        1190,
+        352,
+        1320
+      ],
+      "size": [
+        298,
+        130
+      ]
+    },
+    {
+      "category": "watercolor",
+      "name": "star",
+      "file": "stickers/watercolor/star.png",
+      "source": "sticker-sheet-pink-handdrawn-2026.png",
+      "source_box": [
+        406,
+        1168,
+        524,
+        1288
+      ],
+      "size": [
+        93,
+        101
+      ]
+    },
+    {
+      "category": "watercolor",
+      "name": "heart",
+      "file": "stickers/watercolor/heart.png",
+      "source": "sticker-sheet-pink-handdrawn-2026.png",
+      "source_box": [
+        568,
+        1154,
+        724,
+        1302
+      ],
+      "size": [
+        139,
+        120
+      ]
+    },
+    {
+      "category": "watercolor",
+      "name": "cursor",
+      "file": "stickers/watercolor/cursor.png",
+      "source": "sticker-sheet-pink-handdrawn-2026.png",
+      "source_box": [
+        800,
+        1148,
+        978,
+        1302
+      ],
+      "size": [
+        112,
+        137
+      ]
+    },
+    {
+      "category": "watercolor",
+      "name": "glass-sticker",
+      "file": "stickers/watercolor/glass-sticker.png",
+      "source": "sticker-sheet-pink-handdrawn-2026.png",
+      "source_box": [
+        428,
+        1320,
+        624,
+        1514
+      ],
+      "size": [
+        180,
+        133
+      ]
+    },
+    {
+      "category": "watercolor",
+      "name": "sleeping-pillow-cat",
+      "file": "stickers/watercolor/sleeping-pillow-cat.png",
+      "source": "sticker-sheet-pink-handdrawn-2026.png",
+      "source_box": [
+        670,
+        1332,
+        972,
+        1502
+      ],
+      "size": [
+        274,
+        128
+      ]
+    },
+    {
+      "category": "pixel_kawaii",
+      "name": "cat-envelope",
+      "file": "stickers/pixel_kawaii/cat-envelope.png",
+      "source": "sticker-sheet-pixel-kawaii-2026.png",
+      "source_box": [
+        34,
+        36,
+        266,
+        276
+      ],
+      "size": [
+        231,
+        233
+      ]
+    },
+    {
+      "category": "pixel_kawaii",
+      "name": "cat-trash",
+      "file": "stickers/pixel_kawaii/cat-trash.png",
+      "source": "sticker-sheet-pixel-kawaii-2026.png",
+      "source_box": [
+        306,
+        28,
+        494,
+        280
+      ],
+      "size": [
+        188,
+        252
+      ]
+    },
+    {
+      "category": "pixel_kawaii",
+      "name": "cat-folder",
+      "file": "stickers/pixel_kawaii/cat-folder.png",
+      "source": "sticker-sheet-pixel-kawaii-2026.png",
+      "source_box": [
+        530,
+        44,
+        748,
+        264
+      ],
+      "size": [
+        218,
+        220
+      ]
+    },
+    {
+      "category": "pixel_kawaii",
+      "name": "cat-floppy",
+      "file": "stickers/pixel_kawaii/cat-floppy.png",
+      "source": "sticker-sheet-pixel-kawaii-2026.png",
+      "source_box": [
+        786,
+        44,
+        982,
+        276
+      ],
+      "size": [
+        196,
+        223
+      ]
+    },
+    {
+      "category": "pixel_kawaii",
+      "name": "cat-notepad",
+      "file": "stickers/pixel_kawaii/cat-notepad.png",
+      "source": "sticker-sheet-pixel-kawaii-2026.png",
+      "source_box": [
+        1026,
+        38,
+        1238,
+        274
+      ],
+      "size": [
+        212,
+        227
+      ]
+    },
+    {
+      "category": "pixel_kawaii",
+      "name": "waving-cat",
+      "file": "stickers/pixel_kawaii/waving-cat.png",
+      "source": "sticker-sheet-pixel-kawaii-2026.png",
+      "source_box": [
+        1238,
+        46,
+        1522,
+        268
+      ],
+      "size": [
+        284,
+        187
+      ]
+    },
+    {
+      "category": "pixel_kawaii",
+      "name": "cat-globe",
+      "file": "stickers/pixel_kawaii/cat-globe.png",
+      "source": "sticker-sheet-pixel-kawaii-2026.png",
+      "source_box": [
+        24,
+        322,
+        282,
+        536
+      ],
+      "size": [
+        258,
+        209
+      ]
+    },
+    {
+      "category": "pixel_kawaii",
+      "name": "cool-cat-window",
+      "file": "stickers/pixel_kawaii/cool-cat-window.png",
+      "source": "sticker-sheet-pixel-kawaii-2026.png",
+      "source_box": [
+        334,
+        324,
+        706,
+        534
+      ],
+      "size": [
+        372,
+        210
+      ]
+    },
+    {
+      "category": "pixel_kawaii",
+      "name": "cats-exe-window",
+      "file": "stickers/pixel_kawaii/cats-exe-window.png",
+      "source": "sticker-sheet-pixel-kawaii-2026.png",
+      "source_box": [
+        770,
+        326,
+        1132,
+        582
+      ],
+      "size": [
+        357,
+        256
+      ]
+    },
+    {
+      "category": "pixel_kawaii",
+      "name": "error-window",
+      "file": "stickers/pixel_kawaii/error-window.png",
+      "source": "sticker-sheet-pixel-kawaii-2026.png",
+      "source_box": [
+        1164,
+        346,
+        1518,
+        576
+      ],
+      "size": [
+        354,
+        230
+      ]
+    },
+    {
+      "category": "pixel_kawaii",
+      "name": "sticky-note-cat",
+      "file": "stickers/pixel_kawaii/sticky-note-cat.png",
+      "source": "sticker-sheet-pixel-kawaii-2026.png",
+      "source_box": [
+        50,
+        570,
+        228,
+        746
+      ],
+      "size": [
+        178,
+        169
+      ]
+    },
+    {
+      "category": "pixel_kawaii",
+      "name": "picatsso-window",
+      "file": "stickers/pixel_kawaii/picatsso-window.png",
+      "source": "sticker-sheet-pixel-kawaii-2026.png",
+      "source_box": [
+        280,
+        554,
+        716,
+        824
+      ],
+      "size": [
+        436,
+        270
+      ]
+    },
+    {
+      "category": "pixel_kawaii",
+      "name": "heart-pair",
+      "file": "stickers/pixel_kawaii/heart-pair.png",
+      "source": "sticker-sheet-pixel-kawaii-2026.png",
+      "source_box": [
+        726,
+        620,
+        934,
+        804
+      ],
+      "size": [
+        207,
+        183
+      ]
+    },
+    {
+      "category": "pixel_kawaii",
+      "name": "heart-eyes-cat",
+      "file": "stickers/pixel_kawaii/heart-eyes-cat.png",
+      "source": "sticker-sheet-pixel-kawaii-2026.png",
+      "source_box": [
+        940,
+        618,
+        1176,
+        804
+      ],
+      "size": [
+        232,
+        181
+      ]
+    },
+    {
+      "category": "pixel_kawaii",
+      "name": "cat-folder-pair",
+      "file": "stickers/pixel_kawaii/cat-folder-pair.png",
+      "source": "sticker-sheet-pixel-kawaii-2026.png",
+      "source_box": [
+        1218,
+        612,
+        1520,
+        814
+      ],
+      "size": [
+        259,
+        202
+      ]
+    },
+    {
+      "category": "pixel_kawaii",
+      "name": "notes-label",
+      "file": "stickers/pixel_kawaii/notes-label.png",
+      "source": "sticker-sheet-pixel-kawaii-2026.png",
+      "source_box": [
+        42,
+        842,
+        286,
+        966
+      ],
+      "size": [
+        244,
+        124
+      ]
+    },
+    {
+      "category": "pixel_kawaii",
+      "name": "cursor",
+      "file": "stickers/pixel_kawaii/cursor.png",
+      "source": "sticker-sheet-pixel-kawaii-2026.png",
+      "source_box": [
+        344,
+        846,
+        474,
+        984
+      ],
+      "size": [
+        130,
+        138
+      ]
+    },
+    {
+      "category": "pixel_kawaii",
+      "name": "star",
+      "file": "stickers/pixel_kawaii/star.png",
+      "source": "sticker-sheet-pixel-kawaii-2026.png",
+      "source_box": [
+        500,
+        842,
+        700,
+        988
+      ],
+      "size": [
+        187,
+        146
+      ]
+    },
+    {
+      "category": "pixel_kawaii",
+      "name": "cat-cloud",
+      "file": "stickers/pixel_kawaii/cat-cloud.png",
+      "source": "sticker-sheet-pixel-kawaii-2026.png",
+      "source_box": [
+        742,
+        844,
+        938,
+        990
+      ],
+      "size": [
+        177,
+        146
+      ]
+    },
+    {
+      "category": "pixel_kawaii",
+      "name": "rainbow-clouds",
+      "file": "stickers/pixel_kawaii/rainbow-clouds.png",
+      "source": "sticker-sheet-pixel-kawaii-2026.png",
+      "source_box": [
+        982,
+        842,
+        1254,
+        990
+      ],
+      "size": [
+        270,
+        148
+      ]
+    },
+    {
+      "category": "pixel_kawaii",
+      "name": "heart-message",
+      "file": "stickers/pixel_kawaii/heart-message.png",
+      "source": "sticker-sheet-pixel-kawaii-2026.png",
+      "source_box": [
+        1320,
+        836,
+        1518,
+        982
+      ],
+      "size": [
+        193,
+        146
+      ]
+    },
+    {
+      "category": "pixel",
+      "name": "cat-envelope",
+      "file": "stickers/pixel/cat-envelope.png",
+      "source": "sticker-sheet-p2.png",
+      "source_box": [
+        28,
+        42,
+        300,
+        330
+      ],
+      "size": [
+        272,
+        288
+      ]
+    },
+    {
+      "category": "pixel",
+      "name": "cat-folder",
+      "file": "stickers/pixel/cat-folder.png",
+      "source": "sticker-sheet-p2.png",
+      "source_box": [
+        574,
+        42,
+        888,
+        340
+      ],
+      "size": [
+        314,
+        298
+      ]
+    },
+    {
+      "category": "pixel",
+      "name": "cat-floppy",
+      "file": "stickers/pixel/cat-floppy.png",
+      "source": "sticker-sheet-p2.png",
+      "source_box": [
+        872,
+        30,
+        1172,
+        340
+      ],
+      "size": [
+        300,
+        310
+      ]
+    },
+    {
+      "category": "pixel",
+      "name": "cat-notepad",
+      "file": "stickers/pixel/cat-notepad.png",
+      "source": "sticker-sheet-p2.png",
+      "source_box": [
+        18,
+        332,
+        320,
+        638
+      ],
+      "size": [
+        302,
+        306
+      ]
+    },
+    {
+      "category": "pixel",
+      "name": "star",
+      "file": "stickers/pixel/star.png",
+      "source": "sticker-sheet-p2.png",
+      "source_box": [
+        994,
+        348,
+        1244,
+        638
+      ],
+      "size": [
+        250,
+        290
+      ]
+    },
+    {
+      "category": "extra_a",
+      "name": "01-cats-exe-window",
+      "file": "stickers/extra_a/01-cats-exe-window.png",
+      "source": "codex-clipboard-cc724f22-14f3-44be-949b-699f978c1386.png",
+      "source_box": [
+        18,
+        28,
+        453,
+        313
+      ],
+      "size": [
+        424,
+        261
+      ],
+      "tags": [
+        "cat",
+        "pink",
+        "ui-frame",
+        "kawaii",
+        "sticker"
+      ]
+    },
+    {
+      "category": "extra_a",
+      "name": "02-pink-browser-cat-star",
+      "file": "stickers/extra_a/02-pink-browser-cat-star.png",
+      "source": "codex-clipboard-cc724f22-14f3-44be-949b-699f978c1386.png",
+      "source_box": [
+        463,
+        20,
+        1003,
+        282
+      ],
+      "size": [
+        514,
+        243
+      ],
+      "tags": [
+        "cat",
+        "pink",
+        "ui-frame",
+        "kawaii",
+        "sticker"
+      ]
+    },
+    {
+      "category": "extra_a",
+      "name": "03-sunny-sky-window",
+      "file": "stickers/extra_a/03-sunny-sky-window.png",
+      "source": "codex-clipboard-cc724f22-14f3-44be-949b-699f978c1386.png",
+      "source_box": [
+        1000,
+        42,
+        1288,
+        279
+      ],
+      "size": [
+        269,
+        220
+      ],
+      "tags": [
+        "cat",
+        "pink",
+        "ui-frame",
+        "kawaii",
+        "sticker"
+      ]
+    },
+    {
+      "category": "extra_a",
+      "name": "04-heart-note",
+      "file": "stickers/extra_a/04-heart-note.png",
+      "source": "codex-clipboard-cc724f22-14f3-44be-949b-699f978c1386.png",
+      "source_box": [
+        1290,
+        25,
+        1523,
+        293
+      ],
+      "size": [
+        215,
+        257
+      ],
+      "tags": [
+        "cat",
+        "pink",
+        "ui-frame",
+        "kawaii",
+        "sticker"
+      ]
+    },
+    {
+      "category": "extra_a",
+      "name": "05-navigation-sidebar",
+      "file": "stickers/extra_a/05-navigation-sidebar.png",
+      "source": "codex-clipboard-cc724f22-14f3-44be-949b-699f978c1386.png",
+      "source_box": [
+        24,
+        311,
+        223,
+        833
+      ],
+      "size": [
+        184,
+        517
+      ],
+      "tags": [
+        "cat",
+        "pink",
+        "ui-frame",
+        "kawaii",
+        "sticker"
+      ]
+    },
+    {
+      "category": "extra_a",
+      "name": "06-blue-browser-cat",
+      "file": "stickers/extra_a/06-blue-browser-cat.png",
+      "source": "codex-clipboard-cc724f22-14f3-44be-949b-699f978c1386.png",
+      "source_box": [
+        232,
+        312,
+        738,
+        638
+      ],
+      "size": [
+        488,
+        304
+      ],
+      "tags": [
+        "cat",
+        "pink",
+        "ui-frame",
+        "kawaii",
+        "sticker"
+      ]
+    },
+    {
+      "category": "extra_a",
+      "name": "07-cat-message-bubble",
+      "file": "stickers/extra_a/07-cat-message-bubble.png",
+      "source": "codex-clipboard-cc724f22-14f3-44be-949b-699f978c1386.png",
+      "source_box": [
+        745,
+        281,
+        1203,
+        498
+      ],
+      "size": [
+        449,
+        217
+      ],
+      "tags": [
+        "cat",
+        "pink",
+        "ui-frame",
+        "kawaii",
+        "sticker"
+      ]
+    },
+    {
+      "category": "extra_a",
+      "name": "08-taped-photo",
+      "file": "stickers/extra_a/08-taped-photo.png",
+      "source": "codex-clipboard-cc724f22-14f3-44be-949b-699f978c1386.png",
+      "source_box": [
+        1213,
+        284,
+        1521,
+        618
+      ],
+      "size": [
+        280,
+        326
+      ],
+      "tags": [
+        "cat",
+        "pink",
+        "ui-frame",
+        "kawaii",
+        "sticker"
+      ]
+    },
+    {
+      "category": "extra_a",
+      "name": "09-cherries-note-card",
+      "file": "stickers/extra_a/09-cherries-note-card.png",
+      "source": "codex-clipboard-cc724f22-14f3-44be-949b-699f978c1386.png",
+      "source_box": [
+        225,
+        628,
+        743,
+        846
+      ],
+      "size": [
+        502,
+        211
+      ],
+      "tags": [
+        "cat",
+        "pink",
+        "ui-frame",
+        "kawaii",
+        "sticker"
+      ]
+    },
+    {
+      "category": "extra_a",
+      "name": "10-grid-browser-sleepy-cat",
+      "file": "stickers/extra_a/10-grid-browser-sleepy-cat.png",
+      "source": "codex-clipboard-cc724f22-14f3-44be-949b-699f978c1386.png",
+      "source_box": [
+        741,
+        499,
+        1228,
+        810
+      ],
+      "size": [
+        461,
+        290
+      ],
+      "tags": [
+        "cat",
+        "pink",
+        "ui-frame",
+        "kawaii",
+        "sticker"
+      ]
+    },
+    {
+      "category": "extra_a",
+      "name": "11-cat-folder",
+      "file": "stickers/extra_a/11-cat-folder.png",
+      "source": "codex-clipboard-cc724f22-14f3-44be-949b-699f978c1386.png",
+      "source_box": [
+        1220,
+        610,
+        1522,
+        817
+      ],
+      "size": [
+        257,
+        186
+      ],
+      "tags": [
+        "cat",
+        "pink",
+        "ui-frame",
+        "kawaii",
+        "sticker"
+      ]
+    },
+    {
+      "category": "extra_a",
+      "name": "12-pink-notes-label",
+      "file": "stickers/extra_a/12-pink-notes-label.png",
+      "source": "codex-clipboard-cc724f22-14f3-44be-949b-699f978c1386.png",
+      "source_box": [
+        12,
+        852,
+        445,
+        1005
+      ],
+      "size": [
+        409,
+        121
+      ],
+      "tags": [
+        "cat",
+        "pink",
+        "ui-frame",
+        "kawaii",
+        "sticker"
+      ]
+    },
+    {
+      "category": "extra_a",
+      "name": "13-cat-tabs-label",
+      "file": "stickers/extra_a/13-cat-tabs-label.png",
+      "source": "codex-clipboard-cc724f22-14f3-44be-949b-699f978c1386.png",
+      "source_box": [
+        440,
+        840,
+        823,
+        1005
+      ],
+      "size": [
+        350,
+        152
+      ],
+      "tags": [
+        "cat",
+        "pink",
+        "ui-frame",
+        "kawaii",
+        "sticker"
+      ]
+    },
+    {
+      "category": "extra_a",
+      "name": "14-mint-cat-message",
+      "file": "stickers/extra_a/14-mint-cat-message.png",
+      "source": "codex-clipboard-cc724f22-14f3-44be-949b-699f978c1386.png",
+      "source_box": [
+        820,
+        818,
+        1185,
+        1005
+      ],
+      "size": [
+        351,
+        172
+      ],
+      "tags": [
+        "cat",
+        "pink",
+        "ui-frame",
+        "kawaii",
+        "sticker"
+      ]
+    },
+    {
+      "category": "extra_a",
+      "name": "15-cloud-star",
+      "file": "stickers/extra_a/15-cloud-star.png",
+      "source": "codex-clipboard-cc724f22-14f3-44be-949b-699f978c1386.png",
+      "source_box": [
+        1172,
+        812,
+        1524,
+        1005
+      ],
+      "size": [
+        334,
+        163
+      ],
+      "tags": [
+        "cat",
+        "pink",
+        "ui-frame",
+        "kawaii",
+        "sticker"
+      ]
+    },
+    {
+      "category": "extra_b",
+      "name": "good-day-cat-card",
+      "file": "stickers/extra_b/good-day-cat-card.png",
+      "source": "codex-clipboard-430e4549-e89b-4a04-ae62-a7d795202ec1.png",
+      "source_box": [
+        135,
+        108,
+        458,
+        335
+      ],
+      "size": [
+        309,
+        226
+      ],
+      "kind": "smooth"
+    },
+    {
+      "category": "extra_b",
+      "name": "ufo-cat",
+      "file": "stickers/extra_b/ufo-cat.png",
+      "source": "codex-clipboard-430e4549-e89b-4a04-ae62-a7d795202ec1.png",
+      "source_box": [
+        475,
+        65,
+        728,
+        282
+      ],
+      "size": [
+        238,
+        196
+      ],
+      "kind": "smooth"
+    },
+    {
+      "category": "extra_b",
+      "name": "dream-landscape-window",
+      "file": "stickers/extra_b/dream-landscape-window.png",
+      "source": "codex-clipboard-430e4549-e89b-4a04-ae62-a7d795202ec1.png",
+      "source_box": [
+        1070,
+        102,
+        1400,
+        370
+      ],
+      "size": [
+        330,
+        263
+      ],
+      "kind": "smooth"
+    },
+    {
+      "category": "extra_b",
+      "name": "loading-progress-window",
+      "file": "stickers/extra_b/loading-progress-window.png",
+      "source": "codex-clipboard-430e4549-e89b-4a04-ae62-a7d795202ec1.png",
+      "source_box": [
+        915,
+        710,
+        1292,
+        958
+      ],
+      "size": [
+        377,
+        248
+      ],
+      "kind": "smooth"
+    },
+    {
+      "category": "extra_b",
+      "name": "cloud-peeking-cat",
+      "file": "stickers/extra_b/cloud-peeking-cat.png",
+      "source": "codex-clipboard-430e4549-e89b-4a04-ae62-a7d795202ec1.png",
+      "source_box": [
+        1280,
+        450,
+        1528,
+        730
+      ],
+      "size": [
+        248,
+        280
+      ],
+      "kind": "smooth"
+    },
+    {
+      "category": "extra_b",
+      "name": "playlist-player",
+      "file": "stickers/extra_b/playlist-player.png",
+      "source": "codex-clipboard-e14adc77-42ac-4135-9f3f-80420805bd53.png",
+      "source_box": [
+        350,
+        25,
+        720,
+        285
+      ],
+      "size": [
+        370,
+        255
+      ],
+      "kind": "smooth"
+    },
+    {
+      "category": "extra_b",
+      "name": "notes-cat-window",
+      "file": "stickers/extra_b/notes-cat-window.png",
+      "source": "codex-clipboard-e14adc77-42ac-4135-9f3f-80420805bd53.png",
+      "source_box": [
+        1224,
+        42,
+        1530,
+        325
+      ],
+      "size": [
+        306,
+        283
+      ],
+      "kind": "smooth"
+    },
+    {
+      "category": "extra_b",
+      "name": "cat-house-landscape",
+      "file": "stickers/extra_b/cat-house-landscape.png",
+      "source": "codex-clipboard-e14adc77-42ac-4135-9f3f-80420805bd53.png",
+      "source_box": [
+        1095,
+        660,
+        1530,
+        1020
+      ],
+      "size": [
+        435,
+        360
+      ],
+      "kind": "smooth"
+    },
+    {
+      "category": "extra_b",
+      "name": "retro-cat-mail",
+      "file": "stickers/extra_b/retro-cat-mail.png",
+      "source": "codex-clipboard-0fe63c42-c4f1-4270-9ecd-ee4caba3a276.png",
+      "source_box": [
+        70,
+        86,
+        203,
+        204
+      ],
+      "size": [
+        124,
+        118
+      ],
+      "kind": "smooth"
+    },
+    {
+      "category": "extra_b",
+      "name": "retro-cat-trash",
+      "file": "stickers/extra_b/retro-cat-trash.png",
+      "source": "codex-clipboard-0fe63c42-c4f1-4270-9ecd-ee4caba3a276.png",
+      "source_box": [
+        76,
+        288,
+        200,
+        419
+      ],
+      "size": [
+        117,
+        131
+      ],
+      "kind": "smooth"
+    },
+    {
+      "category": "extra_b",
+      "name": "retro-cat-files",
+      "file": "stickers/extra_b/retro-cat-files.png",
+      "source": "codex-clipboard-0fe63c42-c4f1-4270-9ecd-ee4caba3a276.png",
+      "source_box": [
+        72,
+        511,
+        203,
+        648
+      ],
+      "size": [
+        130,
+        137
+      ],
+      "kind": "smooth"
+    },
+    {
+      "category": "extra_b",
+      "name": "retro-cat-floppy",
+      "file": "stickers/extra_b/retro-cat-floppy.png",
+      "source": "codex-clipboard-0fe63c42-c4f1-4270-9ecd-ee4caba3a276.png",
+      "source_box": [
+        76,
+        690,
+        210,
+        827
+      ],
+      "size": [
+        116,
+        137
+      ],
+      "kind": "smooth"
+    },
+    {
+      "category": "extra_b",
+      "name": "retro-cat-internet",
+      "file": "stickers/extra_b/retro-cat-internet.png",
+      "source": "codex-clipboard-0fe63c42-c4f1-4270-9ecd-ee4caba3a276.png",
+      "source_box": [
+        65,
+        862,
+        215,
+        977
+      ],
+      "size": [
+        137,
+        101
+      ],
+      "kind": "smooth"
+    },
+    {
+      "category": "extra_b",
+      "name": "retro-cats-error-combo",
+      "file": "stickers/extra_b/retro-cats-error-combo.png",
+      "source": "codex-clipboard-0fe63c42-c4f1-4270-9ecd-ee4caba3a276.png",
+      "source_box": [
+        285,
+        110,
+        680,
+        425
+      ],
+      "size": [
+        395,
+        315
+      ],
+      "kind": "smooth"
+    },
+    {
+      "category": "extra_b",
+      "name": "retro-picatsso-canvas",
+      "file": "stickers/extra_b/retro-picatsso-canvas.png",
+      "source": "codex-clipboard-0fe63c42-c4f1-4270-9ecd-ee4caba3a276.png",
+      "source_box": [
+        284,
+        498,
+        640,
+        794
+      ],
+      "size": [
+        356,
+        296
+      ],
+      "kind": "smooth"
+    },
+    {
+      "category": "extra_b",
+      "name": "retro-cat-notes",
+      "file": "stickers/extra_b/retro-cat-notes.png",
+      "source": "codex-clipboard-0fe63c42-c4f1-4270-9ecd-ee4caba3a276.png",
+      "source_box": [
+        252,
+        868,
+        415,
+        1007
+      ],
+      "size": [
+        149,
+        135
+      ],
+      "kind": "smooth"
+    },
+    {
+      "category": "extra_b",
+      "name": "retro-cool-cat-window",
+      "file": "stickers/extra_b/retro-cool-cat-window.png",
+      "source": "codex-clipboard-0fe63c42-c4f1-4270-9ecd-ee4caba3a276.png",
+      "source_box": [
+        435,
+        870,
+        675,
+        1007
+      ],
+      "size": [
+        240,
+        137
+      ],
+      "kind": "smooth"
+    }
+  ],
+  "summary": {
+    "total_assets": 115,
+    "categories": {
+      "handdrawn": 23,
+      "pixel": 22,
+      "watercolor": 17,
+      "pixel_kawaii": 21,
+      "extra_a": 15,
+      "extra_b": 17
+    },
+    "last_updated": "2026-10-23"
+  }
+}
