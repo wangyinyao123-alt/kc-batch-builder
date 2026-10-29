@@ -1,0 +1,14 @@
+{
+  "name": "flowchart-elf-vsdx",
+  "version": "0.1.0",
+  "private": true,
+  "type": "commonjs",
+  "description": "流程图 JSON → .vsdx 导出器（ts-visio + dual-write 补丁）",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "node test/run.js"
+  },
+  "dependencies": {
+    "ts-visio": "^1.16.27"
+  }
+}

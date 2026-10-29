@@ -9,3 +9,7 @@ _design-archive/
 .idea/
 .vscode/
 *.swp
+
+# 工具依赖
+tools/**/node_modules/
+tools/**/package-lock.json
