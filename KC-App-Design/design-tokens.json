@@ -1,39 +1,64 @@
 {
   "meta": {
     "name": "KC App UI handoff tokens",
-    "source": "Pixso design gti8TP-GucHUL6Ed2XgaWg",
-    "precision": "approximate implementation guidance; verify exact values in Pixso"
+    "source": "Pixso design gti8TP-GucHUL6Ed2XgaWg (via MCP, exact values)",
+    "extractedAt": "2026-10-28",
+    "precision": "exact — measured from Pixso node DSL"
   },
   "canvas": {
     "width": 1280,
-    "height": 800
+    "height": 800,
+    "safeArea": { "left": 32, "right": 32, "top": 24, "bottom": 24 }
   },
   "fontFamily": {
-    "ui": "Noto Sans TC, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
-    "weights": {
-      "regular": 400,
-      "bold": 700
-    }
+    "ui": "'Noto Sans TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+    "mono": "'JetBrains Mono', 'SF Mono', Menlo, monospace",
+    "weights": { "regular": 400, "bold": 700 }
+  },
+  "fontSize": {
+    "h1": 28,
+    "h2": 21,
+    "h3": 18,
+    "body": 14,
+    "bodyBold": 13,
+    "caption": 11,
+    "micro": 10,
+    "tiny": 9
   },
   "colors": {
-    "textPrimary": "#2F2A3A",
-    "textSecondary": "#756C80",
-    "textMuted": "#A39AAA",
+    "textPrimary": "#573747",
+    "textSecondary": "#7D6773",
+    "textMuted": "#967B88",
+    "textOnAccent": "#FFFFFF",
     "surface": "#FFFFFF",
-    "surfaceSoft": "#FFF8FC",
-    "border": "#EADFEA",
-    "accent": "#E879A8",
-    "accentStrong": "#D9558B",
-    "success": "#57B894",
+    "surfaceSoft": "#FFFAFC",
+    "surfaceMuted": "#FFFDFB",
+    "border": "#E99AB8",
+    "borderMuted": "#F0B0C8",
+    "accent": "#E99AB8",
+    "accentStrong": "#B85F7C",
+    "accentDark": "#9D5170",
+    "accentDarker": "#77475B",
+    "accentDarkest": "#573747",
+    "success": "#499B72",
+    "successStrong": "#55B47B",
+    "danger": "#B74863",
     "warning": "#E7A64D",
-    "danger": "#D95C72",
     "info": "#6B9EDB",
-    "overlayWhite": "rgba(255,255,255,0.62)"
+    "overlayWhite": "rgba(255,255,255,0.44)"
+  },
+  "statusColors": {
+    "running": "#499B72",
+    "completed": "#55B47B",
+    "queued": "#967B88",
+    "partialFailure": "#E7A64D",
+    "failed": "#B74863"
   },
   "radius": {
-    "window": 24,
-    "card": 16,
-    "control": 10,
+    "page": 16,
+    "card": 10,
+    "control": 8,
+    "input": 4,
     "pill": 999
   },
   "spacing": {
@@ -43,23 +68,19 @@
     "control": 12,
     "tableRow": 16
   },
-  "shadow": {
-    "window": "0 18px 48px rgba(93,54,89,0.18)",
-    "card": "0 8px 24px rgba(93,54,89,0.10)"
+  "stroke": {
+    "default": 1,
+    "emphasis": 1.5,
+    "heavy": 2
   },
   "backgrounds": {
     "P1": "assets/backgrounds/background-pink-grid-cat-1280x800.jpg",
     "P2-P5": "assets/backgrounds/background-sky-cat-1280x800.jpg",
-    "layerOrder": [
-      "illustration",
-      "white-soften-overlay",
-      "content"
-    ]
+    "layerOrder": ["illustration", "white-soften-overlay", "content"],
+    "P1-fill": "#FFF9F1",
+    "P1-overlay": "rgba(255,255,255,0.44)"
   },
-  "statusColors": {
-    "running": "#6B9EDB",
-    "completed": "#57B894",
-    "queued": "#A39AAA",
-    "partialFailure": "#E7A64D"
+  "shadow": {
+    "card": "0 8px 24px rgba(87,55,71,0.10)"
   }
 }

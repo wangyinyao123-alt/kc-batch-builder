@@ -1,0 +1,1445 @@
+{
+ "stats": {
+  "source": {
+   "variableMap": 0,
+   "variableSetMap": 0,
+   "localStyleMap": 0
+  },
+  "outputBytes": 14488
+ },
+ "roots": [
+  {
+   "id": "7:40",
+   "type": "FRAME",
+   "name": "P1 登录",
+   "frameMaskDisabled": false,
+   "box": {
+    "w": 1280,
+    "h": 800
+   },
+   "fills": [
+    {
+     "type": "solid",
+     "value": "rgba(255,249,241,1)"
+    },
+    {
+     "type": "gradient",
+     "value": "LINEAR",
+     "stops": [
+      [
+       "rgba(224,158,186,0.16)",
+       0
+      ],
+      [
+       "rgba(224,158,186,0.16)",
+       1
+      ],
+      [
+       "rgba(224,158,186,0)",
+       1
+      ]
+     ],
+     "transform": [
+      0,
+      1,
+      0,
+      -64,
+      0,
+      32.5
+     ],
+     "points": [
+      [
+       630,
+       0
+      ],
+      [
+       640,
+       0
+      ],
+      [
+       640,
+       800
+      ]
+     ]
+    },
+    {
+     "type": "gradient",
+     "value": "LINEAR",
+     "stops": [
+      [
+       "rgba(224,158,186,0.16)",
+       0
+      ],
+      [
+       "rgba(224,158,186,0.16)",
+       1
+      ],
+      [
+       "rgba(224,158,186,0)",
+       1
+      ]
+     ],
+     "transform": [
+      1,
+      0,
+      0,
+      0,
+      40,
+      -19.5
+     ],
+     "points": [
+      [
+       0,
+       410
+      ],
+      [
+       0,
+       400
+      ],
+      [
+       1280,
+       400
+      ]
+     ]
+    }
+   ],
+   "children": [
+    {
+     "id": "19:1",
+     "type": "RECTANGLE",
+     "name": "页面背景 · 粉色网格猫咪",
+     "box": {
+      "w": 1280,
+      "h": 800
+     },
+     "fills": [
+      {
+       "type": "asset",
+       "id": "6ce674f061fa66ca6f7b630e1846056ac750126e",
+       "imageScaleMode": "FILL",
+       "scale": 0.5,
+       "transform": [
+        1,
+        0,
+        0,
+        0,
+        1,
+        0
+       ],
+       "leftPt": [
+        640,
+        800
+       ],
+       "startPt": [
+        640,
+        400
+       ],
+       "endPt": [
+        1280,
+        400
+       ],
+       "filters": {
+        "tint": 0,
+        "shadows": 0,
+        "highlights": 0,
+        "exposure": 0,
+        "temperature": 0,
+        "vibrance": 0,
+        "contrast": 0,
+        "hue": 0
+       },
+       "originalImageWidth": 0,
+       "originalImageHeight": 0
+      }
+     ]
+    },
+    {
+     "id": "19:2",
+     "type": "RECTANGLE",
+     "name": "页面背景柔化层 · P1",
+     "box": {
+      "w": 1280,
+      "h": 800
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(255,255,255,0.44)"
+      }
+     ]
+    },
+    {
+     "id": "6:1",
+     "type": "RECTANGLE",
+     "name": "登录页贴纸·窗口猫",
+     "angle": 162,
+     "box": {
+      "w": 285.921234,
+      "h": 235.153885,
+      "x": 114.669729,
+      "y": 13.778001
+     },
+     "fills": [
+      {
+       "type": "asset",
+       "id": "7661d35985291870c496e946776ddfac88e975e9",
+       "imageScaleMode": "FILL",
+       "scale": 0.5,
+       "transform": [
+        1,
+        0,
+        0,
+        0,
+        1,
+        0
+       ],
+       "leftPt": [
+        142.960617,
+        235.153885
+       ],
+       "startPt": [
+        142.960617,
+        117.576942
+       ],
+       "endPt": [
+        285.921234,
+        117.576942
+       ],
+       "filters": {
+        "tint": 0,
+        "shadows": 0,
+        "highlights": 0,
+        "exposure": 0,
+        "temperature": 0,
+        "vibrance": 0,
+        "contrast": 0,
+        "hue": 0
+       },
+       "originalImageWidth": 314,
+       "originalImageHeight": 282
+      }
+     ],
+     "radius": 31
+    },
+    {
+     "id": "10:1",
+     "type": "FRAME",
+     "name": "Frame 79",
+     "frameMaskDisabled": false,
+     "box": {
+      "w": 520,
+      "h": 35,
+      "x": 380,
+      "y": 705
+     },
+     "autoLayout": {
+      "direction": "HORIZONTAL",
+      "mode": "HORIZONTAL",
+      "primarySizing": "FIXED",
+      "counterSizing": "FIXED",
+      "gap": 8,
+      "padding": [
+       8,
+       10,
+       8,
+       10
+      ],
+      "counterAlign": "center",
+      "itemVertAlign": "CENTER",
+      "align": "center",
+      "widthResize": "FIXED",
+      "heightResize": "FIXED"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(253,234,240,1)"
+      }
+     ],
+     "strokes": [
+      {
+       "type": "solid",
+       "value": "rgba(240,176,200,1)"
+      }
+     ],
+     "radius": 6,
+     "strokeWeight": 1.5,
+     "children": [
+      {
+       "id": "10:2",
+       "type": "RECTANGLE",
+       "name": "Rectangle 15",
+       "box": {
+        "w": 22,
+        "h": 20,
+        "x": 10,
+        "y": 7.5
+       },
+       "fills": [
+        {
+         "type": "solid",
+         "value": "rgba(224,112,144,1)"
+        }
+       ],
+       "strokes": [
+        {
+         "type": "solid",
+         "value": "rgba(208,120,142,1)"
+        }
+       ],
+       "radius": 4,
+       "strokeWeight": 1.5
+      },
+      {
+       "id": "10:3",
+       "type": "RECTANGLE",
+       "name": "Rectangle 16",
+       "box": {
+        "w": 22,
+        "h": 20,
+        "x": 40,
+        "y": 7.5
+       },
+       "fills": [
+        {
+         "type": "solid",
+         "value": "rgba(242,166,94,1)"
+        }
+       ],
+       "strokes": [
+        {
+         "type": "solid",
+         "value": "rgba(208,120,142,1)"
+        }
+       ],
+       "radius": 4,
+       "strokeWeight": 1.5
+      },
+      {
+       "id": "10:4",
+       "type": "RECTANGLE",
+       "name": "Rectangle 17",
+       "box": {
+        "w": 22,
+        "h": 20,
+        "x": 70,
+        "y": 7.5
+       },
+       "fills": [
+        {
+         "type": "solid",
+         "value": "rgba(245,215,110,1)"
+        }
+       ],
+       "strokes": [
+        {
+         "type": "solid",
+         "value": "rgba(208,120,142,1)"
+        }
+       ],
+       "radius": 4,
+       "strokeWeight": 1.5
+      },
+      {
+       "id": "10:5",
+       "type": "RECTANGLE",
+       "name": "Rectangle 18",
+       "box": {
+        "w": 22,
+        "h": 20,
+        "x": 100,
+        "y": 7.5
+       },
+       "fills": [
+        {
+         "type": "solid",
+         "value": "rgba(156,211,160,1)"
+        }
+       ],
+       "strokes": [
+        {
+         "type": "solid",
+         "value": "rgba(208,120,142,1)"
+        }
+       ],
+       "radius": 4,
+       "strokeWeight": 1.5
+      },
+      {
+       "id": "10:6",
+       "type": "RECTANGLE",
+       "name": "Rectangle 19",
+       "box": {
+        "w": 22,
+        "h": 20,
+        "x": 130,
+        "y": 7.5
+       },
+       "fills": [
+        {
+         "type": "solid",
+         "value": "rgba(156,197,232,1)"
+        }
+       ],
+       "strokes": [
+        {
+         "type": "solid",
+         "value": "rgba(208,120,142,1)"
+        }
+       ],
+       "radius": 4,
+       "strokeWeight": 1.5
+      },
+      {
+       "id": "10:7",
+       "type": "RECTANGLE",
+       "name": "Rectangle 20",
+       "box": {
+        "w": 22,
+        "h": 20,
+        "x": 160,
+        "y": 7.5
+       },
+       "fills": [
+        {
+         "type": "solid",
+         "value": "rgba(185,168,224,1)"
+        }
+       ],
+       "strokes": [
+        {
+         "type": "solid",
+         "value": "rgba(208,120,142,1)"
+        }
+       ],
+       "radius": 4,
+       "strokeWeight": 1.5
+      },
+      {
+       "id": "10:8",
+       "type": "RECTANGLE",
+       "name": "Rectangle 21",
+       "box": {
+        "w": 22,
+        "h": 20,
+        "x": 190,
+        "y": 7.5
+       },
+       "fills": [
+        {
+         "type": "solid",
+         "value": "rgba(201,196,192,1)"
+        }
+       ],
+       "strokes": [
+        {
+         "type": "solid",
+         "value": "rgba(208,120,142,1)"
+        }
+       ],
+       "radius": 4,
+       "strokeWeight": 1.5
+      },
+      {
+       "id": "10:9",
+       "type": "RECTANGLE",
+       "name": "Rectangle 22",
+       "box": {
+        "w": 22,
+        "h": 20,
+        "x": 220,
+        "y": 7.5
+       },
+       "fills": [
+        {
+         "type": "solid",
+         "value": "rgba(74,58,64,1)"
+        }
+       ],
+       "strokes": [
+        {
+         "type": "solid",
+         "value": "rgba(208,120,142,1)"
+        }
+       ],
+       "radius": 4,
+       "strokeWeight": 1.5
+      },
+      {
+       "id": "10:10",
+       "type": "RECTANGLE",
+       "name": "Rectangle 23",
+       "box": {
+        "w": 0.001,
+        "h": 1,
+        "x": 250,
+        "y": 17
+       },
+       "fills": [
+        {
+         "type": "solid",
+         "value": "rgba(253,234,240,1)"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "10:14",
+     "type": "FRAME",
+     "name": "窗口标题栏",
+     "frameMaskDisabled": false,
+     "box": {
+      "w": 1280,
+      "h": 36
+     },
+     "autoLayout": {
+      "direction": "HORIZONTAL",
+      "mode": "HORIZONTAL",
+      "primarySizing": "FIXED",
+      "gap": 0,
+      "padding": [
+       8,
+       12,
+       8,
+       12
+      ],
+      "counterAlign": "center",
+      "itemVertAlign": "CENTER",
+      "itemHoriAlign": "SPACE_EVENLY",
+      "align": "space-between",
+      "widthResize": "FIXED",
+      "heightResize": "FIXED"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(251,235,184,1)"
+      }
+     ]
+    },
+    {
+     "id": "12:3",
+     "type": "RECTANGLE",
+     "name": "登录页贴纸·行星",
+     "angle": -21.398148,
+     "box": {
+      "w": 152,
+      "h": 134.600006,
+      "x": 610.315322,
+      "y": 41.089167
+     },
+     "fills": [
+      {
+       "type": "asset",
+       "id": "bf071b13a705b45afa147244563b44ff9db02582",
+       "imageScaleMode": "FILL",
+       "scale": 0.5,
+       "transform": [
+        1,
+        0,
+        0,
+        0,
+        1,
+        0
+       ],
+       "leftPt": [
+        76,
+        134.600006
+       ],
+       "startPt": [
+        76,
+        67.300003
+       ],
+       "endPt": [
+        152,
+        67.300003
+       ],
+       "filters": {
+        "tint": 0,
+        "shadows": 0,
+        "highlights": 0,
+        "exposure": 0,
+        "temperature": 0,
+        "vibrance": 0,
+        "contrast": 0,
+        "hue": 0
+       },
+       "originalImageWidth": 0,
+       "originalImageHeight": 0
+      }
+     ]
+    },
+    {
+     "id": "25:1",
+     "type": "RECTANGLE",
+     "name": "07-cat-message-bubble 1",
+     "angle": 24.285576,
+     "box": {
+      "w": 365,
+      "h": 181,
+      "x": 894.071343,
+      "y": 358.050864
+     },
+     "fills": [
+      {
+       "type": "asset",
+       "id": "929fa225c682c8e524691db925717a7d8be0409a",
+       "imageScaleMode": "FILL",
+       "scale": 0.5,
+       "transform": [
+        1,
+        0,
+        0,
+        0,
+        1,
+        0
+       ],
+       "leftPt": [
+        182.5,
+        181
+       ],
+       "startPt": [
+        182.5,
+        90.5
+       ],
+       "endPt": [
+        365,
+        90.5
+       ],
+       "filters": {
+        "tint": 0,
+        "shadows": 0,
+        "highlights": 0,
+        "exposure": 0,
+        "temperature": 0,
+        "vibrance": 0,
+        "contrast": 0,
+        "hue": 0
+       },
+       "originalImageWidth": 449,
+       "originalImageHeight": 217
+      }
+     ]
+    },
+    {
+     "id": "7:41",
+     "type": "FRAME",
+     "name": "登录卡片",
+     "frameMaskDisabled": false,
+     "box": {
+      "w": 520,
+      "h": 610,
+      "x": 380,
+      "y": 95
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(235,247,242,1)"
+      }
+     ],
+     "strokes": [
+      {
+       "type": "solid",
+       "value": "rgba(255,253,251,1)"
+      },
+      {
+       "type": "solid",
+       "value": "rgba(173,94,128,1)"
+      }
+     ],
+     "effects": [
+      {
+       "type": "DROP_SHADOW",
+       "radius": 0,
+       "color": "rgba(231,177,198,1)",
+       "offset": [
+        4,
+        4
+       ]
+      }
+     ],
+     "strokeWeight": 1,
+     "children": [
+      {
+       "id": "7:42",
+       "type": "FRAME",
+       "name": "窗口标题栏",
+       "frameMaskDisabled": false,
+       "box": {
+        "w": 514,
+        "h": 56,
+        "x": 3,
+        "y": 3
+       },
+       "fills": [
+        {
+         "type": "solid",
+         "value": "rgba(246,211,224,1)"
+        }
+       ],
+       "strokes": [
+        {
+         "type": "solid",
+         "value": "rgba(217,142,171,1)"
+        }
+       ],
+       "strokeWeight": 1,
+       "children": [
+        {
+         "id": "7:43",
+         "type": "FRAME",
+         "name": "品牌标记",
+         "frameMaskDisabled": false,
+         "box": {
+          "w": 34,
+          "h": 34,
+          "x": 20,
+          "y": 11
+         },
+         "autoLayout": {
+          "direction": "VERTICAL",
+          "mode": "VERTICAL",
+          "gap": 0,
+          "padding": 0,
+          "counterAlign": "center",
+          "itemVertAlign": "CENTER",
+          "itemHoriAlign": "CENTER",
+          "align": "center",
+          "widthResize": "FIXED",
+          "heightResize": "FIXED"
+         },
+         "fills": [
+          {
+           "type": "solid",
+           "value": "rgba(240,176,200,1)"
+          }
+         ],
+         "strokes": [
+          {
+           "type": "solid",
+           "value": "rgba(224,112,144,1)"
+          }
+         ],
+         "radius": 8,
+         "strokeWeight": 2,
+         "children": [
+          {
+           "id": "7:44",
+           "type": "FRAME",
+           "name": "heart",
+           "frameMaskDisabled": true,
+           "constraints": {
+            "horizontal": "SCALE",
+            "vertical": "SCALE"
+           },
+           "box": {
+            "w": 18,
+            "h": 18,
+            "x": 8,
+            "y": 8
+           },
+           "vectorRef": "7:44",
+           "assetType": "icon",
+           "childrenSummary": {
+            "total": 1,
+            "omitted": 1,
+            "reason": "vector-icon"
+           }
+          }
+         ]
+        },
+        {
+         "id": "7:46",
+         "type": "TEXT",
+         "name": "应用名",
+         "box": {
+          "w": 260,
+          "h": 22,
+          "x": 66,
+          "y": 18
+         },
+         "text": {
+          "content": "KC 批量建库工具",
+          "fontFamily": "Noto Sans TC",
+          "fontStyle": "Bold",
+          "fontSize": 18,
+          "fontWeight": 700
+         },
+         "fills": [
+          {
+           "type": "solid",
+           "value": "rgba(87,55,71,1)"
+          }
+         ]
+        },
+        {
+         "id": "7:47",
+         "type": "ELLIPSE",
+         "name": "窗口控制点",
+         "box": {
+          "w": 12,
+          "h": 12,
+          "x": 454,
+          "y": 22
+         },
+         "fills": [
+          {
+           "type": "solid",
+           "value": "rgba(217,122,151,1)"
+          }
+         ],
+         "strokes": [
+          {
+           "type": "solid",
+           "value": "rgba(173,94,128,1)"
+          }
+         ],
+         "strokeWeight": 1
+        },
+        {
+         "id": "7:48",
+         "type": "ELLIPSE",
+         "name": "窗口控制点",
+         "box": {
+          "w": 12,
+          "h": 12,
+          "x": 473,
+          "y": 22
+         },
+         "fills": [
+          {
+           "type": "solid",
+           "value": "rgba(223,177,90,1)"
+          }
+         ],
+         "strokes": [
+          {
+           "type": "solid",
+           "value": "rgba(173,94,128,1)"
+          }
+         ],
+         "strokeWeight": 1
+        },
+        {
+         "id": "7:49",
+         "type": "ELLIPSE",
+         "name": "窗口控制点",
+         "box": {
+          "w": 12,
+          "h": 12,
+          "x": 492,
+          "y": 22
+         },
+         "fills": [
+          {
+           "type": "solid",
+           "value": "rgba(122,179,143,1)"
+          }
+         ],
+         "strokes": [
+          {
+           "type": "solid",
+           "value": "rgba(173,94,128,1)"
+          }
+         ],
+         "strokeWeight": 1
+        }
+       ]
+      },
+      {
+       "id": "7:50",
+       "type": "FRAME",
+       "name": "首次使用提示",
+       "frameMaskDisabled": false,
+       "box": {
+        "w": 448,
+        "h": 34,
+        "x": 36,
+        "y": 78
+       },
+       "fills": [
+        {
+         "type": "solid",
+         "value": "rgba(251,235,242,1)"
+        }
+       ],
+       "children": [
+        {
+         "id": "7:51",
+         "type": "ELLIPSE",
+         "name": "提示点",
+         "box": {
+          "w": 8,
+          "h": 8,
+          "x": 14,
+          "y": 13
+         },
+         "fills": [
+          {
+           "type": "solid",
+           "value": "rgba(217,122,151,1)"
+          }
+         ]
+        },
+        {
+         "id": "7:52",
+         "type": "TEXT",
+         "name": "首次登录提示",
+         "box": {
+          "w": 380,
+          "h": 16,
+          "x": 30,
+          "y": 9
+         },
+         "text": {
+          "content": "本机首次使用，请先登录",
+          "fontFamily": "Noto Sans TC",
+          "fontStyle": "Regular",
+          "fontSize": 12,
+          "fontWeight": 400
+         },
+         "fills": [
+          {
+           "type": "solid",
+           "value": "rgba(119,83,97,1)"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "id": "7:53",
+       "type": "TEXT",
+       "name": "页面标题",
+       "box": {
+        "w": 220,
+        "h": 38,
+        "x": 36,
+        "y": 127
+       },
+       "text": {
+        "content": "登录",
+        "fontFamily": "Noto Sans TC",
+        "fontStyle": "Bold",
+        "fontSize": 28,
+        "fontWeight": 700
+       },
+       "fills": [
+        {
+         "type": "solid",
+         "value": "rgba(87,55,71,1)"
+        }
+       ]
+      },
+      {
+       "id": "7:54",
+       "type": "TEXT",
+       "name": "页面说明",
+       "box": {
+        "w": 448,
+        "h": 20,
+        "x": 36,
+        "y": 171
+       },
+       "text": {
+        "content": "连接 KC 仓库后开始批量建库",
+        "fontFamily": "Noto Sans TC",
+        "fontStyle": "Regular",
+        "fontSize": 12,
+        "fontWeight": 400
+       },
+       "fills": [
+        {
+         "type": "solid",
+         "value": "rgba(138,117,128,1)"
+        }
+       ]
+      },
+      {
+       "id": "7:55",
+       "type": "TEXT",
+       "name": "服务器地址标签",
+       "box": {
+        "w": 448,
+        "h": 16,
+        "x": 36,
+        "y": 215
+       },
+       "text": {
+        "content": "服务器地址",
+        "fontFamily": "Noto Sans TC",
+        "fontStyle": "Bold",
+        "fontSize": 12,
+        "fontWeight": 700
+       },
+       "fills": [
+        {
+         "type": "solid",
+         "value": "rgba(119,71,91,1)"
+        }
+       ]
+      },
+      {
+       "id": "7:56",
+       "type": "FRAME",
+       "name": "服务器地址输入框",
+       "frameMaskDisabled": false,
+       "box": {
+        "w": 448,
+        "h": 44,
+        "x": 36,
+        "y": 237
+       },
+       "fills": [
+        {
+         "type": "solid",
+         "value": "rgba(255,253,251,1)"
+        }
+       ],
+       "strokes": [
+        {
+         "type": "solid",
+         "value": "rgba(213,154,178,1)"
+        }
+       ],
+       "strokeWeight": 1,
+       "children": [
+        {
+         "id": "7:57",
+         "type": "TEXT",
+         "name": "服务器地址输入框内容",
+         "box": {
+          "w": 420,
+          "h": 17,
+          "x": 14,
+          "y": 14
+         },
+         "text": {
+          "content": "https://kc.example.com",
+          "fontFamily": "Noto Sans TC",
+          "fontStyle": "Regular",
+          "fontSize": 13,
+          "fontWeight": 400
+         },
+         "fills": [
+          {
+           "type": "solid",
+           "value": "rgba(87,55,71,1)"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "id": "7:58",
+       "type": "TEXT",
+       "name": "用户名标签",
+       "box": {
+        "w": 448,
+        "h": 16,
+        "x": 36,
+        "y": 294
+       },
+       "text": {
+        "content": "用户名",
+        "fontFamily": "Noto Sans TC",
+        "fontStyle": "Bold",
+        "fontSize": 12,
+        "fontWeight": 700
+       },
+       "fills": [
+        {
+         "type": "solid",
+         "value": "rgba(119,71,91,1)"
+        }
+       ]
+      },
+      {
+       "id": "7:59",
+       "type": "FRAME",
+       "name": "用户名输入框",
+       "frameMaskDisabled": false,
+       "box": {
+        "w": 448,
+        "h": 44,
+        "x": 36,
+        "y": 316
+       },
+       "fills": [
+        {
+         "type": "solid",
+         "value": "rgba(255,253,251,1)"
+        }
+       ],
+       "strokes": [
+        {
+         "type": "solid",
+         "value": "rgba(213,154,178,1)"
+        }
+       ],
+       "strokeWeight": 1,
+       "children": [
+        {
+         "id": "7:60",
+         "type": "TEXT",
+         "name": "用户名输入框内容",
+         "box": {
+          "w": 420,
+          "h": 17,
+          "x": 14,
+          "y": 14
+         },
+         "text": {
+          "content": "请输入 KC 账号",
+          "fontFamily": "Noto Sans TC",
+          "fontStyle": "Regular",
+          "fontSize": 13,
+          "fontWeight": 400
+         },
+         "fills": [
+          {
+           "type": "solid",
+           "value": "rgba(164,141,153,1)"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "id": "7:61",
+       "type": "TEXT",
+       "name": "密码标签",
+       "box": {
+        "w": 448,
+        "h": 16,
+        "x": 36,
+        "y": 373
+       },
+       "text": {
+        "content": "密码",
+        "fontFamily": "Noto Sans TC",
+        "fontStyle": "Bold",
+        "fontSize": 12,
+        "fontWeight": 700
+       },
+       "fills": [
+        {
+         "type": "solid",
+         "value": "rgba(119,71,91,1)"
+        }
+       ]
+      },
+      {
+       "id": "7:62",
+       "type": "FRAME",
+       "name": "密码输入框",
+       "frameMaskDisabled": false,
+       "box": {
+        "w": 448,
+        "h": 44,
+        "x": 36,
+        "y": 395
+       },
+       "fills": [
+        {
+         "type": "solid",
+         "value": "rgba(255,253,251,1)"
+        }
+       ],
+       "strokes": [
+        {
+         "type": "solid",
+         "value": "rgba(213,154,178,1)"
+        }
+       ],
+       "strokeWeight": 1,
+       "children": [
+        {
+         "id": "7:63",
+         "type": "TEXT",
+         "name": "密码输入框内容",
+         "box": {
+          "w": 420,
+          "h": 17,
+          "x": 14,
+          "y": 14
+         },
+         "text": {
+          "content": "请输入密码",
+          "fontFamily": "Noto Sans TC",
+          "fontStyle": "Regular",
+          "fontSize": 13,
+          "fontWeight": 400
+         },
+         "fills": [
+          {
+           "type": "solid",
+           "value": "rgba(164,141,153,1)"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "id": "7:64",
+       "type": "RECTANGLE",
+       "name": "记住密码勾选框",
+       "box": {
+        "w": 16,
+        "h": 16,
+        "x": 36,
+        "y": 461
+       },
+       "fills": [
+        {
+         "type": "solid",
+         "value": "rgba(255,253,251,1)"
+        }
+       ],
+       "strokes": [
+        {
+         "type": "solid",
+         "value": "rgba(173,94,128,1)"
+        }
+       ],
+       "radius": 2,
+       "strokeWeight": 1
+      },
+      {
+       "id": "7:65",
+       "type": "TEXT",
+       "name": "记住密码",
+       "box": {
+        "w": 140,
+        "h": 18,
+        "x": 60,
+        "y": 460
+       },
+       "text": {
+        "content": "记住密码",
+        "fontFamily": "Noto Sans TC",
+        "fontStyle": "Regular",
+        "fontSize": 12,
+        "fontWeight": 400
+       },
+       "fills": [
+        {
+         "type": "solid",
+         "value": "rgba(119,83,97,1)"
+        }
+       ]
+      },
+      {
+       "id": "7:66",
+       "type": "FRAME",
+       "name": "登录按钮",
+       "frameMaskDisabled": false,
+       "box": {
+        "w": 448,
+        "h": 48,
+        "x": 36,
+        "y": 498
+       },
+       "fills": [
+        {
+         "type": "solid",
+         "value": "rgba(233,154,184,1)"
+        }
+       ],
+       "strokes": [
+        {
+         "type": "solid",
+         "value": "rgba(233,154,184,1)"
+        },
+        {
+         "type": "solid",
+         "value": "rgba(169,85,120,1)"
+        }
+       ],
+       "effects": [
+        {
+         "type": "DROP_SHADOW",
+         "radius": 0,
+         "color": "rgba(199,125,154,1)",
+         "offset": [
+          3,
+          3
+         ]
+        }
+       ],
+       "strokeWeight": 1,
+       "children": [
+        {
+         "id": "7:67",
+         "type": "TEXT",
+         "name": "登录按钮文字",
+         "box": {
+          "w": 80,
+          "h": 22,
+          "x": 184,
+          "y": 14
+         },
+         "text": {
+          "content": "登录",
+          "fontFamily": "Noto Sans TC",
+          "fontStyle": "Bold",
+          "fontSize": 16,
+          "fontWeight": 700
+         },
+         "fills": [
+          {
+           "type": "solid",
+           "value": "rgba(255,255,255,1)"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "id": "7:68",
+       "type": "TEXT",
+       "name": "登录页脚提示",
+       "box": {
+        "w": 448,
+        "h": 18,
+        "x": 36,
+        "y": 564
+       },
+       "text": {
+        "content": "KC 批量建库工具  ·  测试环境",
+        "fontFamily": "Noto Sans TC",
+        "fontStyle": "Regular",
+        "fontSize": 11,
+        "fontWeight": 400
+       },
+       "fills": [
+        {
+         "type": "solid",
+         "value": "rgba(138,117,128,1)"
+        }
+       ]
+      },
+      {
+       "id": "15:3",
+       "type": "RECTANGLE",
+       "name": "登录页贴纸·星星彩虹",
+       "angle": 18.399142,
+       "box": {
+        "w": 134.800903,
+        "h": 101.668152,
+        "x": 369.5995,
+        "y": 130.675329
+       },
+       "fills": [
+        {
+         "type": "asset",
+         "id": "557fc3ab79977e69d4aa3ffe382e274c952eaeaa",
+         "imageScaleMode": "FILL",
+         "scale": 0.5,
+         "transform": [
+          1,
+          0,
+          0,
+          0,
+          1,
+          0
+         ],
+         "leftPt": [
+          67.400452,
+          101.668152
+         ],
+         "startPt": [
+          67.400452,
+          50.834076
+         ],
+         "endPt": [
+          134.800903,
+          50.834076
+         ],
+         "filters": {
+          "tint": 0,
+          "shadows": 0,
+          "highlights": 0,
+          "exposure": 0,
+          "temperature": 0,
+          "vibrance": 0,
+          "contrast": 0,
+          "hue": 0
+         },
+         "originalImageWidth": 0,
+         "originalImageHeight": 0
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "15:4",
+     "type": "RECTANGLE",
+     "name": "登录页贴纸·笔记本电脑",
+     "box": {
+      "w": 166,
+      "h": 120,
+      "x": 835,
+      "y": 645
+     },
+     "fills": [
+      {
+       "type": "asset",
+       "id": "59bb4d4bd36962671a128255064e833b5b5d0bf6",
+       "imageScaleMode": "FILL",
+       "scale": 0.5,
+       "transform": [
+        1,
+        0,
+        0,
+        0,
+        1,
+        0
+       ],
+       "leftPt": [
+        83,
+        120
+       ],
+       "startPt": [
+        83,
+        60
+       ],
+       "endPt": [
+        166,
+        60
+       ],
+       "filters": {
+        "tint": 0,
+        "shadows": 0,
+        "highlights": 0,
+        "exposure": 0,
+        "temperature": 0,
+        "vibrance": 0,
+        "contrast": 0,
+        "hue": 0
+       },
+       "originalImageWidth": 0,
+       "originalImageHeight": 0
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "refsIndex": {
+  "vectors": [
+   "7:44"
+  ],
+  "assets": [
+   "557fc3ab79977e69d4aa3ffe382e274c952eaeaa",
+   "59bb4d4bd36962671a128255064e833b5b5d0bf6",
+   "6ce674f061fa66ca6f7b630e1846056ac750126e",
+   "7661d35985291870c496e946776ddfac88e975e9",
+   "929fa225c682c8e524691db925717a7d8be0409a",
+   "bf071b13a705b45afa147244563b44ff9db02582"
+  ]
+ }
+}

@@ -1,5 +1,12 @@
 # KC 批量建库工具｜项目设计记忆
 
+## 交付包现状（2026-10-28 更新）
+
+- `screens/` 已有 6 张 @2x PNG（经 Pixso MCP 导出），`dsl/` 有每页完整节点 JSON。
+- `design-tokens.json` 已换为实测精确值（字号 23 档、颜色、圆角、描边均来自 DSL）。
+- `component-map.md` 为页面→React 组件映射（含精确尺寸）；`interaction-spec.md` 末尾附状态-视觉对照表（五态，default 为实测、hover/active/disabled/focus 为推导约定）。
+- Pixso MCP 访问链：`https://pixso.net/mcp`（国际版），OAuth2+PKCE 动态注册；工具在 `/tmp/pixso-mcp/`（`auth_server_net.py` 授权、`mcp.py` 调用），token 存 `/tmp/pixso-mcp/token-net.json`（7200s + refresh）。
+
 ## 当前进度与协作约定
 
 - Pixso 文件：`gti8TP-GucHUL6Ed2XgaWg`（[打开草稿](https://pixso.net/app/design/gti8TP-GucHUL6Ed2XgaWg?showQuickFrame=true&new=1&icon_type=1&page-id=0%3A1)）。

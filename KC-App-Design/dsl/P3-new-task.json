@@ -1,0 +1,2488 @@
+{
+ "stats": {
+  "source": {
+   "variableMap": 0,
+   "variableSetMap": 0,
+   "localStyleMap": 0
+  },
+  "outputBytes": 26321
+ },
+ "roots": [
+  {
+   "id": "18:137",
+   "type": "FRAME",
+   "name": "P3 新建任务",
+   "frameMaskDisabled": false,
+   "box": {
+    "w": 1280,
+    "h": 800
+   },
+   "fills": [
+    {
+     "type": "solid",
+     "value": "rgba(247,225,230,1)"
+    }
+   ],
+   "children": [
+    {
+     "id": "19:5",
+     "type": "RECTANGLE",
+     "name": "页面背景 · 天空云朵猫咪",
+     "box": {
+      "w": 1280,
+      "h": 800
+     },
+     "fills": [
+      {
+       "type": "asset",
+       "id": "9a3fc901bff302419fc797fd48cc9f8abaf6339c",
+       "imageScaleMode": "FILL",
+       "scale": 0.5,
+       "transform": [
+        1,
+        0,
+        0,
+        0,
+        1,
+        0
+       ],
+       "leftPt": [
+        640,
+        800
+       ],
+       "startPt": [
+        640,
+        400
+       ],
+       "endPt": [
+        1280,
+        400
+       ],
+       "filters": {
+        "tint": 0,
+        "shadows": 0,
+        "highlights": 0,
+        "exposure": 0,
+        "temperature": 0,
+        "vibrance": 0,
+        "contrast": 0,
+        "hue": 0
+       },
+       "originalImageWidth": 0,
+       "originalImageHeight": 0
+      }
+     ]
+    },
+    {
+     "id": "19:6",
+     "type": "RECTANGLE",
+     "name": "页面背景柔化层 · P3",
+     "box": {
+      "w": 1280,
+      "h": 800
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(255,255,255,0.66)"
+      }
+     ]
+    },
+    {
+     "id": "18:138",
+     "type": "RECTANGLE",
+     "name": "窗口投影",
+     "box": {
+      "w": 1216,
+      "h": 756,
+      "x": 37,
+      "y": 27
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(232,182,199,1)"
+      }
+     ]
+    },
+    {
+     "id": "18:139",
+     "type": "RECTANGLE",
+     "name": "应用窗口",
+     "box": {
+      "w": 1216,
+      "h": 756,
+      "x": 32,
+      "y": 22
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(235,247,242,1)"
+      }
+     ],
+     "strokes": [
+      {
+       "type": "solid",
+       "value": "rgba(183,95,127,1)"
+      }
+     ],
+     "strokeWeight": 1
+    },
+    {
+     "id": "18:140",
+     "type": "RECTANGLE",
+     "name": "顶栏",
+     "box": {
+      "w": 1210,
+      "h": 64,
+      "x": 35,
+      "y": 25
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(246,212,224,1)"
+      }
+     ]
+    },
+    {
+     "id": "18:141",
+     "type": "RECTANGLE",
+     "name": "顶栏下沿",
+     "box": {
+      "w": 1210,
+      "h": 2,
+      "x": 35,
+      "y": 87
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(217,136,169,1)"
+      }
+     ]
+    },
+    {
+     "id": "18:142",
+     "type": "RECTANGLE",
+     "name": "应用图标底",
+     "box": {
+      "w": 34,
+      "h": 34,
+      "x": 59,
+      "y": 40
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(244,191,208,1)"
+      }
+     ],
+     "strokes": [
+      {
+       "type": "solid",
+       "value": "rgba(225,116,152,1)"
+      }
+     ],
+     "radius": 9,
+     "strokeWeight": 1
+    },
+    {
+     "id": "18:143",
+     "type": "TEXT",
+     "name": "应用图标",
+     "box": {
+      "w": 34,
+      "h": 28,
+      "x": 59,
+      "y": 43
+     },
+     "text": {
+      "content": "♡",
+      "fontFamily": "Inter",
+      "fontStyle": "Bold",
+      "fontSize": 20,
+      "fontWeight": 700,
+      "textAlignHorizontal": "center"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(213,102,140,1)"
+      }
+     ]
+    },
+    {
+     "id": "18:144",
+     "type": "TEXT",
+     "name": "应用名",
+     "box": {
+      "w": 175,
+      "h": 22,
+      "x": 107,
+      "y": 46
+     },
+     "text": {
+      "content": "KC 批量建库工具",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 17,
+      "fontWeight": 700
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(87,55,71,1)"
+      }
+     ]
+    },
+    {
+     "id": "18:145",
+     "type": "RECTANGLE",
+     "name": "环境标签",
+     "box": {
+      "w": 68,
+      "h": 20,
+      "x": 280,
+      "y": 47
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(250,233,239,1)"
+      }
+     ],
+     "strokes": [
+      {
+       "type": "solid",
+       "value": "rgba(230,181,199,1)"
+      }
+     ],
+     "strokeWeight": 1
+    },
+    {
+     "id": "18:146",
+     "type": "TEXT",
+     "name": "环境文本",
+     "box": {
+      "w": 68,
+      "h": 14,
+      "x": 280,
+      "y": 50
+     },
+     "text": {
+      "content": "测试",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 10,
+      "fontWeight": 700,
+      "textAlignHorizontal": "center"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(154,88,113,1)"
+      }
+     ]
+    },
+    {
+     "id": "18:147",
+     "type": "RECTANGLE",
+     "name": "连接指示灯",
+     "box": {
+      "w": 9,
+      "h": 9,
+      "x": 835,
+      "y": 52
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(85,180,123,1)"
+      }
+     ],
+     "radius": 8
+    },
+    {
+     "id": "18:148",
+     "type": "TEXT",
+     "name": "连接状态",
+     "box": {
+      "w": 50,
+      "h": 19,
+      "x": 851,
+      "y": 47
+     },
+     "text": {
+      "content": "已连接",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 12,
+      "fontWeight": 700
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(75,155,114,1)"
+      }
+     ]
+    },
+    {
+     "id": "18:149",
+     "type": "RECTANGLE",
+     "name": "连接分隔",
+     "box": {
+      "w": 1,
+      "h": 26,
+      "x": 916,
+      "y": 42
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(223,165,187,1)"
+      }
+     ]
+    },
+    {
+     "id": "18:150",
+     "type": "RECTANGLE",
+     "name": "用户头像",
+     "box": {
+      "w": 30,
+      "h": 30,
+      "x": 934,
+      "y": 40
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(255,249,241,1)"
+      }
+     ],
+     "strokes": [
+      {
+       "type": "solid",
+       "value": "rgba(183,95,127,1)"
+      }
+     ],
+     "radius": 16,
+     "strokeWeight": 1
+    },
+    {
+     "id": "18:151",
+     "type": "TEXT",
+     "name": "用户头像字",
+     "box": {
+      "w": 30,
+      "h": 16,
+      "x": 934,
+      "y": 46
+     },
+     "text": {
+      "content": "W",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 12,
+      "fontWeight": 700,
+      "textAlignHorizontal": "center"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(135,68,95,1)"
+      }
+     ]
+    },
+    {
+     "id": "18:152",
+     "type": "TEXT",
+     "name": "账号名",
+     "box": {
+      "w": 104,
+      "h": 18,
+      "x": 977,
+      "y": 48
+     },
+     "text": {
+      "content": "wanghanxiaocn",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 11,
+      "fontWeight": 700
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(89,56,74,1)"
+      }
+     ]
+    },
+    {
+     "id": "18:153",
+     "type": "RECTANGLE",
+     "name": "切换按钮底",
+     "box": {
+      "w": 73,
+      "h": 28,
+      "x": 1092,
+      "y": 42
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(255,249,251,1)"
+      }
+     ],
+     "strokes": [
+      {
+       "type": "solid",
+       "value": "rgba(217,138,168,1)"
+      }
+     ],
+     "strokeWeight": 1
+    },
+    {
+     "id": "18:154",
+     "type": "TEXT",
+     "name": "切换账号",
+     "box": {
+      "w": 73,
+      "h": 14,
+      "x": 1092,
+      "y": 49
+     },
+     "text": {
+      "content": "切换  v",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Regular",
+      "fontSize": 10,
+      "fontWeight": 400,
+      "textAlignHorizontal": "center"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(129,67,93,1)"
+      }
+     ]
+    },
+    {
+     "id": "18:155",
+     "type": "RECTANGLE",
+     "name": "窗口控制点1",
+     "box": {
+      "w": 11,
+      "h": 11,
+      "x": 1179,
+      "y": 49
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(220,121,155,1)"
+      }
+     ],
+     "strokes": [
+      {
+       "type": "solid",
+       "value": "rgba(183,95,127,1)"
+      }
+     ],
+     "radius": 6,
+     "strokeWeight": 1
+    },
+    {
+     "id": "18:156",
+     "type": "RECTANGLE",
+     "name": "窗口控制点2",
+     "box": {
+      "w": 11,
+      "h": 11,
+      "x": 1198,
+      "y": 49
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(243,199,95,1)"
+      }
+     ],
+     "strokes": [
+      {
+       "type": "solid",
+       "value": "rgba(199,156,70,1)"
+      }
+     ],
+     "radius": 6,
+     "strokeWeight": 1
+    },
+    {
+     "id": "18:157",
+     "type": "RECTANGLE",
+     "name": "窗口控制点3",
+     "box": {
+      "w": 11,
+      "h": 11,
+      "x": 1217,
+      "y": 49
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(133,201,161,1)"
+      }
+     ],
+     "strokes": [
+      {
+       "type": "solid",
+       "value": "rgba(96,152,118,1)"
+      }
+     ],
+     "radius": 6,
+     "strokeWeight": 1
+    },
+    {
+     "id": "18:158",
+     "type": "TEXT",
+     "name": "页面路径",
+     "box": {
+      "w": 300,
+      "h": 15,
+      "x": 65,
+      "y": 110
+     },
+     "text": {
+      "content": "PIXEL WORKSPACE / TASKS / NEW",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 10,
+      "fontWeight": 700
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(189,105,136,1)"
+      }
+     ]
+    },
+    {
+     "id": "18:159",
+     "type": "TEXT",
+     "name": "页面标题",
+     "box": {
+      "w": 150,
+      "h": 34,
+      "x": 65,
+      "y": 128
+     },
+     "text": {
+      "content": "新建任务",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 25,
+      "fontWeight": 700
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(87,55,71,1)"
+      }
+     ]
+    },
+    {
+     "id": "18:160",
+     "type": "TEXT",
+     "name": "页面说明",
+     "box": {
+      "w": 330,
+      "h": 20,
+      "x": 221,
+      "y": 140
+     },
+     "text": {
+      "content": "配置发布框架，一次完成批量建库",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Regular",
+      "fontSize": 12,
+      "fontWeight": 400
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(150,123,136,1)"
+      }
+     ]
+    },
+    {
+     "id": "18:161",
+     "type": "TEXT",
+     "name": "返回任务",
+     "box": {
+      "w": 145,
+      "h": 22,
+      "x": 1046,
+      "y": 139
+     },
+     "text": {
+      "content": "← 返回任务",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Regular",
+      "fontSize": 12,
+      "fontWeight": 400,
+      "textAlignHorizontal": "right"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(155,85,114,1)"
+      }
+     ]
+    },
+    {
+     "id": "18:162",
+     "type": "RECTANGLE",
+     "name": "新建 Topic卡片",
+     "box": {
+      "w": 278,
+      "h": 86,
+      "x": 65,
+      "y": 168
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(255,250,252,1)"
+      }
+     ],
+     "strokes": [
+      {
+       "type": "solid",
+       "value": "rgba(226,189,203,1)"
+      }
+     ],
+     "strokeWeight": 1
+    },
+    {
+     "id": "18:163",
+     "type": "RECTANGLE",
+     "name": "新建 Topic图标底",
+     "box": {
+      "w": 42,
+      "h": 42,
+      "x": 79,
+      "y": 187
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(248,225,233,1)"
+      }
+     ],
+     "strokes": [
+      {
+       "type": "solid",
+       "value": "rgba(234,181,200,1)"
+      }
+     ],
+     "radius": 10,
+     "strokeWeight": 1
+    },
+    {
+     "id": "18:164",
+     "type": "TEXT",
+     "name": "新建 Topic图标",
+     "visible": false,
+     "box": {
+      "w": 42,
+      "h": 25,
+      "x": 79,
+      "y": 194
+     },
+     "text": {
+      "content": "T",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 17,
+      "fontWeight": 700,
+      "textAlignHorizontal": "center"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(182,93,124,1)"
+      }
+     ]
+    },
+    {
+     "id": "18:165",
+     "type": "TEXT",
+     "name": "新建 Topic",
+     "box": {
+      "w": 190,
+      "h": 20,
+      "x": 133,
+      "y": 188
+     },
+     "text": {
+      "content": "新建 Topic",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 14,
+      "fontWeight": 700
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(89,56,74,1)"
+      }
+     ]
+    },
+    {
+     "id": "18:166",
+     "type": "TEXT",
+     "name": "新建 Topic说明",
+     "box": {
+      "w": 194,
+      "h": 15,
+      "x": 133,
+      "y": 214
+     },
+     "text": {
+      "content": "创建单篇内容",
+      "autoResize": "HEIGHT",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Regular",
+      "fontSize": 10,
+      "fontWeight": 400
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(154,128,141,1)"
+      }
+     ]
+    },
+    {
+     "id": "18:167",
+     "type": "RECTANGLE",
+     "name": "新建 Map卡片",
+     "box": {
+      "w": 278,
+      "h": 86,
+      "x": 355,
+      "y": 168
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(255,250,252,1)"
+      }
+     ],
+     "strokes": [
+      {
+       "type": "solid",
+       "value": "rgba(226,189,203,1)"
+      }
+     ],
+     "strokeWeight": 1
+    },
+    {
+     "id": "18:168",
+     "type": "RECTANGLE",
+     "name": "新建 Map图标底",
+     "box": {
+      "w": 42,
+      "h": 42,
+      "x": 369,
+      "y": 187
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(254,244,216,1)"
+      }
+     ],
+     "strokes": [
+      {
+       "type": "solid",
+       "value": "rgba(235,214,141,1)"
+      }
+     ],
+     "radius": 10,
+     "strokeWeight": 1
+    },
+    {
+     "id": "18:169",
+     "type": "TEXT",
+     "name": "新建 Map图标",
+     "visible": false,
+     "box": {
+      "w": 42,
+      "h": 25,
+      "x": 369,
+      "y": 194
+     },
+     "text": {
+      "content": "M",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 17,
+      "fontWeight": 700,
+      "textAlignHorizontal": "center"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(182,139,56,1)"
+      }
+     ]
+    },
+    {
+     "id": "18:170",
+     "type": "TEXT",
+     "name": "新建 Map",
+     "box": {
+      "w": 190,
+      "h": 20,
+      "x": 423,
+      "y": 188
+     },
+     "text": {
+      "content": "新建 Map",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 14,
+      "fontWeight": 700
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(89,56,74,1)"
+      }
+     ]
+    },
+    {
+     "id": "18:171",
+     "type": "TEXT",
+     "name": "新建 Map说明",
+     "box": {
+      "w": 194,
+      "h": 15,
+      "x": 423,
+      "y": 214
+     },
+     "text": {
+      "content": "整理章节结构",
+      "autoResize": "HEIGHT",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Regular",
+      "fontSize": 10,
+      "fontWeight": 400
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(154,128,141,1)"
+      }
+     ]
+    },
+    {
+     "id": "18:172",
+     "type": "RECTANGLE",
+     "name": "搭建 Pub卡片",
+     "box": {
+      "w": 278,
+      "h": 86,
+      "x": 645,
+      "y": 168
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(255,240,245,1)"
+      }
+     ],
+     "strokes": [
+      {
+       "type": "solid",
+       "value": "rgba(207,117,150,1)"
+      }
+     ],
+     "strokeWeight": 1
+    },
+    {
+     "id": "18:173",
+     "type": "RECTANGLE",
+     "name": "选中卡片底线",
+     "box": {
+      "w": 278,
+      "h": 3,
+      "x": 645,
+      "y": 251
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(229,168,191,1)"
+      }
+     ]
+    },
+    {
+     "id": "18:174",
+     "type": "RECTANGLE",
+     "name": "搭建 Pub图标底",
+     "box": {
+      "w": 42,
+      "h": 42,
+      "x": 659,
+      "y": 187
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(249,220,232,1)"
+      }
+     ],
+     "strokes": [
+      {
+       "type": "solid",
+       "value": "rgba(219,142,171,1)"
+      }
+     ],
+     "radius": 10,
+     "strokeWeight": 1
+    },
+    {
+     "id": "18:175",
+     "type": "TEXT",
+     "name": "搭建 Pub图标",
+     "visible": false,
+     "box": {
+      "w": 42,
+      "h": 25,
+      "x": 659,
+      "y": 194
+     },
+     "text": {
+      "content": "P",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 17,
+      "fontWeight": 700,
+      "textAlignHorizontal": "center"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(180,78,120,1)"
+      }
+     ]
+    },
+    {
+     "id": "18:176",
+     "type": "TEXT",
+     "name": "搭建 Pub",
+     "box": {
+      "w": 190,
+      "h": 20,
+      "x": 713,
+      "y": 188
+     },
+     "text": {
+      "content": "搭建 Pub",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 14,
+      "fontWeight": 700
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(89,56,74,1)"
+      }
+     ]
+    },
+    {
+     "id": "18:177",
+     "type": "TEXT",
+     "name": "搭建 Pub说明",
+     "box": {
+      "w": 194,
+      "h": 15,
+      "x": 713,
+      "y": 214
+     },
+     "text": {
+      "content": "按框架批量生成发布包",
+      "autoResize": "HEIGHT",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Regular",
+      "fontSize": 10,
+      "fontWeight": 400
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(154,128,141,1)"
+      }
+     ]
+    },
+    {
+     "id": "18:178",
+     "type": "RECTANGLE",
+     "name": "当前选择标签底",
+     "box": {
+      "w": 61,
+      "h": 16,
+      "x": 852,
+      "y": 176
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(233,154,184,1)"
+      }
+     ]
+    },
+    {
+     "id": "18:179",
+     "type": "TEXT",
+     "name": "当前选择标签",
+     "box": {
+      "w": 61,
+      "h": 13,
+      "x": 852,
+      "y": 177
+     },
+     "text": {
+      "content": "当前选择",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 9,
+      "fontWeight": 700,
+      "textAlignHorizontal": "center"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(255,255,255,1)"
+      }
+     ]
+    },
+    {
+     "id": "18:180",
+     "type": "RECTANGLE",
+     "name": "导入图片卡片",
+     "box": {
+      "w": 278,
+      "h": 86,
+      "x": 935,
+      "y": 168
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(255,250,252,1)"
+      }
+     ],
+     "strokes": [
+      {
+       "type": "solid",
+       "value": "rgba(226,189,203,1)"
+      }
+     ],
+     "strokeWeight": 1
+    },
+    {
+     "id": "18:181",
+     "type": "RECTANGLE",
+     "name": "导入图片图标底",
+     "box": {
+      "w": 42,
+      "h": 42,
+      "x": 949,
+      "y": 187
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(226,243,237,1)"
+      }
+     ],
+     "strokes": [
+      {
+       "type": "solid",
+       "value": "rgba(167,212,193,1)"
+      }
+     ],
+     "radius": 10,
+     "strokeWeight": 1
+    },
+    {
+     "id": "18:182",
+     "type": "TEXT",
+     "name": "导入图片图标",
+     "visible": false,
+     "box": {
+      "w": 42,
+      "h": 25,
+      "x": 949,
+      "y": 194
+     },
+     "text": {
+      "content": "I",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 17,
+      "fontWeight": 700,
+      "textAlignHorizontal": "center"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(86,150,119,1)"
+      }
+     ]
+    },
+    {
+     "id": "18:183",
+     "type": "TEXT",
+     "name": "导入图片",
+     "box": {
+      "w": 190,
+      "h": 20,
+      "x": 1003,
+      "y": 188
+     },
+     "text": {
+      "content": "导入图片",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 14,
+      "fontWeight": 700
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(89,56,74,1)"
+      }
+     ]
+    },
+    {
+     "id": "18:184",
+     "type": "TEXT",
+     "name": "导入图片说明",
+     "box": {
+      "w": 194,
+      "h": 15,
+      "x": 1003,
+      "y": 214
+     },
+     "text": {
+      "content": "批量整理图片资源",
+      "autoResize": "HEIGHT",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Regular",
+      "fontSize": 10,
+      "fontWeight": 400
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(154,128,141,1)"
+      }
+     ]
+    },
+    {
+     "id": "18:185",
+     "type": "TEXT",
+     "name": "目标路径标签",
+     "box": {
+      "w": 250,
+      "h": 18,
+      "x": 65,
+      "y": 270
+     },
+     "text": {
+      "content": "KC 仓库目标路径",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 12,
+      "fontWeight": 700
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(119,71,91,1)"
+      }
+     ]
+    },
+    {
+     "id": "18:186",
+     "type": "RECTANGLE",
+     "name": "目标路径输入框",
+     "box": {
+      "w": 1150,
+      "h": 50,
+      "x": 65,
+      "y": 291
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(255,253,251,1)"
+      }
+     ],
+     "strokes": [
+      {
+       "type": "solid",
+       "value": "rgba(221,157,181,1)"
+      }
+     ],
+     "strokeWeight": 1
+    },
+    {
+     "id": "18:187",
+     "type": "TEXT",
+     "name": "路径斜杠",
+     "box": {
+      "w": 22,
+      "h": 21,
+      "x": 81,
+      "y": 306
+     },
+     "text": {
+      "content": "/",
+      "fontFamily": "Inter",
+      "fontStyle": "Bold",
+      "fontSize": 17,
+      "fontWeight": 700
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(180,95,124,1)"
+      }
+     ]
+    },
+    {
+     "id": "18:188",
+     "type": "TEXT",
+     "name": "目标路径",
+     "box": {
+      "w": 740,
+      "h": 20,
+      "x": 108,
+      "y": 307
+     },
+     "text": {
+      "content": "/kc-repository/medical/respiratory/publishing",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Regular",
+      "fontSize": 13,
+      "fontWeight": 400
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(108,72,89,1)"
+      }
+     ]
+    },
+    {
+     "id": "18:189",
+     "type": "RECTANGLE",
+     "name": "路径有效标记底",
+     "box": {
+      "w": 121,
+      "h": 27,
+      "x": 1080,
+      "y": 302
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(237,248,241,1)"
+      }
+     ],
+     "strokes": [
+      {
+       "type": "solid",
+       "value": "rgba(183,220,195,1)"
+      }
+     ],
+     "strokeWeight": 1
+    },
+    {
+     "id": "18:190",
+     "type": "TEXT",
+     "name": "路径有效标记",
+     "box": {
+      "w": 121,
+      "h": 15,
+      "x": 1080,
+      "y": 308
+     },
+     "text": {
+      "content": "✓ 已连接 · 路径有效",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 10,
+      "fontWeight": 700,
+      "textAlignHorizontal": "center"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(67,141,103,1)"
+      }
+     ]
+    },
+    {
+     "id": "18:191",
+     "type": "TEXT",
+     "name": "框架Excel标签",
+     "box": {
+      "w": 350,
+      "h": 18,
+      "x": 65,
+      "y": 359
+     },
+     "text": {
+      "content": "框架 Excel",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 12,
+      "fontWeight": 700
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(119,71,91,1)"
+      }
+     ]
+    },
+    {
+     "id": "18:192",
+     "type": "TEXT",
+     "name": "输出格式标签",
+     "box": {
+      "w": 400,
+      "h": 18,
+      "x": 655,
+      "y": 359
+     },
+     "text": {
+      "content": "发布输出格式",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 12,
+      "fontWeight": 700
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(119,71,91,1)"
+      }
+     ]
+    },
+    {
+     "id": "18:193",
+     "type": "RECTANGLE",
+     "name": "Excel文件卡片",
+     "box": {
+      "w": 560,
+      "h": 100,
+      "x": 65,
+      "y": 382
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(255,250,252,1)"
+      }
+     ],
+     "strokes": [
+      {
+       "type": "solid",
+       "value": "rgba(226,189,203,1)"
+      }
+     ],
+     "strokeWeight": 1
+    },
+    {
+     "id": "18:194",
+     "type": "RECTANGLE",
+     "name": "Excel文件区域",
+     "box": {
+      "w": 534,
+      "h": 74,
+      "x": 78,
+      "y": 395
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(255,253,253,1)"
+      }
+     ],
+     "strokes": [
+      {
+       "type": "solid",
+       "value": "rgba(220,166,187,1)"
+      }
+     ],
+     "strokeWeight": 1
+    },
+    {
+     "id": "18:195",
+     "type": "RECTANGLE",
+     "name": "Excel文件图标底",
+     "box": {
+      "w": 38,
+      "h": 40,
+      "x": 94,
+      "y": 412
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(248,225,233,1)"
+      }
+     ],
+     "strokes": [
+      {
+       "type": "solid",
+       "value": "rgba(227,169,191,1)"
+      }
+     ],
+     "radius": 5,
+     "strokeWeight": 1
+    },
+    {
+     "id": "18:196",
+     "type": "TEXT",
+     "name": "Excel文件图标",
+     "box": {
+      "w": 38,
+      "h": 16,
+      "x": 94,
+      "y": 424
+     },
+     "text": {
+      "content": "XLS",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 10,
+      "fontWeight": 700,
+      "textAlignHorizontal": "center"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(174,90,121,1)"
+      }
+     ]
+    },
+    {
+     "id": "18:197",
+     "type": "TEXT",
+     "name": "Excel文件名",
+     "box": {
+      "w": 300,
+      "h": 20,
+      "x": 145,
+      "y": 410
+     },
+     "text": {
+      "content": "respiratory_pub_framework.xlsx",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 12,
+      "fontWeight": 700
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(89,56,74,1)"
+      }
+     ]
+    },
+    {
+     "id": "18:198",
+     "type": "TEXT",
+     "name": "Excel文件信息",
+     "box": {
+      "w": 340,
+      "h": 16,
+      "x": 145,
+      "y": 435
+     },
+     "text": {
+      "content": "2.4 MB  ·  已读取 4 个工作表，128 行",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Regular",
+      "fontSize": 10,
+      "fontWeight": 400
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(151,127,138,1)"
+      }
+     ]
+    },
+    {
+     "id": "18:199",
+     "type": "RECTANGLE",
+     "name": "重新选择按钮底",
+     "box": {
+      "w": 88,
+      "h": 30,
+      "x": 510,
+      "y": 415
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(255,248,250,1)"
+      }
+     ],
+     "strokes": [
+      {
+       "type": "solid",
+       "value": "rgba(225,163,186,1)"
+      }
+     ],
+     "strokeWeight": 1
+    },
+    {
+     "id": "18:200",
+     "type": "TEXT",
+     "name": "重新选择按钮",
+     "box": {
+      "w": 88,
+      "h": 16,
+      "x": 510,
+      "y": 423
+     },
+     "text": {
+      "content": "重新选择",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 10,
+      "fontWeight": 700,
+      "textAlignHorizontal": "center"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(168,91,120,1)"
+      }
+     ]
+    },
+    {
+     "id": "18:201",
+     "type": "RECTANGLE",
+     "name": "输出格式卡片",
+     "box": {
+      "w": 560,
+      "h": 100,
+      "x": 655,
+      "y": 382
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(255,250,252,1)"
+      }
+     ],
+     "strokes": [
+      {
+       "type": "solid",
+       "value": "rgba(226,189,203,1)"
+      }
+     ],
+     "strokeWeight": 1
+    },
+    {
+     "id": "18:202",
+     "type": "RECTANGLE",
+     "name": "DITA XML格式选项",
+     "box": {
+      "w": 158,
+      "h": 48,
+      "x": 671,
+      "y": 408
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(255,240,245,1)"
+      }
+     ],
+     "strokes": [
+      {
+       "type": "solid",
+       "value": "rgba(207,117,150,1)"
+      }
+     ],
+     "strokeWeight": 1
+    },
+    {
+     "id": "18:203",
+     "type": "TEXT",
+     "name": "DITA XML格式文本",
+     "box": {
+      "w": 158,
+      "h": 20,
+      "x": 671,
+      "y": 422
+     },
+     "text": {
+      "content": "✓  DITA XML",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 12,
+      "fontWeight": 700,
+      "textAlignHorizontal": "center"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(158,79,112,1)"
+      }
+     ]
+    },
+    {
+     "id": "18:204",
+     "type": "RECTANGLE",
+     "name": "HTML格式选项",
+     "box": {
+      "w": 158,
+      "h": 48,
+      "x": 841,
+      "y": 408
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(255,253,251,1)"
+      }
+     ],
+     "strokes": [
+      {
+       "type": "solid",
+       "value": "rgba(230,189,204,1)"
+      }
+     ],
+     "strokeWeight": 1
+    },
+    {
+     "id": "18:205",
+     "type": "TEXT",
+     "name": "HTML格式文本",
+     "box": {
+      "w": 158,
+      "h": 20,
+      "x": 841,
+      "y": 422
+     },
+     "text": {
+      "content": "HTML",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Regular",
+      "fontSize": 12,
+      "fontWeight": 400,
+      "textAlignHorizontal": "center"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(130,101,113,1)"
+      }
+     ]
+    },
+    {
+     "id": "18:206",
+     "type": "RECTANGLE",
+     "name": "PDF格式选项",
+     "box": {
+      "w": 158,
+      "h": 48,
+      "x": 1011,
+      "y": 408
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(255,253,251,1)"
+      }
+     ],
+     "strokes": [
+      {
+       "type": "solid",
+       "value": "rgba(230,189,204,1)"
+      }
+     ],
+     "strokeWeight": 1
+    },
+    {
+     "id": "18:207",
+     "type": "TEXT",
+     "name": "PDF格式文本",
+     "box": {
+      "w": 158,
+      "h": 20,
+      "x": 1011,
+      "y": 422
+     },
+     "text": {
+      "content": "PDF",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Regular",
+      "fontSize": 12,
+      "fontWeight": 400,
+      "textAlignHorizontal": "center"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(130,101,113,1)"
+      }
+     ]
+    },
+    {
+     "id": "18:208",
+     "type": "TEXT",
+     "name": "已有路径标签",
+     "box": {
+      "w": 500,
+      "h": 18,
+      "x": 65,
+      "y": 497
+     },
+     "text": {
+      "content": "已有 Topic / Map 的 KC 路径",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 12,
+      "fontWeight": 700
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(119,71,91,1)"
+      }
+     ]
+    },
+    {
+     "id": "18:209",
+     "type": "TEXT",
+     "name": "语言标签",
+     "box": {
+      "w": 300,
+      "h": 18,
+      "x": 655,
+      "y": 497
+     },
+     "text": {
+      "content": "发布语言",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 12,
+      "fontWeight": 700
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(119,71,91,1)"
+      }
+     ]
+    },
+    {
+     "id": "18:210",
+     "type": "RECTANGLE",
+     "name": "已有路径输入框",
+     "box": {
+      "w": 560,
+      "h": 56,
+      "x": 65,
+      "y": 520
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(255,253,251,1)"
+      }
+     ],
+     "strokes": [
+      {
+       "type": "solid",
+       "value": "rgba(221,157,181,1)"
+      }
+     ],
+     "strokeWeight": 1
+    },
+    {
+     "id": "18:211",
+     "type": "TEXT",
+     "name": "已有路径值",
+     "box": {
+      "w": 505,
+      "h": 20,
+      "x": 80,
+      "y": 538
+     },
+     "text": {
+      "content": "/kc-repository/medical/respiratory/topics",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Regular",
+      "fontSize": 12,
+      "fontWeight": 400
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(112,75,92,1)"
+      }
+     ]
+    },
+    {
+     "id": "18:212",
+     "type": "TEXT",
+     "name": "已有路径下拉",
+     "box": {
+      "w": 20,
+      "h": 20,
+      "x": 591,
+      "y": 538
+     },
+     "text": {
+      "content": "v",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 14,
+      "fontWeight": 700,
+      "textAlignHorizontal": "center"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(164,102,128,1)"
+      }
+     ]
+    },
+    {
+     "id": "18:213",
+     "type": "RECTANGLE",
+     "name": "发布语言输入框",
+     "box": {
+      "w": 560,
+      "h": 56,
+      "x": 655,
+      "y": 520
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(255,253,251,1)"
+      }
+     ],
+     "strokes": [
+      {
+       "type": "solid",
+       "value": "rgba(221,157,181,1)"
+      }
+     ],
+     "strokeWeight": 1
+    },
+    {
+     "id": "18:214",
+     "type": "TEXT",
+     "name": "发布语言值",
+     "box": {
+      "w": 480,
+      "h": 20,
+      "x": 670,
+      "y": 538
+     },
+     "text": {
+      "content": "简体中文",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Regular",
+      "fontSize": 12,
+      "fontWeight": 400
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(112,75,92,1)"
+      }
+     ]
+    },
+    {
+     "id": "18:215",
+     "type": "TEXT",
+     "name": "发布语言下拉",
+     "box": {
+      "w": 20,
+      "h": 20,
+      "x": 1181,
+      "y": 538
+     },
+     "text": {
+      "content": "v",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 14,
+      "fontWeight": 700,
+      "textAlignHorizontal": "center"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(164,102,128,1)"
+      }
+     ]
+    },
+    {
+     "id": "18:216",
+     "type": "RECTANGLE",
+     "name": "配置就绪提示底",
+     "box": {
+      "w": 1150,
+      "h": 42,
+      "x": 65,
+      "y": 592
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(239,248,242,1)"
+      }
+     ],
+     "strokes": [
+      {
+       "type": "solid",
+       "value": "rgba(184,217,194,1)"
+      }
+     ],
+     "strokeWeight": 1
+    },
+    {
+     "id": "18:217",
+     "type": "RECTANGLE",
+     "name": "配置就绪圆点",
+     "box": {
+      "w": 10,
+      "h": 10,
+      "x": 80,
+      "y": 608
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(98,181,128,1)"
+      }
+     ],
+     "radius": 8
+    },
+    {
+     "id": "18:218",
+     "type": "TEXT",
+     "name": "配置就绪主文案",
+     "box": {
+      "w": 300,
+      "h": 20,
+      "x": 101,
+      "y": 603
+     },
+     "text": {
+      "content": "信息完整，可以预检",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 11,
+      "fontWeight": 700
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(76,141,105,1)"
+      }
+     ]
+    },
+    {
+     "id": "18:219",
+     "type": "TEXT",
+     "name": "配置就绪说明",
+     "box": {
+      "w": 335,
+      "h": 18,
+      "x": 858,
+      "y": 604
+     },
+     "text": {
+      "content": "框架文件、落点路径与语言均已配置",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Regular",
+      "fontSize": 10,
+      "fontWeight": 400,
+      "textAlignHorizontal": "right"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(117,147,129,1)"
+      }
+     ]
+    },
+    {
+     "id": "18:220",
+     "type": "RECTANGLE",
+     "name": "操作区分隔线",
+     "box": {
+      "w": 1150,
+      "h": 1,
+      "x": 65,
+      "y": 657
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(229,191,208,1)"
+      }
+     ]
+    },
+    {
+     "id": "18:221",
+     "type": "TEXT",
+     "name": "状态说明",
+     "box": {
+      "w": 560,
+      "h": 20,
+      "x": 65,
+      "y": 688
+     },
+     "text": {
+      "content": "搭建 Pub  ·  已就绪　 检查配置后开始执行",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Regular",
+      "fontSize": 11,
+      "fontWeight": 400
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(141,113,128,1)"
+      }
+     ]
+    },
+    {
+     "id": "18:223",
+     "type": "RECTANGLE",
+     "name": "预检按钮底",
+     "box": {
+      "w": 118,
+      "h": 44,
+      "x": 950,
+      "y": 676
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(255,249,251,1)"
+      }
+     ],
+     "strokes": [
+      {
+       "type": "solid",
+       "value": "rgba(204,126,155,1)"
+      }
+     ],
+     "strokeWeight": 1
+    },
+    {
+     "id": "18:224",
+     "type": "TEXT",
+     "name": "预检按钮",
+     "box": {
+      "w": 118,
+      "h": 20,
+      "x": 950,
+      "y": 687
+     },
+     "text": {
+      "content": "预检",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 13,
+      "fontWeight": 700,
+      "textAlignHorizontal": "center"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(152,81,111,1)"
+      }
+     ]
+    },
+    {
+     "id": "18:225",
+     "type": "RECTANGLE",
+     "name": "执行按钮底",
+     "box": {
+      "w": 132,
+      "h": 50,
+      "x": 1080,
+      "y": 672
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(233,154,184,1)"
+      }
+     ],
+     "strokes": [
+      {
+       "type": "solid",
+       "value": "rgba(183,95,127,1)"
+      }
+     ],
+     "strokeWeight": 1
+    },
+    {
+     "id": "18:227",
+     "type": "TEXT",
+     "name": "开始执行按钮",
+     "box": {
+      "w": 132,
+      "h": 20,
+      "x": 1080,
+      "y": 687
+     },
+     "text": {
+      "content": "开始执行  →",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 14,
+      "fontWeight": 700,
+      "textAlignHorizontal": "center"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(255,255,255,1)"
+      }
+     ]
+    },
+    {
+     "id": "18:228",
+     "type": "RECTANGLE",
+     "name": "底部状态栏",
+     "box": {
+      "w": 1210,
+      "h": 27,
+      "x": 35,
+      "y": 748
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(245,220,229,1)"
+      }
+     ],
+     "strokes": [
+      {
+       "type": "solid",
+       "value": "rgba(217,145,173,1)"
+      }
+     ],
+     "strokeWeight": 1
+    },
+    {
+     "id": "18:229",
+     "type": "RECTANGLE",
+     "name": "底部状态指示灯",
+     "box": {
+      "w": 8,
+      "h": 8,
+      "x": 53,
+      "y": 758
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(85,180,123,1)"
+      }
+     ],
+     "radius": 8
+    },
+    {
+     "id": "18:230",
+     "type": "TEXT",
+     "name": "底部状态文本",
+     "box": {
+      "w": 250,
+      "h": 18,
+      "x": 68,
+      "y": 754
+     },
+     "text": {
+      "content": "就绪  ·  测试环境",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Regular",
+      "fontSize": 10,
+      "fontWeight": 400
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(118,84,102,1)"
+      }
+     ]
+    },
+    {
+     "id": "18:231",
+     "type": "TEXT",
+     "name": "底部仓库状态",
+     "box": {
+      "w": 218,
+      "h": 18,
+      "x": 1010,
+      "y": 754
+     },
+     "text": {
+      "content": "KC 仓库已连接  |  配置将保存到本机",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Regular",
+      "fontSize": 10,
+      "fontWeight": 400,
+      "textAlignHorizontal": "right"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(154,117,134,1)"
+      }
+     ]
+    },
+    {
+     "id": "22:1",
+     "type": "RECTANGLE",
+     "name": "任务类型贴纸 · 新建 Topic",
+     "box": {
+      "w": 42,
+      "h": 42,
+      "x": 79,
+      "y": 187
+     },
+     "fills": [
+      {
+       "type": "asset",
+       "id": "5f3fd831b258a290a25885810c3d416a430628ea",
+       "imageScaleMode": "FIT",
+       "scale": 0.5,
+       "transform": [
+        1,
+        0,
+        0,
+        0,
+        1,
+        0
+       ],
+       "leftPt": [
+        21,
+        42
+       ],
+       "startPt": [
+        21,
+        21
+       ],
+       "endPt": [
+        42,
+        21
+       ],
+       "filters": {
+        "tint": 0,
+        "shadows": 0,
+        "highlights": 0,
+        "exposure": 0,
+        "temperature": 0,
+        "vibrance": 0,
+        "contrast": 0,
+        "hue": 0
+       },
+       "originalImageWidth": 0,
+       "originalImageHeight": 0
+      }
+     ]
+    },
+    {
+     "id": "22:2",
+     "type": "RECTANGLE",
+     "name": "任务类型贴纸 · 新建 Map",
+     "box": {
+      "w": 42,
+      "h": 42,
+      "x": 369,
+      "y": 187
+     },
+     "fills": [
+      {
+       "type": "asset",
+       "id": "9075bead17a05d7cf71e63d76dab4d0db2a811a4",
+       "imageScaleMode": "FIT",
+       "scale": 0.5,
+       "transform": [
+        1,
+        0,
+        0,
+        0,
+        1,
+        0
+       ],
+       "leftPt": [
+        21,
+        42
+       ],
+       "startPt": [
+        21,
+        21
+       ],
+       "endPt": [
+        42,
+        21
+       ],
+       "filters": {
+        "tint": 0,
+        "shadows": 0,
+        "highlights": 0,
+        "exposure": 0,
+        "temperature": 0,
+        "vibrance": 0,
+        "contrast": 0,
+        "hue": 0
+       },
+       "originalImageWidth": 0,
+       "originalImageHeight": 0
+      }
+     ]
+    },
+    {
+     "id": "22:3",
+     "type": "RECTANGLE",
+     "name": "任务类型贴纸 · 搭建 Pub",
+     "box": {
+      "w": 42,
+      "h": 42,
+      "x": 659,
+      "y": 187
+     },
+     "fills": [
+      {
+       "type": "asset",
+       "id": "7a5bfc0e37d4ca71db0c5cc0f6020aa3f464a89b",
+       "imageScaleMode": "FIT",
+       "scale": 0.5,
+       "transform": [
+        1,
+        0,
+        0,
+        0,
+        1,
+        0
+       ],
+       "leftPt": [
+        21,
+        42
+       ],
+       "startPt": [
+        21,
+        21
+       ],
+       "endPt": [
+        42,
+        21
+       ],
+       "filters": {
+        "tint": 0,
+        "shadows": 0,
+        "highlights": 0,
+        "exposure": 0,
+        "temperature": 0,
+        "vibrance": 0,
+        "contrast": 0,
+        "hue": 0
+       },
+       "originalImageWidth": 0,
+       "originalImageHeight": 0
+      }
+     ]
+    },
+    {
+     "id": "22:4",
+     "type": "RECTANGLE",
+     "name": "任务类型贴纸 · 导入图片",
+     "box": {
+      "w": 42,
+      "h": 42,
+      "x": 949,
+      "y": 187
+     },
+     "fills": [
+      {
+       "type": "asset",
+       "id": "b61e1e752661aaae102524e4649166981b6d9716",
+       "imageScaleMode": "FIT",
+       "scale": 0.5,
+       "transform": [
+        1,
+        0,
+        0,
+        0,
+        1,
+        0
+       ],
+       "leftPt": [
+        21,
+        42
+       ],
+       "startPt": [
+        21,
+        21
+       ],
+       "endPt": [
+        42,
+        21
+       ],
+       "filters": {
+        "tint": 0,
+        "shadows": 0,
+        "highlights": 0,
+        "exposure": 0,
+        "temperature": 0,
+        "vibrance": 0,
+        "contrast": 0,
+        "hue": 0
+       },
+       "originalImageWidth": 0,
+       "originalImageHeight": 0
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "refsIndex": {
+  "assets": [
+   "5f3fd831b258a290a25885810c3d416a430628ea",
+   "7a5bfc0e37d4ca71db0c5cc0f6020aa3f464a89b",
+   "9075bead17a05d7cf71e63d76dab4d0db2a811a4",
+   "9a3fc901bff302419fc797fd48cc9f8abaf6339c",
+   "b61e1e752661aaae102524e4649166981b6d9716"
+  ]
+ }
+}

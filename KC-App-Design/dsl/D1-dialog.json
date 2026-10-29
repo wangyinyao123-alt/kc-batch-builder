@@ -1,0 +1,3519 @@
+{
+ "stats": {
+  "source": {
+   "variableMap": 0,
+   "variableSetMap": 0,
+   "localStyleMap": 0
+  },
+  "outputBytes": 38504
+ },
+ "roots": [
+  {
+   "id": "30:1",
+   "type": "FRAME",
+   "name": "D1 弹窗",
+   "frameMaskDisabled": false,
+   "box": {
+    "w": 1280,
+    "h": 800
+   },
+   "children": [
+    {
+     "id": "30:2",
+     "type": "RECTANGLE",
+     "name": "页面背景 · 天空云朵猫咪 · D1",
+     "box": {
+      "w": 1280,
+      "h": 800
+     },
+     "fills": [
+      {
+       "type": "asset",
+       "id": "9a3fc901bff302419fc797fd48cc9f8abaf6339c",
+       "imageScaleMode": "FILL",
+       "scale": 0.5,
+       "transform": [
+        1,
+        0,
+        0,
+        0,
+        1,
+        0
+       ],
+       "leftPt": [
+        640,
+        800
+       ],
+       "startPt": [
+        640,
+        400
+       ],
+       "endPt": [
+        1280,
+        400
+       ],
+       "filters": {
+        "tint": 0,
+        "shadows": 0,
+        "highlights": 0,
+        "exposure": 0,
+        "temperature": 0,
+        "vibrance": 0,
+        "contrast": 0,
+        "hue": 0
+       },
+       "originalImageWidth": 0,
+       "originalImageHeight": 0
+      }
+     ]
+    },
+    {
+     "id": "30:3",
+     "type": "RECTANGLE",
+     "name": "页面背景柔化层 · D1",
+     "box": {
+      "w": 1280,
+      "h": 800
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(255,255,255,0.66)"
+      }
+     ]
+    },
+    {
+     "id": "30:4",
+     "type": "RECTANGLE",
+     "name": "窗口投影",
+     "box": {
+      "w": 1216,
+      "h": 756,
+      "x": 37,
+      "y": 27
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(232,182,199,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:5",
+     "type": "RECTANGLE",
+     "name": "应用窗口",
+     "box": {
+      "w": 1216,
+      "h": 756,
+      "x": 32,
+      "y": 22
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(235,247,242,1)"
+      }
+     ],
+     "radius": 12
+    },
+    {
+     "id": "30:6",
+     "type": "RECTANGLE",
+     "name": "顶栏",
+     "box": {
+      "w": 1210,
+      "h": 64,
+      "x": 35,
+      "y": 25
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(246,212,224,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:7",
+     "type": "RECTANGLE",
+     "name": "顶栏下沿",
+     "box": {
+      "w": 1210,
+      "h": 2,
+      "x": 35,
+      "y": 87
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(217,136,169,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:8",
+     "type": "RECTANGLE",
+     "name": "应用图标底",
+     "box": {
+      "w": 34,
+      "h": 34,
+      "x": 59,
+      "y": 40
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(244,191,208,1)"
+      }
+     ],
+     "radius": 9
+    },
+    {
+     "id": "30:9",
+     "type": "TEXT",
+     "name": "应用图标",
+     "box": {
+      "w": 34,
+      "h": 28,
+      "x": 59,
+      "y": 43
+     },
+     "text": {
+      "content": "♡",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 20,
+      "fontWeight": 700,
+      "textAlignHorizontal": "center",
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(213,102,140,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:10",
+     "type": "TEXT",
+     "name": "应用名",
+     "box": {
+      "w": 175,
+      "h": 22,
+      "x": 107,
+      "y": 46
+     },
+     "text": {
+      "content": "KC 批量建库工具",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 17,
+      "fontWeight": 700,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(87,55,71,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:11",
+     "type": "RECTANGLE",
+     "name": "环境标签",
+     "box": {
+      "w": 68,
+      "h": 20,
+      "x": 280,
+      "y": 47
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(250,233,239,1)"
+      }
+     ],
+     "radius": 8
+    },
+    {
+     "id": "30:12",
+     "type": "TEXT",
+     "name": "环境文本",
+     "box": {
+      "w": 68,
+      "h": 14,
+      "x": 280,
+      "y": 50
+     },
+     "text": {
+      "content": "测试",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 10,
+      "fontWeight": 700,
+      "textAlignHorizontal": "center",
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(154,88,113,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:13",
+     "type": "ELLIPSE",
+     "name": "连接指示灯",
+     "box": {
+      "w": 9,
+      "h": 9,
+      "x": 835,
+      "y": 52
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(85,180,123,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:14",
+     "type": "TEXT",
+     "name": "连接状态",
+     "box": {
+      "w": 50,
+      "h": 19,
+      "x": 851,
+      "y": 47
+     },
+     "text": {
+      "content": "已连接",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 12,
+      "fontWeight": 700,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(73,155,114,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:15",
+     "type": "RECTANGLE",
+     "name": "连接分隔",
+     "box": {
+      "w": 1,
+      "h": 26,
+      "x": 916,
+      "y": 42
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(223,165,187,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:16",
+     "type": "ELLIPSE",
+     "name": "用户头像",
+     "box": {
+      "w": 30,
+      "h": 30,
+      "x": 934,
+      "y": 40
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(255,249,241,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:17",
+     "type": "TEXT",
+     "name": "用户头像字",
+     "box": {
+      "w": 30,
+      "h": 16,
+      "x": 934,
+      "y": 46
+     },
+     "text": {
+      "content": "W",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 12,
+      "fontWeight": 700,
+      "textAlignHorizontal": "center",
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(135,68,95,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:18",
+     "type": "TEXT",
+     "name": "账号名",
+     "box": {
+      "w": 104,
+      "h": 18,
+      "x": 977,
+      "y": 48
+     },
+     "text": {
+      "content": "wanghanxiaocn",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 11,
+      "fontWeight": 700,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(87,55,71,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:19",
+     "type": "RECTANGLE",
+     "name": "切换按钮底",
+     "box": {
+      "w": 73,
+      "h": 28,
+      "x": 1092,
+      "y": 42
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(255,255,255,1)"
+      }
+     ],
+     "radius": 8
+    },
+    {
+     "id": "30:20",
+     "type": "TEXT",
+     "name": "切换账号",
+     "box": {
+      "w": 73,
+      "h": 14,
+      "x": 1092,
+      "y": 49
+     },
+     "text": {
+      "content": "切换  v",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Regular",
+      "fontSize": 10,
+      "fontWeight": 400,
+      "textAlignHorizontal": "center",
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(157,81,112,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:21",
+     "type": "ELLIPSE",
+     "name": "窗口控制点1",
+     "box": {
+      "w": 11,
+      "h": 11,
+      "x": 1179,
+      "y": 49
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(220,121,155,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:22",
+     "type": "ELLIPSE",
+     "name": "窗口控制点2",
+     "box": {
+      "w": 11,
+      "h": 11,
+      "x": 1198,
+      "y": 49
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(243,199,95,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:23",
+     "type": "ELLIPSE",
+     "name": "窗口控制点3",
+     "box": {
+      "w": 11,
+      "h": 11,
+      "x": 1217,
+      "y": 49
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(133,201,161,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:24",
+     "type": "RECTANGLE",
+     "name": "底部状态栏",
+     "box": {
+      "w": 1210,
+      "h": 27,
+      "x": 35,
+      "y": 748
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(245,220,229,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:25",
+     "type": "ELLIPSE",
+     "name": "底部状态指示灯",
+     "box": {
+      "w": 8,
+      "h": 8,
+      "x": 53,
+      "y": 758
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(85,180,123,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:26",
+     "type": "TEXT",
+     "name": "底部状态文本",
+     "box": {
+      "w": 280,
+      "h": 18,
+      "x": 68,
+      "y": 754
+     },
+     "text": {
+      "content": "任务执行中 · 请确认取消影响",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Regular",
+      "fontSize": 10,
+      "fontWeight": 400,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(118,84,102,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:27",
+     "type": "TEXT",
+     "name": "底部仓库状态",
+     "box": {
+      "w": 228,
+      "h": 18,
+      "x": 1000,
+      "y": 754
+     },
+     "text": {
+      "content": "KC 仓库已连接 · 测试环境",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Regular",
+      "fontSize": 10,
+      "fontWeight": 400,
+      "textAlignHorizontal": "right",
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(154,117,134,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:99",
+     "type": "TEXT",
+     "name": "背景页面路径",
+     "box": {
+      "w": 300,
+      "h": 16,
+      "x": 65,
+      "y": 108
+     },
+     "text": {
+      "content": "PIXEL WORKSPACE / TASKS",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 10,
+      "fontWeight": 700,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(189,105,136,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:100",
+     "type": "TEXT",
+     "name": "背景页面标题",
+     "box": {
+      "w": 72,
+      "h": 38,
+      "x": 65,
+      "y": 126
+     },
+     "text": {
+      "content": "任务",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 25,
+      "fontWeight": 700,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(87,55,71,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:101",
+     "type": "TEXT",
+     "name": "背景页面统计",
+     "box": {
+      "w": 290,
+      "h": 20,
+      "x": 151,
+      "y": 136
+     },
+     "text": {
+      "content": "4 个任务 · 1 个执行中 · 1 个排队中",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Regular",
+      "fontSize": 12,
+      "fontWeight": 400,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(125,103,115,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:102",
+     "type": "RECTANGLE",
+     "name": "背景新建任务底",
+     "box": {
+      "w": 163,
+      "h": 44,
+      "x": 1052,
+      "y": 112
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(233,154,184,1)"
+      }
+     ],
+     "radius": 8
+    },
+    {
+     "id": "30:103",
+     "type": "TEXT",
+     "name": "背景新建任务",
+     "box": {
+      "w": 163,
+      "h": 20,
+      "x": 1052,
+      "y": 124
+     },
+     "text": {
+      "content": "+ 新建任务",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 13,
+      "fontWeight": 700,
+      "textAlignHorizontal": "center",
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(255,255,255,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:104",
+     "type": "RECTANGLE",
+     "name": "背景总任务底",
+     "box": {
+      "w": 270,
+      "h": 60,
+      "x": 65,
+      "y": 178
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(255,247,250,1)"
+      }
+     ],
+     "strokes": [
+      {
+       "type": "solid",
+       "value": "rgba(229,191,208,1)"
+      }
+     ],
+     "radius": 8,
+     "strokeWeight": 1
+    },
+    {
+     "id": "30:105",
+     "type": "TEXT",
+     "name": "背景总任务数",
+     "box": {
+      "w": 46,
+      "h": 28,
+      "x": 81,
+      "y": 190
+     },
+     "text": {
+      "content": "04",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 21,
+      "fontWeight": 700,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(193,101,131,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:106",
+     "type": "TEXT",
+     "name": "背景总任务名",
+     "box": {
+      "w": 118,
+      "h": 18,
+      "x": 135,
+      "y": 187
+     },
+     "text": {
+      "content": "全部任务",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 12,
+      "fontWeight": 700,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(87,55,71,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:107",
+     "type": "TEXT",
+     "name": "背景总任务描述",
+     "box": {
+      "w": 175,
+      "h": 16,
+      "x": 135,
+      "y": 207
+     },
+     "text": {
+      "content": "本次建库队列",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Regular",
+      "fontSize": 10,
+      "fontWeight": 400,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(125,103,115,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:108",
+     "type": "RECTANGLE",
+     "name": "背景执行中底",
+     "box": {
+      "w": 270,
+      "h": 60,
+      "x": 355,
+      "y": 178
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(240,251,246,1)"
+      }
+     ],
+     "strokes": [
+      {
+       "type": "solid",
+       "value": "rgba(229,191,208,1)"
+      }
+     ],
+     "radius": 8,
+     "strokeWeight": 1
+    },
+    {
+     "id": "30:109",
+     "type": "TEXT",
+     "name": "背景执行中数",
+     "box": {
+      "w": 46,
+      "h": 28,
+      "x": 371,
+      "y": 190
+     },
+     "text": {
+      "content": "01",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 21,
+      "fontWeight": 700,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(73,155,114,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:110",
+     "type": "TEXT",
+     "name": "背景执行中名",
+     "box": {
+      "w": 118,
+      "h": 18,
+      "x": 425,
+      "y": 187
+     },
+     "text": {
+      "content": "执行中",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 12,
+      "fontWeight": 700,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(87,55,71,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:111",
+     "type": "TEXT",
+     "name": "背景执行中描述",
+     "box": {
+      "w": 175,
+      "h": 16,
+      "x": 425,
+      "y": 207
+     },
+     "text": {
+      "content": "同一时刻仅一个任务",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Regular",
+      "fontSize": 10,
+      "fontWeight": 400,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(125,103,115,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:112",
+     "type": "RECTANGLE",
+     "name": "背景排队中底",
+     "box": {
+      "w": 270,
+      "h": 60,
+      "x": 645,
+      "y": 178
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(255,249,232,1)"
+      }
+     ],
+     "strokes": [
+      {
+       "type": "solid",
+       "value": "rgba(229,191,208,1)"
+      }
+     ],
+     "radius": 8,
+     "strokeWeight": 1
+    },
+    {
+     "id": "30:113",
+     "type": "TEXT",
+     "name": "背景排队中数",
+     "box": {
+      "w": 46,
+      "h": 28,
+      "x": 661,
+      "y": 190
+     },
+     "text": {
+      "content": "01",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 21,
+      "fontWeight": 700,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(177,129,47,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:114",
+     "type": "TEXT",
+     "name": "背景排队中名",
+     "box": {
+      "w": 118,
+      "h": 18,
+      "x": 715,
+      "y": 187
+     },
+     "text": {
+      "content": "排队中",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 12,
+      "fontWeight": 700,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(87,55,71,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:115",
+     "type": "TEXT",
+     "name": "背景排队中描述",
+     "box": {
+      "w": 175,
+      "h": 16,
+      "x": 715,
+      "y": 207
+     },
+     "text": {
+      "content": "等待前序任务完成",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Regular",
+      "fontSize": 10,
+      "fontWeight": 400,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(125,103,115,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:116",
+     "type": "RECTANGLE",
+     "name": "背景部分失败底",
+     "box": {
+      "w": 270,
+      "h": 60,
+      "x": 935,
+      "y": 178
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(255,242,243,1)"
+      }
+     ],
+     "strokes": [
+      {
+       "type": "solid",
+       "value": "rgba(229,191,208,1)"
+      }
+     ],
+     "radius": 8,
+     "strokeWeight": 1
+    },
+    {
+     "id": "30:117",
+     "type": "TEXT",
+     "name": "背景部分失败数",
+     "box": {
+      "w": 46,
+      "h": 28,
+      "x": 951,
+      "y": 190
+     },
+     "text": {
+      "content": "01",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 21,
+      "fontWeight": 700,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(184,95,124,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:118",
+     "type": "TEXT",
+     "name": "背景部分失败名",
+     "box": {
+      "w": 118,
+      "h": 18,
+      "x": 1005,
+      "y": 187
+     },
+     "text": {
+      "content": "部分失败",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 12,
+      "fontWeight": 700,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(87,55,71,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:119",
+     "type": "TEXT",
+     "name": "背景部分失败描述",
+     "box": {
+      "w": 175,
+      "h": 16,
+      "x": 1005,
+      "y": 207
+     },
+     "text": {
+      "content": "可查看失败原因",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Regular",
+      "fontSize": 10,
+      "fontWeight": 400,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(125,103,115,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:120",
+     "type": "RECTANGLE",
+     "name": "背景任务表",
+     "box": {
+      "w": 1150,
+      "h": 326,
+      "x": 65,
+      "y": 257
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(255,250,252,1)"
+      }
+     ],
+     "strokes": [
+      {
+       "type": "solid",
+       "value": "rgba(229,191,208,1)"
+      }
+     ],
+     "radius": 10,
+     "strokeWeight": 1
+    },
+    {
+     "id": "30:121",
+     "type": "RECTANGLE",
+     "name": "背景表头",
+     "box": {
+      "w": 1150,
+      "h": 38,
+      "x": 65,
+      "y": 257
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(249,231,238,1)"
+      }
+     ],
+     "radius": 10
+    },
+    {
+     "id": "30:122",
+     "type": "TEXT",
+     "name": "背景列任务名",
+     "box": {
+      "w": 270,
+      "h": 16,
+      "x": 82,
+      "y": 267
+     },
+     "text": {
+      "content": "任务名",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 11,
+      "fontWeight": 700,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(125,103,115,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:123",
+     "type": "TEXT",
+     "name": "背景列类型",
+     "box": {
+      "w": 150,
+      "h": 16,
+      "x": 430,
+      "y": 267
+     },
+     "text": {
+      "content": "类型",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 11,
+      "fontWeight": 700,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(125,103,115,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:124",
+     "type": "TEXT",
+     "name": "背景列状态",
+     "box": {
+      "w": 150,
+      "h": 16,
+      "x": 620,
+      "y": 267
+     },
+     "text": {
+      "content": "状态",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 11,
+      "fontWeight": 700,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(125,103,115,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:125",
+     "type": "TEXT",
+     "name": "背景列进度",
+     "box": {
+      "w": 180,
+      "h": 16,
+      "x": 814,
+      "y": 267
+     },
+     "text": {
+      "content": "进度",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 11,
+      "fontWeight": 700,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(125,103,115,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:126",
+     "type": "TEXT",
+     "name": "背景列操作",
+     "box": {
+      "w": 96,
+      "h": 16,
+      "x": 1080,
+      "y": 267
+     },
+     "text": {
+      "content": "操作",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 11,
+      "fontWeight": 700,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(125,103,115,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:127",
+     "type": "TEXT",
+     "name": "背景任务0",
+     "box": {
+      "w": 300,
+      "h": 20,
+      "x": 82,
+      "y": 315
+     },
+     "text": {
+      "content": "产品手册 2026 Q4 发布",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 12,
+      "fontWeight": 700,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(87,55,71,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:128",
+     "type": "RECTANGLE",
+     "name": "背景类型0底",
+     "box": {
+      "w": 72,
+      "h": 24,
+      "x": 433,
+      "y": 314
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(255,245,248,1)"
+      }
+     ],
+     "radius": 12
+    },
+    {
+     "id": "30:129",
+     "type": "TEXT",
+     "name": "背景类型0",
+     "box": {
+      "w": 72,
+      "h": 16,
+      "x": 433,
+      "y": 318
+     },
+     "text": {
+      "content": "搭建 Pub",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 10,
+      "fontWeight": 700,
+      "textAlignHorizontal": "center",
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(125,103,115,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:130",
+     "type": "ELLIPSE",
+     "name": "背景状态点0",
+     "box": {
+      "w": 9,
+      "h": 9,
+      "x": 621,
+      "y": 321
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(184,95,124,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:131",
+     "type": "TEXT",
+     "name": "背景状态0",
+     "box": {
+      "w": 105,
+      "h": 20,
+      "x": 638,
+      "y": 314
+     },
+     "text": {
+      "content": "执行中",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 11,
+      "fontWeight": 700,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(184,95,124,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:132",
+     "type": "RECTANGLE",
+     "name": "背景进度轨道0",
+     "box": {
+      "w": 142,
+      "h": 8,
+      "x": 814,
+      "y": 320
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(241,230,235,1)"
+      }
+     ],
+     "radius": 4
+    },
+    {
+     "id": "30:133",
+     "type": "RECTANGLE",
+     "name": "背景进度完成0",
+     "box": {
+      "w": 95.139999,
+      "h": 8,
+      "x": 814,
+      "y": 320
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(233,154,184,1)"
+      }
+     ],
+     "radius": 4
+    },
+    {
+     "id": "30:134",
+     "type": "TEXT",
+     "name": "背景进度文字0",
+     "box": {
+      "w": 54,
+      "h": 20,
+      "x": 966,
+      "y": 314
+     },
+     "text": {
+      "content": "12 / 18",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Regular",
+      "fontSize": 10,
+      "fontWeight": 400,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(125,103,115,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:135",
+     "type": "TEXT",
+     "name": "背景操作0",
+     "box": {
+      "w": 78,
+      "h": 20,
+      "x": 1080,
+      "y": 314
+     },
+     "text": {
+      "content": "停止",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 10,
+      "fontWeight": 700,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(157,81,112,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:136",
+     "type": "RECTANGLE",
+     "name": "背景行分隔1",
+     "box": {
+      "w": 1150,
+      "h": 1,
+      "x": 65,
+      "y": 359
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(240,217,226,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:137",
+     "type": "TEXT",
+     "name": "背景任务1",
+     "box": {
+      "w": 300,
+      "h": 20,
+      "x": 82,
+      "y": 379
+     },
+     "text": {
+      "content": "轨道交通插图",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Regular",
+      "fontSize": 12,
+      "fontWeight": 400,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(87,55,71,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:138",
+     "type": "RECTANGLE",
+     "name": "背景类型1底",
+     "box": {
+      "w": 72,
+      "h": 24,
+      "x": 433,
+      "y": 378
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(255,245,248,1)"
+      }
+     ],
+     "radius": 12
+    },
+    {
+     "id": "30:139",
+     "type": "TEXT",
+     "name": "背景类型1",
+     "box": {
+      "w": 72,
+      "h": 16,
+      "x": 433,
+      "y": 382
+     },
+     "text": {
+      "content": "导入图片",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 10,
+      "fontWeight": 700,
+      "textAlignHorizontal": "center",
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(125,103,115,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:140",
+     "type": "ELLIPSE",
+     "name": "背景状态点1",
+     "box": {
+      "w": 9,
+      "h": 9,
+      "x": 621,
+      "y": 385
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(73,155,114,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:141",
+     "type": "TEXT",
+     "name": "背景状态1",
+     "box": {
+      "w": 105,
+      "h": 20,
+      "x": 638,
+      "y": 378
+     },
+     "text": {
+      "content": "已完成",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 11,
+      "fontWeight": 700,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(73,155,114,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:142",
+     "type": "RECTANGLE",
+     "name": "背景进度轨道1",
+     "box": {
+      "w": 142,
+      "h": 8,
+      "x": 814,
+      "y": 384
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(241,230,235,1)"
+      }
+     ],
+     "radius": 4
+    },
+    {
+     "id": "30:143",
+     "type": "RECTANGLE",
+     "name": "背景进度完成1",
+     "box": {
+      "w": 142,
+      "h": 8,
+      "x": 814,
+      "y": 384
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(120,190,153,1)"
+      }
+     ],
+     "radius": 4
+    },
+    {
+     "id": "30:144",
+     "type": "TEXT",
+     "name": "背景进度文字1",
+     "box": {
+      "w": 54,
+      "h": 20,
+      "x": 966,
+      "y": 378
+     },
+     "text": {
+      "content": "24 / 24",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Regular",
+      "fontSize": 10,
+      "fontWeight": 400,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(125,103,115,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:145",
+     "type": "TEXT",
+     "name": "背景操作1",
+     "box": {
+      "w": 78,
+      "h": 20,
+      "x": 1080,
+      "y": 378
+     },
+     "text": {
+      "content": "记录",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 10,
+      "fontWeight": 700,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(157,81,112,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:146",
+     "type": "RECTANGLE",
+     "name": "背景行分隔2",
+     "box": {
+      "w": 1150,
+      "h": 1,
+      "x": 65,
+      "y": 423
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(240,217,226,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:147",
+     "type": "TEXT",
+     "name": "背景任务2",
+     "box": {
+      "w": 300,
+      "h": 20,
+      "x": 82,
+      "y": 443
+     },
+     "text": {
+      "content": "补充 Topic",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Regular",
+      "fontSize": 12,
+      "fontWeight": 400,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(87,55,71,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:148",
+     "type": "RECTANGLE",
+     "name": "背景类型2底",
+     "box": {
+      "w": 72,
+      "h": 24,
+      "x": 433,
+      "y": 442
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(255,245,248,1)"
+      }
+     ],
+     "radius": 12
+    },
+    {
+     "id": "30:149",
+     "type": "TEXT",
+     "name": "背景类型2",
+     "box": {
+      "w": 72,
+      "h": 16,
+      "x": 433,
+      "y": 446
+     },
+     "text": {
+      "content": "新建 Topic",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 10,
+      "fontWeight": 700,
+      "textAlignHorizontal": "center",
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(125,103,115,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:150",
+     "type": "ELLIPSE",
+     "name": "背景状态点2",
+     "box": {
+      "w": 9,
+      "h": 9,
+      "x": 621,
+      "y": 449
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(177,129,47,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:151",
+     "type": "TEXT",
+     "name": "背景状态2",
+     "box": {
+      "w": 105,
+      "h": 20,
+      "x": 638,
+      "y": 442
+     },
+     "text": {
+      "content": "排队中",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 11,
+      "fontWeight": 700,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(177,129,47,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:152",
+     "type": "RECTANGLE",
+     "name": "背景进度轨道2",
+     "box": {
+      "w": 142,
+      "h": 8,
+      "x": 814,
+      "y": 448
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(241,230,235,1)"
+      }
+     ],
+     "radius": 4
+    },
+    {
+     "id": "30:153",
+     "type": "RECTANGLE",
+     "name": "背景进度完成2",
+     "box": {
+      "w": 0,
+      "h": 8,
+      "x": 814,
+      "y": 448
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(227,199,111,1)"
+      }
+     ],
+     "radius": 4
+    },
+    {
+     "id": "30:154",
+     "type": "TEXT",
+     "name": "背景进度文字2",
+     "box": {
+      "w": 54,
+      "h": 20,
+      "x": 966,
+      "y": 442
+     },
+     "text": {
+      "content": "0 / 12",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Regular",
+      "fontSize": 10,
+      "fontWeight": 400,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(125,103,115,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:155",
+     "type": "TEXT",
+     "name": "背景操作2",
+     "box": {
+      "w": 78,
+      "h": 20,
+      "x": 1080,
+      "y": 442
+     },
+     "text": {
+      "content": "查看",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 10,
+      "fontWeight": 700,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(157,81,112,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:156",
+     "type": "RECTANGLE",
+     "name": "背景行分隔3",
+     "box": {
+      "w": 1150,
+      "h": 1,
+      "x": 65,
+      "y": 487
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(240,217,226,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:157",
+     "type": "TEXT",
+     "name": "背景任务3",
+     "box": {
+      "w": 300,
+      "h": 20,
+      "x": 82,
+      "y": 507
+     },
+     "text": {
+      "content": "spec 图片",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Regular",
+      "fontSize": 12,
+      "fontWeight": 400,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(87,55,71,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:158",
+     "type": "RECTANGLE",
+     "name": "背景类型3底",
+     "box": {
+      "w": 72,
+      "h": 24,
+      "x": 433,
+      "y": 506
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(255,245,248,1)"
+      }
+     ],
+     "radius": 12
+    },
+    {
+     "id": "30:159",
+     "type": "TEXT",
+     "name": "背景类型3",
+     "box": {
+      "w": 72,
+      "h": 16,
+      "x": 433,
+      "y": 510
+     },
+     "text": {
+      "content": "导入图片",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 10,
+      "fontWeight": 700,
+      "textAlignHorizontal": "center",
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(125,103,115,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:160",
+     "type": "ELLIPSE",
+     "name": "背景状态点3",
+     "box": {
+      "w": 9,
+      "h": 9,
+      "x": 621,
+      "y": 513
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(184,95,124,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:161",
+     "type": "TEXT",
+     "name": "背景状态3",
+     "box": {
+      "w": 105,
+      "h": 20,
+      "x": 638,
+      "y": 506
+     },
+     "text": {
+      "content": "部分失败",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 11,
+      "fontWeight": 700,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(184,95,124,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:162",
+     "type": "RECTANGLE",
+     "name": "背景进度轨道3",
+     "box": {
+      "w": 142,
+      "h": 8,
+      "x": 814,
+      "y": 512
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(241,230,235,1)"
+      }
+     ],
+     "radius": 4
+    },
+    {
+     "id": "30:163",
+     "type": "RECTANGLE",
+     "name": "背景进度完成3",
+     "box": {
+      "w": 130.639999,
+      "h": 8,
+      "x": 814,
+      "y": 512
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(230,161,84,1)"
+      }
+     ],
+     "radius": 4
+    },
+    {
+     "id": "30:164",
+     "type": "TEXT",
+     "name": "背景进度文字3",
+     "box": {
+      "w": 54,
+      "h": 20,
+      "x": 966,
+      "y": 506
+     },
+     "text": {
+      "content": "22 / 24",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Regular",
+      "fontSize": 10,
+      "fontWeight": 400,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(125,103,115,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:165",
+     "type": "TEXT",
+     "name": "背景操作3",
+     "box": {
+      "w": 78,
+      "h": 20,
+      "x": 1080,
+      "y": 506
+     },
+     "text": {
+      "content": "查看原因",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 10,
+      "fontWeight": 700,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(157,81,112,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:166",
+     "type": "RECTANGLE",
+     "name": "背景日志栏",
+     "box": {
+      "w": 1150,
+      "h": 80,
+      "x": 65,
+      "y": 600
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(255,247,250,1)"
+      }
+     ],
+     "strokes": [
+      {
+       "type": "solid",
+       "value": "rgba(229,191,208,1)"
+      }
+     ],
+     "radius": 8,
+     "strokeWeight": 1
+    },
+    {
+     "id": "30:167",
+     "type": "TEXT",
+     "name": "背景日志标题",
+     "box": {
+      "w": 120,
+      "h": 18,
+      "x": 82,
+      "y": 611
+     },
+     "text": {
+      "content": "执行日志",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 12,
+      "fontWeight": 700,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(87,55,71,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:168",
+     "type": "TEXT",
+     "name": "背景日志行1",
+     "box": {
+      "w": 420,
+      "h": 16,
+      "x": 82,
+      "y": 635
+     },
+     "text": {
+      "content": "10:42:18   正在生成 Map：转向架",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Regular",
+      "fontSize": 10,
+      "fontWeight": 400,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(125,103,115,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:169",
+     "type": "TEXT",
+     "name": "背景日志行2",
+     "box": {
+      "w": 450,
+      "h": 16,
+      "x": 82,
+      "y": 654
+     },
+     "text": {
+      "content": "10:42:21   已完成 12 / 18 项，下一步：导入图片",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Regular",
+      "fontSize": 10,
+      "fontWeight": 400,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(125,103,115,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:170",
+     "type": "RECTANGLE",
+     "name": "弹窗遮罩",
+     "box": {
+      "w": 1216,
+      "h": 756,
+      "x": 32,
+      "y": 22
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(87,55,71,0.54)"
+      }
+     ],
+     "radius": 12
+    },
+    {
+     "id": "30:171",
+     "type": "RECTANGLE",
+     "name": "危险确认标签底",
+     "box": {
+      "w": 170,
+      "h": 24,
+      "x": 116,
+      "y": 108
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(249,231,238,1)"
+      }
+     ],
+     "radius": 12
+    },
+    {
+     "id": "30:172",
+     "type": "TEXT",
+     "name": "危险确认标签",
+     "box": {
+      "w": 170,
+      "h": 16,
+      "x": 116,
+      "y": 112
+     },
+     "text": {
+      "content": "D1 · 危险确认（默认态）",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 10,
+      "fontWeight": 700,
+      "textAlignHorizontal": "center",
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(157,81,112,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:173",
+     "type": "RECTANGLE",
+     "name": "报错变体标签底",
+     "box": {
+      "w": 120,
+      "h": 24,
+      "x": 748,
+      "y": 178
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(249,231,238,1)"
+      }
+     ],
+     "radius": 12
+    },
+    {
+     "id": "30:174",
+     "type": "TEXT",
+     "name": "报错变体标签",
+     "box": {
+      "w": 120,
+      "h": 16,
+      "x": 748,
+      "y": 182
+     },
+     "text": {
+      "content": "报错弹窗变体",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 10,
+      "fontWeight": 700,
+      "textAlignHorizontal": "center",
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(157,81,112,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:175",
+     "type": "RECTANGLE",
+     "name": "危险确认投影",
+     "box": {
+      "w": 590,
+      "h": 486,
+      "x": 122,
+      "y": 148
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(205,123,151,0.42)"
+      }
+     ],
+     "radius": 14
+    },
+    {
+     "id": "30:176",
+     "type": "RECTANGLE",
+     "name": "危险确认弹窗",
+     "box": {
+      "w": 590,
+      "h": 486,
+      "x": 116,
+      "y": 142
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(255,250,252,1)"
+      }
+     ],
+     "strokes": [
+      {
+       "type": "solid",
+       "value": "rgba(229,191,208,1)"
+      }
+     ],
+     "radius": 14,
+     "strokeWeight": 1
+    },
+    {
+     "id": "30:179",
+     "type": "TEXT",
+     "name": "危险执行中",
+     "box": {
+      "w": 112,
+      "h": 18,
+      "x": 203,
+      "y": 170
+     },
+     "text": {
+      "content": "正在执行",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 10,
+      "fontWeight": 700,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(184,95,124,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:180",
+     "type": "TEXT",
+     "name": "危险标题",
+     "box": {
+      "w": 320,
+      "h": 31,
+      "x": 203,
+      "y": 190
+     },
+     "text": {
+      "content": "确认取消这个任务？",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 21,
+      "fontWeight": 700,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(87,55,71,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:181",
+     "type": "TEXT",
+     "name": "危险副文案",
+     "box": {
+      "w": 510,
+      "h": 22,
+      "x": 140,
+      "y": 225
+     },
+     "text": {
+      "content": "任务会立即停止，已创建的 KC 对象不会自动回滚。",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Regular",
+      "fontSize": 12,
+      "fontWeight": 400,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(108,72,89,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:182",
+     "type": "RECTANGLE",
+     "name": "危险任务摘要",
+     "box": {
+      "w": 542,
+      "h": 72,
+      "x": 140,
+      "y": 256
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(249,231,238,1)"
+      }
+     ],
+     "radius": 10
+    },
+    {
+     "id": "30:183",
+     "type": "TEXT",
+     "name": "危险任务名",
+     "box": {
+      "w": 360,
+      "h": 20,
+      "x": 158,
+      "y": 267
+     },
+     "text": {
+      "content": "产品手册 2026 Q4 发布",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 13,
+      "fontWeight": 700,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(87,55,71,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:184",
+     "type": "TEXT",
+     "name": "危险任务状态",
+     "box": {
+      "w": 380,
+      "h": 18,
+      "x": 158,
+      "y": 289
+     },
+     "text": {
+      "content": "搭建 Pub  ·  执行中  ·  已完成 12 / 18",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 10,
+      "fontWeight": 700,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(157,81,112,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:185",
+     "type": "TEXT",
+     "name": "危险目录",
+     "box": {
+      "w": 305,
+      "h": 14,
+      "x": 158,
+      "y": 309
+     },
+     "text": {
+      "content": "/KC/产品文档/2026-Q4",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Regular",
+      "fontSize": 9,
+      "fontWeight": 400,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(125,103,115,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:186",
+     "type": "TEXT",
+     "name": "危险影响标题",
+     "box": {
+      "w": 280,
+      "h": 22,
+      "x": 140,
+      "y": 345
+     },
+     "text": {
+      "content": "取消后会留下什么",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 13,
+      "fontWeight": 700,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(87,55,71,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:187",
+     "type": "RECTANGLE",
+     "name": "影响行1",
+     "box": {
+      "w": 542,
+      "h": 36,
+      "x": 140,
+      "y": 374
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(240,251,246,1)"
+      }
+     ],
+     "radius": 7
+    },
+    {
+     "id": "30:188",
+     "type": "ELLIPSE",
+     "name": "影响点1",
+     "box": {
+      "w": 10,
+      "h": 10,
+      "x": 153,
+      "y": 387
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(73,155,114,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:189",
+     "type": "TEXT",
+     "name": "影响标题1",
+     "box": {
+      "w": 105,
+      "h": 20,
+      "x": 173,
+      "y": 381
+     },
+     "text": {
+      "content": "12 项已创建",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 11,
+      "fontWeight": 700,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(87,55,71,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:190",
+     "type": "TEXT",
+     "name": "影响说明1",
+     "box": {
+      "w": 360,
+      "h": 20,
+      "x": 284,
+      "y": 381
+     },
+     "text": {
+      "content": "保留在 KC 仓库，可从结果清单打开。",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Regular",
+      "fontSize": 10,
+      "fontWeight": 400,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(108,72,89,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:191",
+     "type": "RECTANGLE",
+     "name": "影响行2",
+     "box": {
+      "w": 542,
+      "h": 36,
+      "x": 140,
+      "y": 416
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(255,248,234,1)"
+      }
+     ],
+     "radius": 7
+    },
+    {
+     "id": "30:192",
+     "type": "ELLIPSE",
+     "name": "影响点2",
+     "box": {
+      "w": 10,
+      "h": 10,
+      "x": 153,
+      "y": 429
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(177,129,47,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:193",
+     "type": "TEXT",
+     "name": "影响标题2",
+     "box": {
+      "w": 105,
+      "h": 20,
+      "x": 173,
+      "y": 423
+     },
+     "text": {
+      "content": "1 项正在处理",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 11,
+      "fontWeight": 700,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(87,55,71,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:194",
+     "type": "TEXT",
+     "name": "影响说明2",
+     "box": {
+      "w": 360,
+      "h": 20,
+      "x": 284,
+      "y": 423
+     },
+     "text": {
+      "content": "立即停止，并标记为「未完成」。",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Regular",
+      "fontSize": 10,
+      "fontWeight": 400,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(108,72,89,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:195",
+     "type": "RECTANGLE",
+     "name": "影响行3",
+     "box": {
+      "w": 542,
+      "h": 36,
+      "x": 140,
+      "y": 458
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(255,242,243,1)"
+      }
+     ],
+     "radius": 7
+    },
+    {
+     "id": "30:196",
+     "type": "ELLIPSE",
+     "name": "影响点3",
+     "box": {
+      "w": 10,
+      "h": 10,
+      "x": 153,
+      "y": 471
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(184,95,124,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:197",
+     "type": "TEXT",
+     "name": "影响标题3",
+     "box": {
+      "w": 105,
+      "h": 20,
+      "x": 173,
+      "y": 465
+     },
+     "text": {
+      "content": "5 项等待执行",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 11,
+      "fontWeight": 700,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(87,55,71,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:198",
+     "type": "TEXT",
+     "name": "影响说明3",
+     "box": {
+      "w": 360,
+      "h": 20,
+      "x": 284,
+      "y": 465
+     },
+     "text": {
+      "content": "不会开始执行，可之后仅重试未完成项。",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Regular",
+      "fontSize": 10,
+      "fontWeight": 400,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(108,72,89,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:199",
+     "type": "RECTANGLE",
+     "name": "危险提示底",
+     "box": {
+      "w": 542,
+      "h": 34,
+      "x": 140,
+      "y": 507
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(255,240,243,1)"
+      }
+     ],
+     "radius": 7
+    },
+    {
+     "id": "30:200",
+     "type": "TEXT",
+     "name": "危险提示",
+     "box": {
+      "w": 420,
+      "h": 18,
+      "x": 154,
+      "y": 515
+     },
+     "text": {
+      "content": "任务会保留在列表中并显示为「已取消」。",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 10,
+      "fontWeight": 700,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(183,72,99,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:201",
+     "type": "RECTANGLE",
+     "name": "继续执行按钮底",
+     "box": {
+      "w": 124,
+      "h": 42,
+      "x": 410,
+      "y": 558
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(255,255,255,1)"
+      }
+     ],
+     "strokes": [
+      {
+       "type": "solid",
+       "value": "rgba(223,167,189,1)"
+      }
+     ],
+     "radius": 8,
+     "strokeWeight": 1
+    },
+    {
+     "id": "30:202",
+     "type": "TEXT",
+     "name": "继续执行按钮",
+     "box": {
+      "w": 124,
+      "h": 20,
+      "x": 410,
+      "y": 569
+     },
+     "text": {
+      "content": "继续执行",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 12,
+      "fontWeight": 700,
+      "textAlignHorizontal": "center",
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(157,81,112,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:203",
+     "type": "RECTANGLE",
+     "name": "取消任务按钮底",
+     "box": {
+      "w": 136,
+      "h": 42,
+      "x": 546,
+      "y": 558
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(232,97,120,1)"
+      }
+     ],
+     "radius": 8
+    },
+    {
+     "id": "30:204",
+     "type": "TEXT",
+     "name": "取消任务按钮",
+     "box": {
+      "w": 136,
+      "h": 20,
+      "x": 546,
+      "y": 569
+     },
+     "text": {
+      "content": "取消任务",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 12,
+      "fontWeight": 700,
+      "textAlignHorizontal": "center",
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(255,255,255,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:205",
+     "type": "RECTANGLE",
+     "name": "报错投影",
+     "box": {
+      "w": 424,
+      "h": 302,
+      "x": 754,
+      "y": 219
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(205,123,151,0.38)"
+      }
+     ],
+     "radius": 12
+    },
+    {
+     "id": "30:206",
+     "type": "RECTANGLE",
+     "name": "报错弹窗",
+     "box": {
+      "w": 424,
+      "h": 302,
+      "x": 748,
+      "y": 213
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(255,250,252,1)"
+      }
+     ],
+     "strokes": [
+      {
+       "type": "solid",
+       "value": "rgba(229,191,208,1)"
+      }
+     ],
+     "radius": 12,
+     "strokeWeight": 1
+    },
+    {
+     "id": "30:207",
+     "type": "RECTANGLE",
+     "name": "报错图标底",
+     "box": {
+      "w": 32,
+      "h": 32,
+      "x": 772,
+      "y": 237
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(255,240,243,1)"
+      }
+     ],
+     "radius": 16
+    },
+    {
+     "id": "30:208",
+     "type": "TEXT",
+     "name": "报错图标",
+     "box": {
+      "w": 32,
+      "h": 20,
+      "x": 772,
+      "y": 242
+     },
+     "text": {
+      "content": "!",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 15,
+      "fontWeight": 700,
+      "textAlignHorizontal": "center",
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(232,97,120,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:209",
+     "type": "TEXT",
+     "name": "报错标题",
+     "box": {
+      "w": 210,
+      "h": 25,
+      "x": 816,
+      "y": 239
+     },
+     "text": {
+      "content": "无法导入图片",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 18,
+      "fontWeight": 700,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(87,55,71,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:210",
+     "type": "TEXT",
+     "name": "报错原因",
+     "box": {
+      "w": 350,
+      "h": 44,
+      "x": 772,
+      "y": 285
+     },
+     "text": {
+      "content": "traction-12.png 在所选目录中找不到。请确认文件仍在原路径后，再重试失败项。",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Regular",
+      "fontSize": 11,
+      "fontWeight": 400,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(108,72,89,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:211",
+     "type": "RECTANGLE",
+     "name": "报错详情底",
+     "box": {
+      "w": 376,
+      "h": 60,
+      "x": 772,
+      "y": 344
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(255,241,243,1)"
+      }
+     ],
+     "radius": 8
+    },
+    {
+     "id": "30:212",
+     "type": "TEXT",
+     "name": "报错代码",
+     "box": {
+      "w": 190,
+      "h": 17,
+      "x": 788,
+      "y": 353
+     },
+     "text": {
+      "content": "E207 · 文件不存在",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 10,
+      "fontWeight": 700,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(183,72,99,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:213",
+     "type": "TEXT",
+     "name": "报错路径",
+     "box": {
+      "w": 300,
+      "h": 18,
+      "x": 788,
+      "y": 373
+     },
+     "text": {
+      "content": "/KC/…/images/traction-12.png",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Regular",
+      "fontSize": 10,
+      "fontWeight": 400,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(125,103,115,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:214",
+     "type": "TEXT",
+     "name": "报错辅助",
+     "box": {
+      "w": 260,
+      "h": 18,
+      "x": 772,
+      "y": 418
+     },
+     "text": {
+      "content": "错误代码可复制给管理员排查",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Regular",
+      "fontSize": 10,
+      "fontWeight": 400,
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(125,103,115,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:215",
+     "type": "RECTANGLE",
+     "name": "报错底部分割线",
+     "box": {
+      "w": 376,
+      "h": 1,
+      "x": 772,
+      "y": 446
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(229,191,208,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:216",
+     "type": "RECTANGLE",
+     "name": "复制详情按钮底",
+     "box": {
+      "w": 116,
+      "h": 38,
+      "x": 888,
+      "y": 458
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(255,255,255,1)"
+      }
+     ],
+     "strokes": [
+      {
+       "type": "solid",
+       "value": "rgba(223,167,189,1)"
+      }
+     ],
+     "radius": 8,
+     "strokeWeight": 1
+    },
+    {
+     "id": "30:217",
+     "type": "TEXT",
+     "name": "复制详情按钮",
+     "box": {
+      "w": 116,
+      "h": 20,
+      "x": 888,
+      "y": 467
+     },
+     "text": {
+      "content": "复制详情",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 11,
+      "fontWeight": 700,
+      "textAlignHorizontal": "center",
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(157,81,112,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:218",
+     "type": "RECTANGLE",
+     "name": "确定按钮底",
+     "box": {
+      "w": 132,
+      "h": 38,
+      "x": 1016,
+      "y": 458
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(233,154,184,1)"
+      }
+     ],
+     "radius": 8
+    },
+    {
+     "id": "30:219",
+     "type": "TEXT",
+     "name": "确定按钮",
+     "box": {
+      "w": 132,
+      "h": 20,
+      "x": 1016,
+      "y": 467
+     },
+     "text": {
+      "content": "确定",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Bold",
+      "fontSize": 11,
+      "fontWeight": 700,
+      "textAlignHorizontal": "center",
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(255,255,255,1)"
+      }
+     ]
+    },
+    {
+     "id": "30:220",
+     "type": "TEXT",
+     "name": "报错说明",
+     "box": {
+      "w": 424,
+      "h": 18,
+      "x": 748,
+      "y": 532
+     },
+     "text": {
+      "content": "用于路径不存在、连接失败等可恢复错误",
+      "fontFamily": "Noto Sans TC",
+      "fontStyle": "Regular",
+      "fontSize": 10,
+      "fontWeight": 400,
+      "textAlignHorizontal": "center",
+      "textAlignVertical": "middle"
+     },
+     "fills": [
+      {
+       "type": "solid",
+       "value": "rgba(247,230,237,1)"
+      }
+     ]
+    },
+    {
+     "id": "33:1",
+     "type": "RECTANGLE",
+     "name": "贴纸 · 取消警示",
+     "box": {
+      "w": 48,
+      "h": 48,
+      "x": 140,
+      "y": 170
+     },
+     "fills": [
+      {
+       "type": "asset",
+       "id": "89209b4d381ee5530812e6f105ea69dbd5d587d6",
+       "imageScaleMode": "FIT",
+       "scale": 0.5,
+       "transform": [
+        1,
+        0,
+        0,
+        0,
+        1,
+        0
+       ],
+       "leftPt": [
+        24,
+        48
+       ],
+       "startPt": [
+        24,
+        24
+       ],
+       "endPt": [
+        48,
+        24
+       ],
+       "filters": {
+        "tint": 0,
+        "shadows": 0,
+        "highlights": 0,
+        "exposure": 0,
+        "temperature": 0,
+        "vibrance": 0,
+        "contrast": 0,
+        "hue": 0
+       },
+       "originalImageWidth": 0,
+       "originalImageHeight": 0
+      }
+     ]
+    },
+    {
+     "id": "33:2",
+     "type": "RECTANGLE",
+     "name": "贴纸 · 清理猫",
+     "box": {
+      "w": 42,
+      "h": 48,
+      "x": 618,
+      "y": 262
+     },
+     "fills": [
+      {
+       "type": "asset",
+       "id": "c7d07d3921bafafb6066c74b82e778ec95cfcd3c",
+       "imageScaleMode": "FIT",
+       "scale": 0.5,
+       "transform": [
+        1,
+        0,
+        0,
+        0,
+        1,
+        0
+       ],
+       "leftPt": [
+        21,
+        48
+       ],
+       "startPt": [
+        21,
+        24
+       ],
+       "endPt": [
+        42,
+        24
+       ],
+       "filters": {
+        "tint": 0,
+        "shadows": 0,
+        "highlights": 0,
+        "exposure": 0,
+        "temperature": 0,
+        "vibrance": 0,
+        "contrast": 0,
+        "hue": 0
+       },
+       "originalImageWidth": 0,
+       "originalImageHeight": 0
+      }
+     ]
+    },
+    {
+     "id": "33:3",
+     "type": "RECTANGLE",
+     "name": "贴纸 · 报错窗口",
+     "box": {
+      "w": 72,
+      "h": 47,
+      "x": 1061,
+      "y": 231
+     },
+     "fills": [
+      {
+       "type": "asset",
+       "id": "92c508bd2603fb60ec8aa633c8f933fd81ee745a",
+       "imageScaleMode": "FIT",
+       "scale": 0.5,
+       "transform": [
+        1,
+        0,
+        0,
+        0,
+        1,
+        0
+       ],
+       "leftPt": [
+        36,
+        47
+       ],
+       "startPt": [
+        36,
+        23.5
+       ],
+       "endPt": [
+        72,
+        23.5
+       ],
+       "filters": {
+        "tint": 0,
+        "shadows": 0,
+        "highlights": 0,
+        "exposure": 0,
+        "temperature": 0,
+        "vibrance": 0,
+        "contrast": 0,
+        "hue": 0
+       },
+       "originalImageWidth": 0,
+       "originalImageHeight": 0
+      }
+     ]
+    },
+    {
+     "id": "33:4",
+     "type": "RECTANGLE",
+     "name": "贴纸 · 错误笔记",
+     "box": {
+      "w": 38,
+      "h": 34,
+      "x": 1094,
+      "y": 408
+     },
+     "fills": [
+      {
+       "type": "asset",
+       "id": "bed4c804f63bb5c94b682c4ec8c443d400f18370",
+       "imageScaleMode": "FIT",
+       "scale": 0.5,
+       "transform": [
+        1,
+        0,
+        0,
+        0,
+        1,
+        0
+       ],
+       "leftPt": [
+        19,
+        34
+       ],
+       "startPt": [
+        19,
+        17
+       ],
+       "endPt": [
+        38,
+        17
+       ],
+       "filters": {
+        "tint": 0,
+        "shadows": 0,
+        "highlights": 0,
+        "exposure": 0,
+        "temperature": 0,
+        "vibrance": 0,
+        "contrast": 0,
+        "hue": 0
+       },
+       "originalImageWidth": 0,
+       "originalImageHeight": 0
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "refsIndex": {
+  "assets": [
+   "89209b4d381ee5530812e6f105ea69dbd5d587d6",
+   "92c508bd2603fb60ec8aa633c8f933fd81ee745a",
+   "9a3fc901bff302419fc797fd48cc9f8abaf6339c",
+   "bed4c804f63bb5c94b682c4ec8c443d400f18370",
+   "c7d07d3921bafafb6066c74b82e778ec95cfcd3c"
+  ]
+ }
+}

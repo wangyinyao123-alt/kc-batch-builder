@@ -12,9 +12,11 @@ KC-App-Design/
 ├── README.md                    本文件
 ├── pixso-source.txt             设计源稿链接与文件 ID
 ├── PROJECT_MEMORY.md            页面结构、素材使用、字体和背景约定
-├── design-tokens.json           颜色、圆角、间距、阴影、状态色
-├── interaction-spec.md          交互状态与业务规则
-├── screens/                     页面预览图（待导出，见 screens/README.md）
+├── design-tokens.json           颜色、字号、圆角、描边、状态色（Pixso 实测精确值）
+├── interaction-spec.md          交互状态与业务规则 + 状态-视觉对照表（含五态）
+├── component-map.md             页面→组件映射表（Pixso 节点名 ↔ 建议 React 组件名，含精确尺寸）
+├── screens/                     页面预览图 2560×1600 @2x PNG（已通过 Pixso MCP 导出）
+├── dsl/                         每页完整节点 DSL JSON（精确坐标/尺寸/颜色/文本，开发查数用）
 └── assets/
     ├── README.md                素材来源与用途总表
     ├── sticker-library.json     115 枚贴纸的路径/尺寸/来源索引
@@ -36,11 +38,15 @@ KC-App-Design/
 - 文件 ID：`gti8TP-GucHUL6Ed2XgaWg`
 - 链接同样记录在 [pixso-source.txt](pixso-source.txt)
 
-尺寸、间距、颜色、字体的**精确值以 Pixso 检查模式为准**；`design-tokens.json` 是实现用的近似值。
+尺寸、间距、颜色、字体的精确值已写入 `design-tokens.json`、`component-map.md` 和 `dsl/*.json`（均通过 Pixso MCP 从源稿实测）。如有出入以 Pixso 检查模式为准。
 
-## 待办：导出页面预览
+## 页面预览
 
-`screens/` 目前只有导出说明，没有 PNG/PDF。需要在有权限的 Pixso 账号下导出 6 张画板，详见 [screens/README.md](screens/README.md)。
+`screens/` 内含 6 张 2560×1600（@2x）PNG：`P1-login`、`P2-task-center`、`P3-new-task`、`P4-task-detail`、`P5-settings`、`D1-dialog`，另有一张 `Frame-82-extra`（画布上的小元素，非页面）。
+
+## 程序化访问（Pixso MCP）
+
+本仓库可通过 Pixso MCP（Streamable HTTP，端点 `https://pixso.net/mcp`）直接读取设计稿：OAuth2 + PKCE 动态注册授权后，可用 `get_export_image` 导出任意节点 PNG/SVG、`get_node_dsl` 取节点树精确数据。授权工具链在 `/tmp/pixso-mcp/`（token 有效期 7200s，含 refresh_token）。注意设计稿在国际版 pixso.net，账号与国内版 pixso.cn 不互通。
 
 ## 交付边界
 
