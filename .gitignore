@@ -13,3 +13,7 @@ _design-archive/
 # 工具依赖
 tools/**/node_modules/
 tools/**/package-lock.json
+
+# 核心包依赖
+packages/**/node_modules/
+packages/**/package-lock.json

@@ -1,0 +1,19 @@
+{
+  "name": "@flowchart-elf/core",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "流程图精灵核心：Markdown 解析、文字度量、中间数据（IR）",
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "scripts": {
+    "test": "node --test \"test/*.test.js\""
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@dagrejs/dagre": "^1.1.8"
+  }
+}

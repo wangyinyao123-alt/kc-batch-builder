@@ -117,6 +117,28 @@ test('每个图形都同时具备两套样式（真实产物，不是构造的 X
   }
 });
 
+test('每条连线都带箭头（EndArrow 不能是 0）', async () => {
+  const { pageXml } = await unzip(await buildVsdx(DIAGRAM, undefined, zip));
+  const connectors = shapesOf(pageXml).filter((s) => /BeginX/.test(s.inner) && /EndX/.test(s.inner));
+  assert.equal(connectors.length, DIAGRAM.edges.length, '连线数量不对');
+  for (const c of connectors) {
+    const m = /<Cell N="EndArrow" V="([^"]*)"/.exec(c.inner);
+    assert.ok(m, '连线缺 EndArrow');
+    // ts-visio 的枚举名是 Open（'2'），写成 OpenArrow 会得到 undefined → "0" 静默丢箭头
+    assert.notEqual(m[1], '0', '连线没有箭头（EndArrow=0）');
+  }
+});
+
+test('每条连线两端都粘到具名连接点，不是粘到形状中心', async () => {
+  const { pageXml } = await unzip(await buildVsdx(DIAGRAM, undefined, zip));
+  const connects = [...pageXml.matchAll(/<Connect [^>]*>/g)].map((m) => m[0]);
+  assert.equal(connects.length, DIAGRAM.edges.length * 2, 'Connect 条目数应为连线数×2');
+  for (const c of connects) {
+    assert.match(c, /ToCell="Connections\.X\d+"/, `粘到了中心点而不是具名连接点：${c}`);
+    assert.doesNotMatch(c, /ToCell="PinX"/, `粘到了 PinX：${c}`);
+  }
+});
+
 test('几何形状按类型映射（判断=菱形）', async () => {
   const bytes = await buildVsdx(DIAGRAM, {}, zip);
   const { pageXml } = await unzip(bytes);

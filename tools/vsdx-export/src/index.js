@@ -26,6 +26,25 @@ const toInches = (px) => px / INCH_PX;
 /** 画布 y（向上为负）→ Visio y（向上为正）。pageH 为整页高度，单位画布像素。 */
 const toVisioY = (yTopPx, pageHpx) => toInches(pageHpx - yTopPx);
 
+/**
+ * 由两个框的相对位置推断连线该接哪两个连接点。
+ * 与 packages/core 的 toVsdxInput 同一套规则（主要沿 y 就用上下，否则左右），
+ * 保证「调用方给了端口」与「没给由这里兜底」两种情况的产物一致。
+ */
+function inferPorts(from, to) {
+  if (!from || !to) return { fromPort: 'Bottom', toPort: 'Top' };
+  const dx = to.cx - from.cx;
+  const dy = to.cy - from.cy;
+  if (Math.abs(dy) >= Math.abs(dx)) {
+    return dy >= 0
+      ? { fromPort: 'Bottom', toPort: 'Top' }
+      : { fromPort: 'Top', toPort: 'Bottom' };
+  }
+  return dx >= 0
+    ? { fromPort: 'Right', toPort: 'Left' }
+    : { fromPort: 'Left', toPort: 'Right' };
+}
+
 const GEOMETRY_MAP = {
   start: 'rounded-rectangle',
   end: 'rounded-rectangle',
@@ -162,6 +181,18 @@ async function buildVsdx(diagram, theme, zipImpl) {
 
   /** id → Shape 句柄，供连线使用 */
   const handles = new Map();
+  /** id → 节点框（中心点），用于推断连线端口 */
+  const nodeById = new Map();
+  for (const n of diagram.nodes || []) {
+    nodeById.set(n.id, {
+      cx: n.x + n.w / 2,
+      cy: n.y + n.h / 2,
+      x: n.x,
+      y: n.y,
+      w: n.w,
+      h: n.h,
+    });
+  }
 
   for (const n of diagram.nodes || []) {
     const geometry = GEOMETRY_MAP[n.type] || 'rectangle';
@@ -199,17 +230,28 @@ async function buildVsdx(diagram, theme, zipImpl) {
   }
 
   for (const e of diagram.edges || []) {
-    const from = handles.get(e.from);
-    const to = handles.get(e.to);
-    if (!from || !to) continue;
+    const fromShape = handles.get(e.from);
+    const toShape = handles.get(e.to);
+    if (!fromShape || !toShape) continue;
+
+    // 端口不能省略：不传端口时 ts-visio 落成 ToCell="PinX"（粘到形状中心），
+    // 连线会打穿框体。调用方没给就按两者相对位置推一个。
+    const a = nodeById.get(e.from);
+    const b = nodeById.get(e.to);
+    const infer = inferPorts(a, b);
+    const fromPort = e.fromPort || infer.fromPort;
+    const toPort = e.toPort || infer.toPort;
+
     await page.connectShapes(
-      from,
-      to,
+      fromShape,
+      toShape,
       ArrowHeads.None,
-      ArrowHeads.OpenArrow,
+      // 注意：枚举名是 Open，不是 OpenArrow。
+      // 写成 ArrowHeads.OpenArrow 会得到 undefined，最终 EndArrow="0"，图上没有箭头。
+      ArrowHeads.Open,
       { lineColor: t.lineColor, lineWeight: t.lineWeightPt, routing: 'orthogonal' },
-      e.fromPort ? { name: e.fromPort } : undefined,
-      e.toPort ? { name: e.toPort } : undefined
+      { name: fromPort },
+      { name: toPort }
     );
   }
 
@@ -219,6 +261,8 @@ async function buildVsdx(diagram, theme, zipImpl) {
 }
 
 module.exports = {
+  // 浏览器端用 jszipImpl(JSZip)，Node 端用 nodeImpl()
+  ...require('./zip.js'),
   buildVsdx,
   patchVsdx,
   dualWriteStyleCells,
@@ -228,4 +272,5 @@ module.exports = {
   toVisioY,
   GEOMETRY_MAP,
   INCH_PX,
+  inferPorts,
 };
