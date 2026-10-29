@@ -170,7 +170,7 @@ export function layout(diagram, spec = DEFAULT_SPEC, opts = {}) {
 /**
  * 分支标签的位置：取路径 40% 处，并把标签框向左/右挪开连线。
  */
-function placeLabel(text, points, spec) {
+export function placeLabel(text, points, spec) {
   if (points.length < 2) return null;
   const a = spec.arrowLabel;
   const size = isCjk(text) ? a.cjkSize : a.size;
@@ -188,12 +188,12 @@ function placeLabel(text, points, spec) {
   return { x, y, w, h, size };
 }
 
-function isCjk(text) {
+export function isCjk(text) {
   return /[\u3000-\u303f\u3040-\u33ff\u3400-\u4dbf\u4e00-\u9fff\uff00-\uffef]/.test(text);
 }
 
 /** 折线上按长度比例取点。 */
-function pointAtRatio(points, ratio) {
+export function pointAtRatio(points, ratio) {
   let total = 0;
   const segs = [];
   for (let i = 1; i < points.length; i++) {
@@ -217,7 +217,7 @@ function pointAtRatio(points, ratio) {
   return points.at(-1);
 }
 
-function computeBounds(nodes, edges = [], labels = []) {
+export function computeBounds(nodes, edges = [], labels = []) {
   if (nodes.length === 0) return { x: 0, y: 0, width: 0, height: 0, minX: 0, minY: 0 };
   let minX = Infinity;
   let minY = Infinity;

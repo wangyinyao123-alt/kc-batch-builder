@@ -1,0 +1,28 @@
+{
+  "name": "@flowchart-elf/editor",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "画布编辑器：拖拽、改字、连线、撤销",
+  "exports": {
+    ".": "./src/doc.js",
+    "./doc": "./src/doc.js"
+  },
+  "scripts": {
+    "test": "node --test \"test/*.test.js\"",
+    "serve": "node serve.js",
+    "build": "node build.mjs",
+    "dev": "node build.mjs && node serve.js"
+  },
+  "dependencies": {
+    "@dagrejs/dagre": "^1.1.8",
+    "buffer": "^6.0.3",
+    "jszip": "^3.10.2"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.2"
+  }
+}

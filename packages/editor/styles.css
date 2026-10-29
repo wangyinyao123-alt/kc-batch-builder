@@ -1,0 +1,532 @@
+/*
+ * 画布编辑器样式。
+ *
+ * 设计取向：界面尽量退到背景里，让图成为唯一焦点。
+ * 所以顶栏和右侧面板用低对比度的灰，强调色只出现在「选中」和「正在拉线」这类
+ * 真实反馈上 —— 界面自己不该抢眼。
+ *
+ * 尺寸全部走 4px 的倍数，和导出图的网格对齐，视觉上不会出现「差一点」的错位感。
+ */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  font-family: 'Geist', 'Noto Sans TC', 'PingFang SC', -apple-system, BlinkMacSystemFont,
+    'Microsoft YaHei', system-ui, sans-serif;
+  font-size: 13px;
+  color: #1b1f27;
+  background: #eef0f3;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------------------------------------------------------------- 顶栏 */
+
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 0 0 auto;
+  height: 52px;
+  padding: 0 12px;
+  background: #ffffff;
+  border-bottom: 1px solid #dfe3e8;
+  z-index: 10;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.dot {
+  flex: 0 0 auto;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #bf4520;
+}
+
+.title-input {
+  min-width: 0;
+  max-width: 280px;
+  padding: 4px 6px;
+  font: inherit;
+  font-weight: 600;
+  color: inherit;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  outline: none;
+}
+
+.title-input:hover {
+  border-color: #e3e7ec;
+}
+
+.title-input:focus {
+  border-color: #bf4520;
+  background: #fff;
+}
+
+.tools,
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 0 0 auto;
+}
+
+.sep {
+  width: 1px;
+  height: 20px;
+  margin: 0 6px;
+  background: #e3e7ec;
+}
+
+.btn {
+  height: 30px;
+  padding: 0 10px;
+  font: inherit;
+  color: #3d4654;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 120ms, border-color 120ms, color 120ms;
+}
+
+.btn:hover:not(:disabled) {
+  background: #f2f4f7;
+  border-color: #e3e7ec;
+}
+
+.btn:active:not(:disabled) {
+  background: #e8ecf1;
+}
+
+.btn:disabled {
+  color: #b6bdc7;
+  cursor: default;
+}
+
+.btn.icon {
+  width: 30px;
+  padding: 0;
+  font-size: 15px;
+  line-height: 1;
+}
+
+.btn.primary {
+  color: #fff;
+  background: #1b1f27;
+  border-color: #1b1f27;
+}
+
+.btn.primary:hover:not(:disabled) {
+  background: #2b3240;
+  border-color: #2b3240;
+}
+
+.select,
+.number {
+  height: 30px;
+  padding: 0 8px;
+  font: inherit;
+  color: #3d4654;
+  background: #fff;
+  border: 1px solid #dfe3e8;
+  border-radius: 6px;
+  outline: none;
+}
+
+.select:focus,
+.number:focus {
+  border-color: #bf4520;
+}
+
+.select.small {
+  height: 26px;
+  font-size: 12px;
+}
+
+/* ---------------------------------------------------------------- 工作区 */
+
+.workspace {
+  display: flex;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.stage {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  background: #eef0f3;
+  outline: none;
+}
+
+.stage.panning {
+  cursor: grabbing;
+}
+
+.canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+  user-select: none;
+}
+
+.paper {
+  fill: #f5f5f5;
+}
+
+/* 节点与连线由 paint.js 生成的 SVG 字符串构成，交互反馈靠这些类 */
+.canvas .node-hit {
+  fill: transparent;
+  cursor: grab;
+}
+
+.canvas .node-hit.dragging {
+  cursor: grabbing;
+}
+
+.canvas .node-selected .shape-strong {
+  stroke: #bf4520;
+}
+
+.canvas .edge-path {
+  pointer-events: none;
+}
+
+.canvas .edge-hit {
+  fill: none;
+  stroke: transparent;
+  stroke-width: 12;
+  cursor: pointer;
+}
+
+.canvas .edge-selected {
+  stroke: #bf4520;
+}
+
+.canvas .label-hit {
+  cursor: text;
+}
+
+.canvas .port {
+  fill: #ffffff;
+  stroke: #bf4520;
+  stroke-width: 1.5;
+  opacity: 0;
+  transition: opacity 100ms;
+}
+
+.canvas .node-hover .port,
+.canvas .port.visible {
+  opacity: 1;
+}
+
+.canvas .port:hover {
+  fill: #bf4520;
+}
+
+.canvas .guide {
+  stroke: #bf4520;
+  stroke-width: 1;
+  stroke-dasharray: 4 4;
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.canvas .marquee {
+  fill: rgba(191, 69, 32, 0.08);
+  stroke: #bf4520;
+  stroke-width: 1;
+  stroke-dasharray: 4 3;
+  pointer-events: none;
+}
+
+.canvas .rubber {
+  stroke: #bf4520;
+  stroke-width: 1.5;
+  stroke-dasharray: 5 4;
+  fill: none;
+  pointer-events: none;
+}
+
+/* ---------------------------------------------------------------- 就地编辑 */
+
+.text-editor {
+  position: absolute;
+  z-index: 5;
+  min-width: 80px;
+  padding: 6px 8px;
+  font-family: inherit;
+  font-size: 13px;
+  line-height: 1.4;
+  color: #1b1f27;
+  text-align: center;
+  background: #fff;
+  border: 1px solid #bf4520;
+  border-radius: 6px;
+  box-shadow: 0 4px 16px rgba(20, 24, 32, 0.12);
+  resize: none;
+  outline: none;
+  overflow: hidden;
+}
+
+.empty-hint {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  color: #9aa4b2;
+  pointer-events: none;
+  text-align: center;
+}
+
+.empty-hint p {
+  margin: 0;
+  font-size: 15px;
+}
+
+.empty-hint .sub {
+  font-size: 12px;
+  color: #b6bdc7;
+}
+
+.empty-hint[hidden] {
+  display: none;
+}
+
+/* ---------------------------------------------------------------- 右栏 */
+
+.inspector {
+  flex: 0 0 248px;
+  padding: 8px;
+  overflow-y: auto;
+  background: #ffffff;
+  border-left: 1px solid #dfe3e8;
+}
+
+.group {
+  padding: 8px 8px 12px;
+  border-bottom: 1px solid #f0f2f5;
+}
+
+.group:last-child {
+  border-bottom: none;
+}
+
+.group h2 {
+  margin: 0 0 8px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: #8b95a3;
+  text-transform: uppercase;
+}
+
+.empty {
+  font-size: 12px;
+  color: #9aa4b2;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-size: 12px;
+  color: #4d5666;
+}
+
+.number {
+  width: 72px;
+}
+
+.note {
+  margin: 8px 0 0;
+  font-size: 11px;
+  line-height: 1.5;
+  color: #9aa4b2;
+}
+
+.keys {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 12px;
+  line-height: 1.9;
+  color: #6b7686;
+}
+
+kbd {
+  display: inline-block;
+  min-width: 18px;
+  padding: 0 4px;
+  font-family: inherit;
+  font-size: 11px;
+  color: #4d5666;
+  text-align: center;
+  background: #f2f4f7;
+  border: 1px solid #e3e7ec;
+  border-radius: 4px;
+}
+
+/* 选中项详情 */
+.sel-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #1b1f27;
+}
+
+.sel-tag {
+  padding: 1px 6px;
+  font-size: 10px;
+  font-weight: 500;
+  color: #6b7686;
+  background: #f2f4f7;
+  border-radius: 4px;
+}
+
+.field {
+  margin-bottom: 8px;
+}
+
+.field label {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 11px;
+  color: #8b95a3;
+}
+
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  padding: 5px 8px;
+  font: inherit;
+  font-size: 12px;
+  color: #1b1f27;
+  background: #fff;
+  border: 1px solid #dfe3e8;
+  border-radius: 6px;
+  outline: none;
+}
+
+.field textarea {
+  resize: vertical;
+  min-height: 54px;
+  line-height: 1.5;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  border-color: #bf4520;
+}
+
+.type-row {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.type-btn {
+  flex: 1 1 auto;
+  padding: 4px 6px;
+  font: inherit;
+  font-size: 11px;
+  color: #4d5666;
+  background: #fff;
+  border: 1px solid #dfe3e8;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.type-btn:hover {
+  background: #f2f4f7;
+}
+
+.type-btn.on {
+  color: #fff;
+  background: #1b1f27;
+  border-color: #1b1f27;
+}
+
+.danger {
+  width: 100%;
+  margin-top: 4px;
+  color: #a33a1c;
+}
+
+.danger:hover:not(:disabled) {
+  background: #fdf0ec;
+  border-color: #f0cfc5;
+}
+
+/* ---------------------------------------------------------------- 提示条 */
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  z-index: 50;
+  padding: 8px 14px;
+  font-size: 12px;
+  color: #fff;
+  background: rgba(27, 31, 39, 0.92);
+  border-radius: 8px;
+  transform: translateX(-50%);
+  animation: toast-in 160ms ease-out;
+}
+
+.toast[hidden] {
+  display: none;
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 6px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+@media (max-width: 880px) {
+  .inspector {
+    display: none;
+  }
+  .actions .btn:not(.primary) {
+    display: none;
+  }
+}

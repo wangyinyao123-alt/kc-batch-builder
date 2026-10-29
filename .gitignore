@@ -17,3 +17,6 @@ tools/**/package-lock.json
 # 核心包依赖
 packages/**/node_modules/
 packages/**/package-lock.json
+
+# 编辑器构建产物（可由 npm run build 重新生成）
+packages/editor/dist/
