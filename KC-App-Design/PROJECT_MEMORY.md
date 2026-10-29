@@ -1,5 +1,13 @@
 # KC 批量建库工具｜项目设计记忆
 
+## 开发流程决策（2026-10-29 定案）
+
+- **技术栈：React + Electron**，目标平台 **Windows**（后端为 PowerShell 脚本）；macOS 仅作开发机，主进程 mock runner 回放录制日志驱动 UI。
+- **后端形态**：四类任务各对应一个 ps1 脚本（用户持有维护）。「导入图片」= `kc-import-images-ui.ps1` 已就绪并完成契约拆解 → 见 `../backend/kc-import-contract.md`（调用形态 / 参数↔P3 表单 / stdout 行协议 / 状态机 / 错误码 / 清洗逻辑）。其余三类（新建 Topic / 新建 Map / 搭建 Pub）待用户发脚本。
+- **已确认决策**：①P2 任务列表 = App 本地记录执行历史，不从 KC 拉；②服务器地址走 `-WsBaseUrl` 参数，默认 kc-prod，P5 可改；③KC 路径 = 手贴 + 浏览目录（用户确认脚本已支持浏览）。
+- **功能注入顺序**：P3 导入图片+预检 → P4 执行流式 → P1 登录 → P2 任务中心 → P5 设置 → D1 弹窗；其余三类任务脚本到齐后按同节奏各接一个。
+- 骨架顺序：Electron 工程 + 日志解析器（kc-log-parser）+ mock runner → 六页静态还原 → 路由/窗口 → 按上序接功能。
+
 ## 交付包现状（2026-10-28 更新）
 
 - `screens/` 已有 6 张 @2x PNG（经 Pixso MCP 导出），`dsl/` 有每页完整节点 JSON。
