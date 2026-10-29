@@ -1,9 +1,9 @@
 /**
- * 模板 = 一组参数，不是一套素材。
+ * 设计令牌层：配色（palette）、排版规格（DEFAULT_SPEC）、网格工具。
  *
+ * 这一层不知道「模板」是什么 —— 模板是 templates.js 在它之上叠的一层。
  * 颜色角色全部来自 diagram-design 的 references/style-guide.md（语义 token），
  * 排版与描边来自同一份 style guide 的 Typography / Stroke, radius, spacing 两节。
- * 换模板只换这里，解析与排版逻辑不受影响。
  */
 
 /** 4px 网格：所有坐标、尺寸、间距都必须是它的倍数（硬规则）。 */
@@ -39,15 +39,6 @@ export const DARK = {
   link: '#739fdf',
 };
 
-const THEMES = { light: LIGHT, dark: DARK };
-
-/** @param {'light'|'dark'|object} theme */
-export function resolveTheme(theme) {
-  if (!theme) return LIGHT;
-  if (typeof theme === 'string') return THEMES[theme] || LIGHT;
-  return { ...LIGHT, ...theme };
-}
-
 /**
  * 排版规格。字体栈按 diagram-design 的「CJK 不收字」规则延伸：
  * Geist 无汉字，中文名走自己的族栈，绝不换 skin。
@@ -72,9 +63,11 @@ export const DEFAULT_SPEC = {
   ovalRadius: 20,
   mergeDotRadius: 4,
 
-  // 版面
+  // 版面（模板可覆盖，见 templates.js 的 spacing）
   padding: 32,
   titleGap: 24,
+  nodeGap: 40,
+  rankGap: 56,
   minRowHeight: 48,
   maxNodeTextWidth: 200,
   lineHeightRatio: {
@@ -84,19 +77,6 @@ export const DEFAULT_SPEC = {
     decision: { aspect: 1.6, maxTextWidth: 160 },
   },
 };
-
-/** 主题 + 规格合成一份完整的绘制参数。 */
-export function resolveSpec(theme, spec) {
-  return {
-    ...DEFAULT_SPEC,
-    ...spec,
-    theme: resolveTheme(theme),
-    stroke: { ...DEFAULT_SPEC.stroke, ...(spec && spec.stroke) },
-    radius: { ...DEFAULT_SPEC.radius, ...(spec && spec.radius) },
-    nodeName: { ...DEFAULT_SPEC.nodeName, ...(spec && spec.nodeName) },
-    arrowLabel: { ...DEFAULT_SPEC.arrowLabel, ...(spec && spec.arrowLabel) },
-  };
-}
 
 /**
  * 标题占的高度（0 表示不画标题）。

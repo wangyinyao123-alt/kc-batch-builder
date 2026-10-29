@@ -117,6 +117,25 @@ function dualWriteStyleCells(pageXml) {
         shapeXml = shapeXml.replace(/^(<Shape\b[^>]*>)/, `$1${toAdd.join('')}`);
       }
     }
+
+    // 「无填充」不能只写 FillForegnd="none"：ts-visio 的 createFillSection 硬写
+    // FillPattern="1"（= Solid），Visio 见到实心图案照样填色，模板的描边风格就没了。
+    // 必须把 FillPattern 归零。FillPattern 的值与位置无关，全形状范围内改即可。
+    if (/<Cell N="FillForegnd" V="none"/.test(shapeXml)) {
+      const zeroed = shapeXml.replace(
+        /<Cell N="FillPattern" V="\d+"\s*\/?>(?:<\/Cell>)?/g,
+        '<Cell N="FillPattern" V="0"></Cell>',
+      );
+      if (zeroed !== shapeXml) inserted = true;
+      shapeXml = zeroed;
+      if (!/<Cell N="FillPattern"/.test(shapeXml)) {
+        shapeXml = shapeXml.replace(
+          /^(<Shape\b[^>]*>)/,
+          '$1<Cell N="FillPattern" V="0"></Cell>',
+        );
+        inserted = true;
+      }
+    }
     return inserted ? shapeXml : shapeXml;
   });
 }
@@ -168,6 +187,24 @@ async function buildVsdx(diagram, theme, zipImpl) {
   const page = doc.pages[0];
   page.setSize(toInches(pageW), toInches(pageH));
 
+  // 纸色底：Visio 页面本身永远是白的，深色模板（tech）导进 Visio 会变成
+  // 「白纸 + 深色框」，和屏上完全不是一张图。铺一个满页矩形当底色，
+  // 放在第一个 addShape，z 序在最底层。
+  if (t.paperColor) {
+    await page.addShape({
+      text: '',
+      x: toInches(pageW / 2),
+      y: toVisioY(pageH / 2, pageH),
+      width: toInches(pageW),
+      height: toInches(pageH),
+      geometry: 'rectangle',
+      fillColor: t.paperColor,
+      lineColor: t.paperColor,
+      lineWeightPt: 0,
+      fontColor: t.paperColor,
+    });
+  }
+
   const shapeStyle = {
     fillColor: t.fillColor,
     lineColor: t.lineColor,
@@ -195,6 +232,9 @@ async function buildVsdx(diagram, theme, zipImpl) {
   }
 
   for (const n of diagram.nodes || []) {
+    // 每个节点可以带自己的外观（模板里「起止反白、判断淡底」靠这个），
+    // 没带就退回全局主题。
+    const st = n.style || {};
     const geometry = GEOMETRY_MAP[n.type] || 'rectangle';
     const props = {
       text: n.text ?? '',
@@ -204,14 +244,22 @@ async function buildVsdx(diagram, theme, zipImpl) {
       height: toInches(n.h),
       geometry,
       ...shapeStyle,
+      fillColor: st.fillColor ?? t.fillColor,
+      lineColor: st.lineColor ?? t.lineColor,
+      fontColor: st.fontColor ?? t.fontColor,
+      fontSize: st.fontSize ?? t.fontSize,
+      lineWeightPt: st.lineWeightPt ?? t.lineWeightPt,
     };
-    if (geometry === 'rounded-rectangle') props.cornerRadius = toInches(t.cornerRadiusPx);
+    if (geometry === 'rounded-rectangle') {
+      props.cornerRadius = toInches(st.cornerRadiusPx ?? t.cornerRadiusPx);
+    }
     const shape = await page.addShape(props);
     handles.set(n.id, shape);
   }
 
   // 分支标签：无边框、无填充的文字块。放在连线中点附近，由排版层给出 x/y/w/h。
   for (const lab of diagram.labels || []) {
+    const st = lab.style || {};
     await page.addShape({
       text: lab.text,
       x: toInches(lab.x + lab.w / 2),
@@ -219,9 +267,9 @@ async function buildVsdx(diagram, theme, zipImpl) {
       width: toInches(lab.w),
       height: toInches(lab.h),
       geometry: 'rectangle',
-      fillColor: t.fillColor,
-      lineColor: t.fillColor, // 同色即视觉上无边框
-      fontColor: t.fontColor,
+      fillColor: st.fillColor ?? t.paperColor ?? t.fillColor,
+      lineColor: st.lineColor ?? st.fillColor ?? t.paperColor ?? t.fillColor,
+      fontColor: st.fontColor ?? t.fontColor,
       fontSize: Math.max(8, t.fontSize - 1),
       fontFamily: t.fontFamily,
       horzAlign: 'center',

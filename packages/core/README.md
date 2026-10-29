@@ -10,11 +10,30 @@ cd packages/core
 # 先看效果
 node bin/flowchart.js 你的流程.md -o 流程.svg
 node bin/flowchart.js 你的流程.md -o 流程.vsdx
-node bin/flowchart.js 你的流程.md -o 流程.svg --theme dark
-node bin/flowchart.js 你的流程.md -o 流程.svg --no-title
+node bin/flowchart.js 你的流程.md -o 流程.svg -t business
+node bin/flowchart.js 你的流程.md -o 流程.svg -t minimal --palette dark
+node bin/flowchart.js --list                 # 看所有模板与配色
 ```
 
-`--out` 按扩展名决定格式：`.svg` 或 `.vsdx`。诊断信息打 stderr，有 error 就不生成文件。
+`-o` 按扩展名决定格式：`.svg` 或 `.vsdx`。诊断信息打 stderr，有 error 就不生成文件。
+
+## 模板
+
+五套模板，`-t/--template` 选；四套配色，`-p/--palette` 选。**模板和配色正交** —— 模板决定形状与排版，配色只管颜色，所以 `-t business -p dark` 是合法的：商务骨架配深色。
+
+| 模板 | 配色 | 长什么样 |
+|---|---|---|
+| `default` | light | 冷灰纸面、细笔画、浅色起止块。贴进文档最不抢眼 |
+| `business` | slate | 纯白纸面、起止反白实心、判断淡底、笔画偏粗 |
+| `minimal` | light | 直角、无填充、细线、间距紧凑，只有判断框用一点强调色 |
+| `tech` | dark | 深色底、强调色描边、等宽分支标签 |
+| `paper` | paper | 暖白纸面、褐黑墨、衬线标题，适合打印 |
+
+```bash
+node bin/flowchart.js --list        # 模板与配色的完整清单
+```
+
+模板不是四份配色方案。`business` 的起止块是实心深蓝反白、圆角 4px、字号 13；`minimal` 是直角无填充、笔画 0.8、间距 32/44、箭头换成细描边人字。只换颜色的话换模板就没有意义了 —— `test/templates.test.js` 里有一条用例专门守着「模板之间必须是结构性差异」，退化成换色会直接报错。
 
 ## Markdown 怎么写
 
@@ -88,7 +107,8 @@ packages/core/          核心包（纯 JS，无构建步骤，Node ≥ 20）
   src/widths.js         Arial 字符宽度表（实测）
   src/measure.js        文字度量与折行（含中文禁则）
   src/parse.js          Markdown → IR
-  src/theme.js          设计令牌：配色、字号、间距、圆角
+  src/theme.js          设计令牌：网格、间距、标题高度
+  src/templates.js      模板与配色表、resolveSpec / shapeOf / colorOf
   src/layout.js         dagre 排版 → 带坐标的节点与折线
   src/render.js         自绘 SVG
   src/vsdx-input.js     排版结果 → vsdx 导出器输入
@@ -105,17 +125,21 @@ tools/vsdx-export/      .vsdx 导出（ts-visio + dual-write 补丁）
 
 **导出 vsdx 不写 OOXML。** 用 `ts-visio` 生成，再把 Fill/Line 的样式 Cell 同时写进 Section 内层和 Shape 直属层。后半句是必须的：draw.io 的 vsdx 导入器只读 Shape 直属的 Cell，不读 Section 内层的，只写后者的话导入进来是白底黑框。两个位置都写才既能被 Visio 正确读、又能在 draw.io 里正常显示。
 
+**模板是 spec，不是样式表。** 一份模板就是一组数字：字号、内外边距、节点间距、层级间距、笔画粗细、圆角、每种节点用哪种形状（`rect`/`pill`/`diamond`）与哪个颜色角色。渲染层不认识任何具体模板 —— 它只查 `shapeOf(spec, type)` 和 `colorOf(spec, role)`。所以加一套新模板不需要动渲染代码，只加一条配置。vsdx 导出走的是同一份 spec：每个节点带着自己的填充/描边/字色下去，否则模板之间的差异在导出后就全丢了。
+
 **保存的是数据，不是图片。** IR（`{version, title, nodes, edges, diagnostics}`）是唯一真相，SVG 和 vsdx 都是它的投影。
 
 ## 测试
 
 ```bash
-cd packages/core && npm test        # 53 个用例
-cd tools/vsdx-export && npm test    # 11 个用例
+cd packages/core && npm test        # 65 个用例
+cd tools/vsdx-export && npm test    # 13 个用例
 node packages/core/scripts/audit.mjs  # 连线穿框体检
 ```
 
-`packages/core` 的测试全是可计算的版式不变量，不看图：4px 网格、节点不重叠、文字不超框、连线端点落在边框上、标签互不压、排版幂等、换主题不改几何。
+`packages/core` 的测试全是可计算的版式不变量，不看图：4px 网格、节点不重叠、文字不超框、连线端点落在边框上、标签互不压、排版幂等、换模板不改图结构。
+
+模板相关的不变量单独一组：每套模板都能解析出完整 spec（不许有 undefined 漏进 SVG）、节点形状只能落在 `rect`/`pill`/`diamond` 三种、颜色角色都能解析成色值、模板与配色可任意组合、模板之间必须是结构性差异。
 
 ## 已知限制
 
@@ -123,6 +147,8 @@ node packages/core/scripts/audit.mjs  # 连线穿框体检
 - draw.io 导入后会丢字号：它不读 `Character` Section。Visio 本身正常。
 - 只支持竖向（上→下）布局，没有泳道和横向。
 - 图是重新排版生成的，不是拖拽编辑器。改图 = 改 Markdown 再跑一次。
+- 模板里的 `minimal` 是「无填充」。svg 里就是 `fill="none"`；vsdx 里还得额外把 `FillPattern` 归零（ts-visio 硬写 1 = 实心），导出器里已经补上。
+- `tech` 这类深色模板在 vsdx 里会先铺一个满页底色矩形 —— Visio 的页面本身永远是白的，不铺底的话导进去是「白纸 + 深色框」。
 
 ## 语法诊断
 

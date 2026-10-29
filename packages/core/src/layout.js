@@ -67,8 +67,9 @@ export function measureNode(node, spec = DEFAULT_SPEC) {
  */
 export function layout(diagram, spec = DEFAULT_SPEC, opts = {}) {
   const direction = opts.direction || 'TB';
-  const nodesep = opts.nodeGap ?? 40;
-  const ranksep = opts.rankGap ?? 56;
+  // 间距优先取调用方，其次取模板（spacing.nodeGap / rankGap），最后才是默认
+  const nodesep = opts.nodeGap ?? spec.nodeGap ?? 40;
+  const ranksep = opts.rankGap ?? spec.rankGap ?? 56;
 
   const sized = new Map();
   for (const n of diagram.nodes) {

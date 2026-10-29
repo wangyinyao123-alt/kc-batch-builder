@@ -13,20 +13,31 @@ import { basename, extname } from 'node:path';
 import { parseMarkdown } from '../src/parse.js';
 import { layout } from '../src/layout.js';
 import { renderSvg } from '../src/render.js';
-import { resolveSpec, titleHeight } from '../src/theme.js';
+import { resolveSpec, titleHeight, listTemplates, listPalettes } from '../src/templates.js';
 import { toVsdxInput, toVsdxTheme } from '../src/vsdx-input.js';
 
 const USAGE = `用法：flowchart <输入.md> [选项]
 
 选项：
-  -o, --out <文件>     输出路径（按扩展名决定格式：.svg / .vsdx）
-  -t, --theme <名字>   light | dark（默认 light）
-      --no-title       不把首行标题画进图里
-  -h, --help           显示这段帮助
+  -o, --out <文件>      输出路径（按扩展名决定格式：.svg / .vsdx）
+  -t, --template <名字> 模板（默认 default，见下方列表）
+  -p, --palette <名字>  配色，覆盖模板自带的配色
+      --no-title        不把首行标题画进图里
+  -l, --list            列出所有模板与配色
+  -h, --help            显示这段帮助
 
 示例：
-  flowchart 流程.md -o 流程.svg
-  flowchart 流程.md -o 流程.vsdx --theme dark
+  flowchart 流程.md -o 流程.svg --template business
+  flowchart 流程.md -o 流程.svg --template minimal --palette dark
+  flowchart 流程.md -o 流程.vsdx
+
+模板：
+${listTemplates()
+  .map((t) => `  ${t.name.padEnd(10)} ${t.label.padEnd(4)} ${t.description}`)
+  .join('\n')}
+
+配色：
+  ${listPalettes().join(' / ')}
 `;
 
 function fail(msg) {
@@ -35,7 +46,7 @@ function fail(msg) {
 }
 
 function parseArgs(argv) {
-  const opts = { input: null, out: null, theme: 'light', title: true };
+  const opts = { input: null, out: null, template: 'default', palette: null, title: true };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === '-h' || a === '--help') {
@@ -43,8 +54,16 @@ function parseArgs(argv) {
       process.exit(0);
     } else if (a === '-o' || a === '--out') {
       opts.out = argv[++i];
-    } else if (a === '-t' || a === '--theme') {
-      opts.theme = argv[++i];
+    } else if (a === '-t' || a === '--template') {
+      opts.template = argv[++i];
+    } else if (a === '-p' || a === '--palette') {
+      opts.palette = argv[++i];
+    } else if (a === '-l' || a === '--list') {
+      for (const t of listTemplates()) {
+        console.log(`${t.name.padEnd(10)} ${t.label.padEnd(4)} [${t.palette}] ${t.description}`);
+      }
+      console.log(`\n配色：${listPalettes().join(' / ')}`);
+      process.exit(0);
     } else if (a === '--no-title') {
       opts.title = false;
     } else if (a.startsWith('-')) {
@@ -79,7 +98,12 @@ async function main() {
     fail(`Markdown 有 ${errors.length} 处错误，未生成文件。`);
   }
 
-  const spec = resolveSpec(opts.theme);
+  let spec;
+  try {
+    spec = resolveSpec(opts.template, opts.palette ? { palette: opts.palette } : {});
+  } catch (e) {
+    fail(e.message);
+  }
   const laid = layout(diagram, spec);
 
   const out = opts.out || `${basename(opts.input, extname(opts.input))}.svg`;

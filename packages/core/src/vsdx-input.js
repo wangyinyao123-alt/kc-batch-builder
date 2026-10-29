@@ -9,6 +9,8 @@
  * 连接点名字是 Top / Right / Bottom / Left。
  */
 
+import { colorOf, shapeOf } from './templates.js';
+
 /**
  * 由两个框的相对位置推出连线该从哪一侧出去、从哪一侧进来。
  * 规则与 dagre 的正交路由一致：主要沿 y 走就用上下，否则用左右。
@@ -34,15 +36,29 @@ export function toVsdxInput(laid, spec, opts = {}) {
   const padding = opts.padding ?? spec.padding;
   const titleHeight = opts.titleHeight ?? 0;
 
-  const nodes = laid.nodes.map((n) => ({
-    id: n.id,
-    type: n.type,
-    text: n.text,
-    x: n.x + padding,
-    y: n.y + padding + titleHeight,
-    w: n.w,
-    h: n.h,
-  }));
+  // 每个节点带上自己的外观：模板里「起止反白实心、判断淡底」这类差异
+  // 必须一路传到 vsdx，否则导出后所有形状是同一个填充色，模板等于白做。
+  const nodes = laid.nodes.map((n) => {
+    const sh = shapeOf(spec, n.type);
+    return {
+      id: n.id,
+      type: n.type,
+      text: n.text,
+      x: n.x + padding,
+      y: n.y + padding + titleHeight,
+      w: n.w,
+      h: n.h,
+      style: {
+        shape: sh.kind,
+        fillColor: colorOf(spec, sh.fill),
+        lineColor: colorOf(spec, sh.stroke),
+        fontColor: colorOf(spec, sh.text),
+        lineWeightPt: pxToPt(spec.stroke?.default ?? 1),
+        // 胶囊用半高做圆角；矩形用模板的 md 圆角；菱形忽略圆角
+        cornerRadiusPx: sh.kind === 'pill' ? n.h / 2 : spec.radius?.md ?? 6,
+      },
+    };
+  });
 
   const byId = new Map(laid.nodes.map((n) => [n.id, n]));
 
@@ -52,6 +68,11 @@ export function toVsdxInput(laid, spec, opts = {}) {
     y: l.y + padding + titleHeight,
     w: l.w,
     h: l.h,
+    style: {
+      fillColor: spec.theme.paper,
+      lineColor: spec.theme.paper, // 与纸同色 = 视觉上无边框
+      fontColor: spec.theme.muted,
+    },
   }));
 
   const edges = [];
@@ -67,6 +88,10 @@ export function toVsdxInput(laid, spec, opts = {}) {
       kind: e.kind,
       fromPort,
       toPort,
+      style: {
+        lineColor: colorOf(spec, spec.edge?.color || 'muted'),
+        lineWeightPt: pxToPt(spec.edge?.width ?? spec.stroke?.default ?? 1),
+      },
     });
   }
 
@@ -81,17 +106,23 @@ export function toVsdxInput(laid, spec, opts = {}) {
   };
 }
 
-/** 字体与描边参数 → vsdx 的主题对象（vsdx 用 pt，SVG 用 px）。 */
+/**
+ * 字体与描边参数 → vsdx 的主题对象（vsdx 用 pt，SVG 用 px）。
+ *
+ * 这里的 fill/line/font 只是兜底值：每个节点在自己的 style 里覆盖它们。
+ */
 export function toVsdxTheme(spec) {
   const t = spec.theme;
+  const shape = shapeOf(spec, 'process');
   return {
     fontFamily: 'PingFang SC',
     fontSize: pxToPt(spec.nodeName.size),
-    fillColor: t.paper,
-    lineColor: t.ink,
-    fontColor: t.ink,
+    fillColor: colorOf(spec, shape.fill),
+    lineColor: colorOf(spec, shape.stroke),
+    fontColor: colorOf(spec, shape.text),
     lineWeightPt: spec.stroke.default,
     cornerRadiusPx: spec.radius.md,
+    paperColor: t.paper,
   };
 }
 

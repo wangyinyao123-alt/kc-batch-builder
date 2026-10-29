@@ -2,7 +2,7 @@
 // 用法：node scripts/audit.mjs
 import { parseMarkdown } from '../src/parse.js';
 import { layout } from '../src/layout.js';
-import { resolveSpec } from '../src/theme.js';
+import { resolveSpec } from '../src/templates.js';
 
 const CASES = {
   simple: `# 运动控制流程

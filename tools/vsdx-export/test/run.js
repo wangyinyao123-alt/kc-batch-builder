@@ -162,6 +162,44 @@ test('页面尺寸按 meta 设置', async () => {
   assert.ok(/PageHeight" V="4\.791/.test(pageXml), '页高不对');
 });
 
+test('无填充（fillColor: "none"）同时把 FillPattern 归零', async () => {
+  // ts-visio 的 createFillSection 硬写 FillPattern=1（实心），
+  // 只改 FillForegnd="none" 在 Visio 里仍然是填色的。这条用例守住补丁。
+  const d = {
+    meta: { pageW: 200, pageH: 200 },
+    nodes: [
+      { id: 'a', type: 'process', text: 'A', x: 20, y: 20, w: 100, h: 48,
+        style: { fillColor: 'none', lineColor: '#000000' } },
+    ],
+    edges: [],
+  };
+  const bytes = await buildVsdx(d, {}, zip);
+  const { pageXml } = await unzip(bytes);
+  const shape = shapesOf(pageXml)[0].xml;
+  assert.ok(/FillForegnd" V="none"/.test(shape), '应写入 FillForegnd="none"');
+  // 直属层与 Section 内都必须是 0
+  const patterns = [...shape.matchAll(/FillPattern" V="(\d+)"/g)].map((m) => m[1]);
+  assert.ok(patterns.length > 0, '应有 FillPattern');
+  for (const v of patterns) assert.strictEqual(v, '0', 'FillPattern 应全部归零');
+});
+
+test('有纸色时先铺一个满页底矩形（深色模板导进 Visio 不变白纸）', async () => {
+  const d = {
+    meta: { pageW: 400, pageH: 300 },
+    nodes: [{ id: 'a', type: 'process', text: 'A', x: 20, y: 20, w: 100, h: 48 }],
+    edges: [],
+  };
+  const bytes = await buildVsdx(d, { paperColor: '#2d3142' }, zip);
+  const { pageXml } = await unzip(bytes);
+  const shapes = shapesOf(pageXml);
+  // 背景是第一个形状，尺寸等于整页
+  assert.ok(shapes.length >= 2, '应至少有一个背景 + 一个节点');
+  const bg = shapes[0].xml;
+  assert.ok(/FillForegnd" V="#2d3142"/.test(bg), '背景色应为纸色');
+  assert.ok(/Width" V="4\.166/.test(bg), '背景宽度应等于页宽');
+  assert.ok(/Height" V="3\.125/.test(bg), '背景高度应等于页高');
+});
+
 test('无 theme 时用默认值，不抛错', async () => {
   const bytes = await buildVsdx({ meta: { pageW: 200, pageH: 200 }, nodes: [], edges: [] }, undefined, zip);
   assert.ok(bytes.length > 0);

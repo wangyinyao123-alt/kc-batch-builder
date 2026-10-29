@@ -9,15 +9,15 @@ export { ASCII_WIDTHS, EXTRA_WIDTHS, FULLWIDTH_RANGES, FALLBACK_WIDTH } from './
 export { DIAGRAM_VERSION, emptyDiagram, isRenderable, makeId } from './ir.js';
 export { layout, measureNode } from './layout.js';
 export { renderSvg } from './render.js';
+export { GRID, LIGHT, DARK, DEFAULT_SPEC, ceilGrid, snapGrid, titleHeight } from './theme.js';
 export {
-  GRID,
-  LIGHT,
-  DARK,
-  DEFAULT_SPEC,
-  resolveTheme,
+  PALETTES,
+  TEMPLATES,
+  SHAPE_KINDS,
   resolveSpec,
-  ceilGrid,
-  snapGrid,
-  titleHeight,
-} from './theme.js';
+  shapeOf,
+  colorOf,
+  listTemplates,
+  listPalettes,
+} from './templates.js';
 export { toVsdxInput, toVsdxTheme, inferPorts, pxToPt } from './vsdx-input.js';

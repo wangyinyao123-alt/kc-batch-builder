@@ -10,7 +10,7 @@ import assert from 'node:assert/strict';
 import { parseMarkdown } from '../src/parse.js';
 import { layout, measureNode } from '../src/layout.js';
 import { renderSvg } from '../src/render.js';
-import { resolveSpec } from '../src/theme.js';
+import { resolveSpec } from '../src/templates.js';
 import { textWidth } from '../src/measure.js';
 
 const spec = resolveSpec('light');

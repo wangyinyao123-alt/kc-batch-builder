@@ -9,7 +9,7 @@ import assert from 'node:assert/strict';
 
 import { parseMarkdown } from '../src/parse.js';
 import { layout } from '../src/layout.js';
-import { resolveSpec, titleHeight } from '../src/theme.js';
+import { resolveSpec, titleHeight } from '../src/templates.js';
 import { toVsdxInput, toVsdxTheme, inferPorts, pxToPt } from '../src/vsdx-input.js';
 
 const spec = resolveSpec('light');
