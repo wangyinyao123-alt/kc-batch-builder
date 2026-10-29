@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="560" height="1284" viewBox="0 0 560 1284" role="img" aria-labelledby="dgm-title">
+<title id="dgm-title">订单退款流程</title>
+<defs><marker id="arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L8,4 L0,8 z" fill="#5b6b7f"/></marker></defs>
+<rect width="560" height="1284" fill="#ffffff"/>
+<text x="36" y="64" font-family="'Instrument Serif','Noto Serif TC','Noto Serif SC',serif" font-size="28" font-weight="400" fill="#1b2733">订单退款流程</text>
+<g transform="translate(36,104)">
+<path d="M260,44 L260,76 L260,108" fill="none" stroke="#5b6b7f" stroke-width="1.2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<path d="M260,156 L260,188 L260,220" fill="none" stroke="#5b6b7f" stroke-width="1.2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<path d="M164,300 L92,332 L92,404 L92,476 L92,508" fill="none" stroke="#5b6b7f" stroke-width="1.2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<path d="M304,300 L344,332 L344,364" fill="none" stroke="#5b6b7f" stroke-width="1.2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<path d="M296,444 L260,476 L260,508" fill="none" stroke="#5b6b7f" stroke-width="1.2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<path d="M392,444 L428,476 L428,508" fill="none" stroke="#5b6b7f" stroke-width="1.2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<path d="M92,556 L92,588 L140,620" fill="none" stroke="#5b6b7f" stroke-width="1.2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<path d="M260,556 L260,588 L212,620" fill="none" stroke="#5b6b7f" stroke-width="1.2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<path d="M176,668 L176,700 L176,732" fill="none" stroke="#5b6b7f" stroke-width="1.2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<path d="M120,812 L80,844 L80,876" fill="none" stroke="#5b6b7f" stroke-width="1.2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<path d="M228,812 L268,844 L268,876" fill="none" stroke="#5b6b7f" stroke-width="1.2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<path d="M268,924 L268,956 L268,988" fill="none" stroke="#5b6b7f" stroke-width="1.2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<path d="M268,1036 L268,1068 L268,1100" fill="none" stroke="#5b6b7f" stroke-width="1.2" marker-end="url(#arrow)" stroke-linejoin="round"/>
+<rect x="100" y="348" width="24" height="28" fill="#ffffff"/>
+<text x="112" y="362" text-anchor="middle" dominant-baseline="central" font-family="'Geist','Noto Sans TC','PingFang TC','PingFang SC','Microsoft JhengHei','Microsoft YaHei',sans-serif" font-size="12" font-weight="500" fill="#5b6b7f">否</text>
+<rect x="336" y="308" width="24" height="28" fill="#ffffff"/>
+<text x="348" y="322" text-anchor="middle" dominant-baseline="central" font-family="'Geist','Noto Sans TC','PingFang TC','PingFang SC','Microsoft JhengHei','Microsoft YaHei',sans-serif" font-size="12" font-weight="500" fill="#5b6b7f">是</text>
+<rect x="276" y="452" width="24" height="28" fill="#ffffff"/>
+<text x="288" y="466" text-anchor="middle" dominant-baseline="central" font-family="'Geist','Noto Sans TC','PingFang TC','PingFang SC','Microsoft JhengHei','Microsoft YaHei',sans-serif" font-size="12" font-weight="500" fill="#5b6b7f">否</text>
+<rect x="424" y="452" width="24" height="28" fill="#ffffff"/>
+<text x="436" y="466" text-anchor="middle" dominant-baseline="central" font-family="'Geist','Noto Sans TC','PingFang TC','PingFang SC','Microsoft JhengHei','Microsoft YaHei',sans-serif" font-size="12" font-weight="500" fill="#5b6b7f">是</text>
+<rect x="100" y="820" width="24" height="28" fill="#ffffff"/>
+<text x="112" y="834" text-anchor="middle" dominant-baseline="central" font-family="'Geist','Noto Sans TC','PingFang TC','PingFang SC','Microsoft JhengHei','Microsoft YaHei',sans-serif" font-size="12" font-weight="500" fill="#5b6b7f">是</text>
+<rect x="260" y="820" width="24" height="28" fill="#ffffff"/>
+<text x="272" y="834" text-anchor="middle" dominant-baseline="central" font-family="'Geist','Noto Sans TC','PingFang TC','PingFang SC','Microsoft JhengHei','Microsoft YaHei',sans-serif" font-size="12" font-weight="500" fill="#5b6b7f">否</text>
+<rect x="212" y="0" width="96" height="44" rx="20" ry="20" fill="#2b5d8a" stroke="#2b5d8a" stroke-width="1.2"/>
+<text x="260" y="22" text-anchor="middle" dominant-baseline="central" font-family="'Geist','Noto Sans TC','PingFang TC','PingFang SC','Microsoft JhengHei','Microsoft YaHei',sans-serif" font-size="13" font-weight="600" fill="#ffffff">开始</text>
+<rect x="188" y="108" width="144" height="48" rx="4" fill="#ffffff" stroke="#1b2733" stroke-width="1.2"/>
+<text x="260" y="132" text-anchor="middle" dominant-baseline="central" font-family="'Geist','Noto Sans TC','PingFang TC','PingFang SC','Microsoft JhengHei','Microsoft YaHei',sans-serif" font-size="13" font-weight="600" fill="#1b2733">用户提交退款申请</text>
+<polygon points="258,220 364,260 258,300 152,260" fill="#eef2f8" stroke="#2b5d8a" stroke-width="1.2" stroke-linejoin="round"/>
+<text x="258" y="260" text-anchor="middle" dominant-baseline="central" font-family="'Geist','Noto Sans TC','PingFang TC','PingFang SC','Microsoft JhengHei','Microsoft YaHei',sans-serif" font-size="13" font-weight="600" fill="#1b2733">订单是否已发货？</text>
+<rect x="32" y="508" width="120" height="48" rx="4" fill="#ffffff" stroke="#1b2733" stroke-width="1.2"/>
+<text x="92" y="532" text-anchor="middle" dominant-baseline="central" font-family="'Geist','Noto Sans TC','PingFang TC','PingFang SC','Microsoft JhengHei','Microsoft YaHei',sans-serif" font-size="13" font-weight="600" fill="#1b2733">直接退款</text>
+<polygon points="346,364 484,404 346,444 208,404" fill="#eef2f8" stroke="#2b5d8a" stroke-width="1.2" stroke-linejoin="round"/>
+<text x="346" y="404" text-anchor="middle" dominant-baseline="central" font-family="'Geist','Noto Sans TC','PingFang TC','PingFang SC','Microsoft JhengHei','Microsoft YaHei',sans-serif" font-size="13" font-weight="600" fill="#1b2733">商品是否影响二次销售？</text>
+<rect x="200" y="508" width="120" height="48" rx="4" fill="#ffffff" stroke="#1b2733" stroke-width="1.2"/>
+<text x="260" y="532" text-anchor="middle" dominant-baseline="central" font-family="'Geist','Noto Sans TC','PingFang TC','PingFang SC','Microsoft JhengHei','Microsoft YaHei',sans-serif" font-size="13" font-weight="600" fill="#1b2733">人工审核</text>
+<rect x="368" y="508" width="120" height="48" rx="4" fill="#ffffff" stroke="#1b2733" stroke-width="1.2"/>
+<text x="428" y="532" text-anchor="middle" dominant-baseline="central" font-family="'Geist','Noto Sans TC','PingFang TC','PingFang SC','Microsoft JhengHei','Microsoft YaHei',sans-serif" font-size="13" font-weight="600" fill="#1b2733">驳回申请</text>
+<rect x="116" y="620" width="120" height="48" rx="4" fill="#ffffff" stroke="#1b2733" stroke-width="1.2"/>
+<text x="176" y="644" text-anchor="middle" dominant-baseline="central" font-family="'Geist','Noto Sans TC','PingFang TC','PingFang SC','Microsoft JhengHei','Microsoft YaHei',sans-serif" font-size="13" font-weight="600" fill="#1b2733">财务打款</text>
+<polygon points="174,732 268,772 174,812 80,772" fill="#eef2f8" stroke="#2b5d8a" stroke-width="1.2" stroke-linejoin="round"/>
+<text x="174" y="772" text-anchor="middle" dominant-baseline="central" font-family="'Geist','Noto Sans TC','PingFang TC','PingFang SC','Microsoft JhengHei','Microsoft YaHei',sans-serif" font-size="13" font-weight="600" fill="#1b2733">打款是否成功？</text>
+<rect x="0" y="876" width="160" height="48" rx="4" fill="#ffffff" stroke="#1b2733" stroke-width="1.2"/>
+<text x="80" y="900" text-anchor="middle" dominant-baseline="central" font-family="'Geist','Noto Sans TC','PingFang TC','PingFang SC','Microsoft JhengHei','Microsoft YaHei',sans-serif" font-size="13" font-weight="600" fill="#1b2733">通知用户，流程结束</text>
+<rect x="208" y="876" width="120" height="48" rx="4" fill="#ffffff" stroke="#1b2733" stroke-width="1.2"/>
+<text x="268" y="900" text-anchor="middle" dominant-baseline="central" font-family="'Geist','Noto Sans TC','PingFang TC','PingFang SC','Microsoft JhengHei','Microsoft YaHei',sans-serif" font-size="13" font-weight="600" fill="#1b2733">重试三次</text>
+<rect x="208" y="988" width="120" height="48" rx="4" fill="#ffffff" stroke="#1b2733" stroke-width="1.2"/>
+<text x="268" y="1012" text-anchor="middle" dominant-baseline="central" font-family="'Geist','Noto Sans TC','PingFang TC','PingFang SC','Microsoft JhengHei','Microsoft YaHei',sans-serif" font-size="13" font-weight="600" fill="#1b2733">人工介入</text>
+<rect x="220" y="1100" width="96" height="44" rx="20" ry="20" fill="#1b2733" stroke="#1b2733" stroke-width="1.2"/>
+<text x="268" y="1122" text-anchor="middle" dominant-baseline="central" font-family="'Geist','Noto Sans TC','PingFang TC','PingFang SC','Microsoft JhengHei','Microsoft YaHei',sans-serif" font-size="13" font-weight="600" fill="#ffffff">结束</text>
+</g>
+</svg>

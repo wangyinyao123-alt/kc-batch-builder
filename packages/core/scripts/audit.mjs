@@ -2,7 +2,7 @@
 // 用法：node scripts/audit.mjs
 import { parseMarkdown } from '../src/parse.js';
 import { layout } from '../src/layout.js';
-import { resolveSpec } from '../src/templates.js';
+import { resolveSpec, listTemplates } from '../src/templates.js';
 
 const CASES = {
   simple: `# 运动控制流程
@@ -42,8 +42,6 @@ const CASES = {
 `,
 };
 
-const spec = resolveSpec('light');
-
 /** 判断点是否落在矩形内（矩形向里缩 2px，容忍贴着边框的端点） */
 function inside(px, py, n, inset = 2) {
   return (
@@ -57,38 +55,43 @@ function inside(px, py, n, inset = 2) {
 let total = 0;
 let bad = 0;
 
-for (const [name, src] of Object.entries(CASES)) {
-  const laid = layout(parseMarkdown(src), spec);
-  let hits = 0;
+// 每套模板的间距不同（minimal 32/44，business 48/64），排版结果也不同，
+// 所以必须逐模板体检：只验默认模板会漏掉紧凑模板的穿框。
+for (const tpl of listTemplates()) {
+  const spec = resolveSpec(tpl.name);
+  for (const [name, src] of Object.entries(CASES)) {
+    const laid = layout(parseMarkdown(src), spec);
+    let hits = 0;
 
-  for (const e of laid.edges) {
-    // 沿折线均匀采样 60 个点
-    const pts = e.points;
-    for (let seg = 0; seg < pts.length - 1; seg++) {
-      const a = pts[seg];
-      const b = pts[seg + 1];
-      for (let k = 0; k <= 60; k++) {
-        const t = k / 60;
-        const px = a.x + (b.x - a.x) * t;
-        const py = a.y + (b.y - a.y) * t;
-        for (const n of laid.nodes) {
-          if (n.id === e.from || n.id === e.to) continue;
-          if (inside(px, py, n)) {
-            hits++;
-            console.log(`  ✗ ${name}: ${e.from}→${e.to} 穿过 ${n.id} @ (${px.toFixed(1)}, ${py.toFixed(1)})`);
-            seg = 1e9;
-            k = 1e9;
-            break;
+    for (const e of laid.edges) {
+      // 沿折线均匀采样 60 个点
+      const pts = e.points;
+      for (let seg = 0; seg < pts.length - 1; seg++) {
+        const a = pts[seg];
+        const b = pts[seg + 1];
+        for (let k = 0; k <= 60; k++) {
+          const t = k / 60;
+          const px = a.x + (b.x - a.x) * t;
+          const py = a.y + (b.y - a.y) * t;
+          for (const n of laid.nodes) {
+            if (n.id === e.from || n.id === e.to) continue;
+            if (inside(px, py, n)) {
+              hits++;
+              console.log(`  ✗ ${tpl.name}/${name}: ${e.from}→${e.to} 穿过 ${n.id} @ (${px.toFixed(1)}, ${py.toFixed(1)})`);
+              seg = 1e9;
+              k = 1e9;
+              break;
+            }
           }
         }
       }
     }
-  }
 
-  total += laid.nodes.length;
-  console.log(`${hits === 0 ? '✓' : '✗'} ${name}: ${laid.nodes.length} 节点 / ${laid.edges.length} 连线，穿框 ${hits === 0 ? 'none' : hits}`);
-  bad += hits;
+    total += laid.nodes.length;
+    console.log(`${hits === 0 ? '✓' : '✗'} ${tpl.name.padEnd(9)} ${name.padEnd(8)}: ${laid.nodes.length} 节点 / ${laid.edges.length} 连线，穿框 ${hits === 0 ? 'none' : hits}`);
+    bad += hits;
+  }
 }
 
-console.log(bad === 0 ? `\n全部通过（${total} 个节点）` : `\n发现 ${bad} 处穿框`);
+console.log(bad === 0 ? `\n全部通过（${total} 个节点，${listTemplates().length} 套模板）` : `\n发现 ${bad} 处穿框`);
 process.exit(bad === 0 ? 0 : 1);

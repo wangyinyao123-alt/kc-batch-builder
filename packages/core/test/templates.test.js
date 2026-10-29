@@ -184,6 +184,51 @@ test('模板只改外观，不改图结构（节点数/连线数/顺序）', () 
   }
 });
 
+// WCAG 相对亮度与对比度。模板最容易翻车的地方是「深色底配深色字」，
+// 而这类问题在代码里看不出来，必须算。
+function luminance(hex) {
+  const ch = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255);
+  const lin = ch.map((u) => (u <= 0.03928 ? u / 12.92 : ((u + 0.055) / 1.055) ** 2.4));
+  return 0.2126 * lin[0] + 0.7152 * lin[1] + 0.0722 * lin[2];
+}
+function contrast(a, b) {
+  const [hi, lo] = [luminance(a), luminance(b)].sort((x, y) => y - x);
+  return (hi + 0.05) / (lo + 0.05);
+}
+
+test('每套模板的文字对比度都过 WCAG AA（4.5:1）', () => {
+  for (const name of NAMES) {
+    const spec = resolveSpec(name);
+    for (const type of ['start', 'end', 'process', 'decision', 'note']) {
+      const sh = shapeOf(spec, type);
+      const fillRole = colorOf(spec, sh.fill);
+      // 无填充的节点视觉上就是纸色
+      const bg = fillRole === 'none' ? spec.theme.paper : fillRole;
+      const fg = colorOf(spec, sh.text);
+      const ratio = contrast(bg, fg);
+      assert.ok(
+        ratio >= 4.5,
+        `${name}/${type} 文字对比度 ${ratio.toFixed(2)}:1 低于 AA（底色 ${bg}，字色 ${fg}）`,
+      );
+    }
+    // 分支标签也要读得清
+    const labBg = spec.theme.paper;
+    const labFg = spec.theme.muted;
+    assert.ok(
+      contrast(labBg, labFg) >= 4.5,
+      `${name} 分支标签对比度 ${contrast(labBg, labFg).toFixed(2)}:1 低于 AA`,
+    );
+  }
+});
+
+test('连线颜色与纸面有足够区分度（3:1，图形元素标准）', () => {
+  for (const name of NAMES) {
+    const spec = resolveSpec(name);
+    const ratio = contrast(spec.theme.paper, colorOf(spec, spec.edge.color));
+    assert.ok(ratio >= 3, `${name} 连线对比度 ${ratio.toFixed(2)}:1 偏低`);
+  }
+});
+
 test('listTemplates / listPalettes 与常量表一致', () => {
   assert.equal(listTemplates().length, NAMES.length);
   assert.equal(listPalettes().length, Object.keys(PALETTES).length);

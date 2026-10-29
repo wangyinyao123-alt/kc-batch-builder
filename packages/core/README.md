@@ -33,6 +33,16 @@ node bin/flowchart.js --list                 # 看所有模板与配色
 node bin/flowchart.js --list        # 模板与配色的完整清单
 ```
 
+同一份 [examples/refund.md](examples/refund.md)，五套模板的效果（`examples/previews/` 里是 SVG 与 PNG 原图）：
+
+| default | business | minimal |
+|---|---|---|
+| ![default](examples/previews/default.png) | ![business](examples/previews/business.png) | ![minimal](examples/previews/minimal.png) |
+
+| tech | paper |
+|---|---|
+| ![tech](examples/previews/tech.png) | ![paper](examples/previews/paper.png) |
+
 模板不是四份配色方案。`business` 的起止块是实心深蓝反白、圆角 4px、字号 13；`minimal` 是直角无填充、笔画 0.8、间距 32/44、箭头换成细描边人字。只换颜色的话换模板就没有意义了 —— `test/templates.test.js` 里有一条用例专门守着「模板之间必须是结构性差异」，退化成换色会直接报错。
 
 ## Markdown 怎么写
