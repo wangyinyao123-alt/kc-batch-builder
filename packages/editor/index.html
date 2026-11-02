@@ -26,8 +26,6 @@
       </div>
 
       <div class="actions">
-        <select id="template" class="select" aria-label="模板"></select>
-        <span class="sep"></span>
         <button id="btn-open" class="btn" title="打开 .json">打开</button>
         <button id="btn-save" class="btn" title="保存 .json (⌘S)">保存</button>
         <button id="btn-export-svg" class="btn">SVG</button>
@@ -57,6 +55,15 @@
       </div>
 
       <aside id="inspector" class="inspector">
+        <section class="group">
+          <h2>模板</h2>
+          <div id="template-grid" class="tpl-grid" role="radiogroup" aria-label="模板"></div>
+          <label class="row palette-row">
+            <span>配色</span>
+            <select id="palette" class="select small" aria-label="配色"></select>
+          </label>
+        </section>
+
         <section class="group">
           <h2>选中项</h2>
           <div id="selection-body" class="empty">没有选中任何东西</div>

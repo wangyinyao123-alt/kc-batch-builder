@@ -21,6 +21,7 @@ import {
   setEdgeLabel,
   setTitle,
   setTemplate,
+  setPalette,
   applyLayout,
   serializeDoc,
   deserializeDoc,
@@ -39,7 +40,7 @@ import {
 import { buildScene, sceneToLaid, snapToNeighbors } from './scene.js';
 import { pickNode, pickEdge, pickLabel, pickPort, pickInRect } from './hit.js';
 import { nodeSvg, edgeSvg, labelSvg, rubberSvg, guidesSvg, marqueeSvg } from './canvas.js';
-import { resolveSpec, listTemplates } from '../../core/src/templates.js';
+import { resolveSpec, listTemplates, listPalettes } from '../../core/src/templates.js';
 import { renderSvg } from '../../core/src/render.js';
 import { layout } from '../../core/src/layout.js';
 import { parseMarkdown } from '../../core/src/parse.js';
@@ -56,6 +57,7 @@ const $ = (id) => document.getElementById(id);
 const els = {
   stage: $('stage'),
   canvas: $('canvas'),
+  canvasPaper: $('canvas-paper'),
   root: $('layer-root'),
   defs: $('canvas-defs'),
   edges: $('layer-edges'),
@@ -65,7 +67,8 @@ const els = {
   textEditor: $('text-editor'),
   emptyHint: $('empty-hint'),
   titleInput: $('doc-title'),
-  templateSelect: $('template'),
+  templateGrid: $('template-grid'),
+  paletteSelect: $('palette'),
   direction: $('direction'),
   nodeGap: $('node-gap'),
   rankGap: $('rank-gap'),
@@ -123,6 +126,10 @@ function render() {
   const scene = buildScene(doc, spec);
   lastScene = scene;
 
+  // 画布底色必须跟模板走：导出时 renderSvg 用 theme.paper 铺底，
+  // 屏幕上若固定 #f5f5f5，深色模板下连线标签的纸底（也是 theme.paper）会变成
+  // 一块块深色补丁，屏上与导出对不上。
+  els.canvasPaper.setAttribute('fill', spec.theme.paper);
   els.defs.innerHTML = buildDefs();
   els.edges.innerHTML = scene.edges
     .map((e) => edgeSvg(e, spec, selection?.kind === 'edge' && selection.id === e.id))
@@ -147,7 +154,8 @@ function render() {
 
   // 视口外的内容不需要吃指针事件，交给命中函数算
   els.titleInput.value = doc.title;
-  els.templateSelect.value = doc.template;
+  syncTemplateGrid();
+  els.paletteSelect.value = doc.palette || '';
   syncSelectionPanel();
   syncHistoryButtons();
 }
@@ -207,6 +215,26 @@ function commit(nextDoc, tag = null) {
   // 立刻落盘（带防抖）。只靠 3 秒定时器 + beforeunload 的话，
   // 标签页被杀 / 崩溃会丢掉最后几秒的编辑，刷新后回到旧文档。
   schedulePersist();
+}
+
+/**
+ * 撤销/重做之后把文档装回去。
+ *
+ * 必须在这里重建 spec —— 模板和配色是写在文档里的，
+ * 撤销一次「换模板」如果只恢复 doc.template 而不重算 spec，
+ * 界面上的卡片会跳回旧模板，画面却还是新模板的样式。
+ */
+function restoreDoc(next) {
+  doc = next;
+  spec = specForDoc(next);
+  if (
+    selection &&
+    !doc.nodes.some((n) => n.id === selection.id) &&
+    !doc.edges.some((e) => e.id === selection.id)
+  ) {
+    selection = null;
+  }
+  render();
 }
 
 let persistTimer = 0;
@@ -749,13 +777,7 @@ function onKeyDown(ev) {
   if (mod && ev.key.toLowerCase() === 'z') {
     ev.preventDefault();
     const next = ev.shiftKey ? history.redo() : history.undo();
-    if (next) {
-      doc = next;
-      if (selection && !doc.nodes.some((n) => n.id === selection.id) && !doc.edges.some((e) => e.id === selection.id)) {
-        selection = null;
-      }
-      render();
-    }
+    if (next) restoreDoc(next);
     return;
   }
 
@@ -864,7 +886,7 @@ function openDocFile() {
     doc = parsed;
     history.reset(doc);
     selection = null;
-    spec = resolveSpec(doc.template || 'default');
+    spec = specForDoc(doc);
     render();
     zoomToFit();
     toast('已打开');
@@ -1016,15 +1038,9 @@ function bindUI() {
     if (r.changed) commit(r.doc, 'title');
   });
 
-  els.templateSelect.addEventListener('change', () => {
-    const r = setTemplate(doc, els.templateSelect.value);
-    if (r.changed) {
-      // 必须从新文档取 template：此刻 doc 还是旧的，
-      // 用 doc.template 会让 spec 停留在上一个模板（屏幕上换模板但颜色不变）。
-      spec = resolveSpec(r.doc.template);
-      commit(r.doc);
-      zoomToFit();
-    }
+  els.paletteSelect.addEventListener('change', () => {
+    const r = setPalette(doc, els.paletteSelect.value);
+    if (r.changed) applyDoc(r.doc);
   });
 
   els.direction.addEventListener('change', () => {
@@ -1041,17 +1057,11 @@ function bindUI() {
   $('btn-layout').addEventListener('click', runLayout);
   els.btnUndo.addEventListener('click', () => {
     const next = history.undo();
-    if (next) {
-      doc = next;
-      render();
-    }
+    if (next) restoreDoc(next);
   });
   els.btnRedo.addEventListener('click', () => {
     const next = history.redo();
-    if (next) {
-      doc = next;
-      render();
-    }
+    if (next) restoreDoc(next);
   });
   $('btn-zoom-in').addEventListener('click', () => zoomStep(1.2));
   $('btn-zoom-out').addEventListener('click', () => zoomStep(1 / 1.2));
@@ -1075,6 +1085,116 @@ function bindUI() {
   });
 }
 
+// ---------------------------------------------------------------- 模板与配色
+
+/**
+ * 从文档解析出绘制参数。
+ *
+ * 两处必须一起改的地方（模板、配色）都走这个函数 —— 之前换模板的代码
+ * 直接调 resolveSpec(doc.template)，加了配色维度后会静默丢掉配色。
+ */
+function specForDoc(d) {
+  return resolveSpec(d.template || 'default', d.palette ? { palette: d.palette } : {});
+}
+
+/** 配色在界面上显示的名字。PALETTES 里没有 label，这里补一份。 */
+const PALETTE_LABEL = {
+  light: '浅色',
+  dark: '深色',
+  slate: '石板',
+  paper: '纸感',
+  mono: '单色',
+};
+const paletteLabel = (name) => PALETTE_LABEL[name] || name;
+
+/**
+ * 模板缩略图：直接调 core 的 renderSvg 画一张迷你图。
+ *
+ * 为什么不手写静态图片：模板改了（加一套、调字号）缩略图必须跟着变，
+ * 否则用户看到的预览和点下去的效果不是一回事。用真渲染就永远一致。
+ */
+const THUMB_DIAGRAM = {
+  nodes: [
+    { id: 't1', type: 'start', text: '开始', x: 22, y: 8, w: 56, h: 26, cx: 50, cy: 21, lines: ['开始'] },
+    { id: 't2', type: 'process', text: '处理', x: 22, y: 46, w: 56, h: 30, cx: 50, cy: 61, lines: ['处理'] },
+    { id: 't3', type: 'decision', text: '判断', x: 18, y: 88, w: 64, h: 34, cx: 50, cy: 105, lines: ['判断'] },
+  ],
+  edges: [
+    { id: 'te1', from: 't1', to: 't2', points: [{ x: 50, y: 34 }, { x: 50, y: 46 }], label: '' },
+    { id: 'te2', from: 't2', to: 't3', points: [{ x: 50, y: 76 }, { x: 50, y: 88 }], label: '' },
+  ],
+  labels: [],
+  width: 100,
+  height: 128,
+};
+
+function templateThumb(tpl) {
+  // 缩略图里不画标题、不留大边距，否则 60px 宽的格子里只剩空白
+  const thumbSpec = {
+    ...resolveSpec(tpl.name),
+    padding: 6,
+    // 缩略图节点文字小一点才看得清形状差异
+    nodeName: { ...resolveSpec(tpl.name).nodeName, size: 9, lineHeight: 12 },
+  };
+  const svg = renderSvg(THUMB_DIAGRAM, thumbSpec, { title: '' });
+  // 去掉固定宽高，交给 CSS 自适应（保留 viewBox 比例）
+  return svg.replace(/width="[^"]*"\s+height="[^"]*"/, '');
+}
+
+function buildTemplateGrid() {
+  els.templateGrid.innerHTML = listTemplates()
+    .map(
+      (t) => `
+      <button class="tpl-card" data-template="${t.name}" role="radio" aria-checked="false"
+              title="${escapeHtml(t.description || t.label)}">
+        <span class="tpl-thumb">${templateThumb(t)}</span>
+        <span class="tpl-name">${escapeHtml(t.label)}</span>
+      </button>`,
+    )
+    .join('');
+  for (const btn of els.templateGrid.querySelectorAll('.tpl-card')) {
+    btn.addEventListener('click', () => applyTemplate(btn.dataset.template));
+  }
+  syncTemplateGrid();
+}
+
+function syncTemplateGrid() {
+  for (const btn of els.templateGrid.querySelectorAll('.tpl-card')) {
+    const on = btn.dataset.template === doc.template;
+    btn.classList.toggle('on', on);
+    btn.setAttribute('aria-checked', on ? 'true' : 'false');
+  }
+}
+
+function buildPaletteSelect() {
+  const tpl = listTemplates().find((t) => t.name === doc.template);
+  els.paletteSelect.innerHTML =
+    `<option value="">模板自带${tpl ? `（${paletteLabel(tpl.palette)}）` : ''}</option>` +
+    listPalettes()
+      .map((p) => `<option value="${p}">${paletteLabel(p)}</option>`)
+      .join('');
+}
+
+/**
+ * 换模板：换形状/字号/间距，同时把配色重置为模板自带的。
+ *
+ * 不重置的话会出怪事 —— 从 dark 配色的自定义状态切到 minimal，
+ * 屏幕上还是深色，用户会以为点了没反应。
+ */
+function applyTemplate(name) {
+  const withTpl = setTemplate(doc, name);
+  const withPal = setPalette(withTpl.doc, '');
+  applyDoc(withPal.doc);
+  buildPaletteSelect();
+  zoomToFit();
+}
+
+/** 模板或配色变了之后的统一收尾：重建 spec、重画、入历史、落盘。 */
+function applyDoc(next) {
+  spec = specForDoc(next);
+  commit(next);
+}
+
 // ---------------------------------------------------------------- 启动
 
 function seedIfEmpty() {
@@ -1095,10 +1215,8 @@ function persist() {
 }
 
 function boot() {
-  // 模板下拉
-  els.templateSelect.innerHTML = listTemplates()
-    .map((t) => `<option value="${t.name}">${t.label}</option>`)
-    .join('');
+  buildTemplateGrid();
+  buildPaletteSelect();
 
   const restored = seedIfEmpty();
   if (restored) {
@@ -1132,7 +1250,7 @@ function boot() {
   }
 
   history.reset(doc);
-  spec = resolveSpec(doc.template || 'default');
+  spec = specForDoc(doc);
   render();
   requestAnimationFrame(() => {
     zoomToFit();

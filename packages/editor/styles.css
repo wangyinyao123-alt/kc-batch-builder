@@ -321,6 +321,76 @@ body {
 
 /* ---------------------------------------------------------------- 右栏 */
 
+/* ---------------------------------------------------------------- 模板选择 */
+
+/*
+ * 模板卡片：每格放一张真渲染出来的缩略图。
+ * 只能靠图形区分模板 —— 五套模板的文字标签差别不大，
+ * 光看「极简 / 商务」这几个字很难想象选出来长什么样。
+ */
+.tpl-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.tpl-card {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4px;
+  padding: 5px;
+  cursor: pointer;
+  background: #fff;
+  border: 1px solid #e3e7ec;
+  border-radius: 8px;
+  outline: none;
+  transition: border-color 120ms, box-shadow 120ms;
+}
+
+.tpl-card:hover {
+  border-color: #c8cfd8;
+}
+
+.tpl-card:focus-visible {
+  border-color: #bf4520;
+}
+
+.tpl-card.on {
+  border-color: #bf4520;
+  box-shadow: 0 0 0 2px rgba(191, 69, 32, 0.14);
+}
+
+.tpl-thumb {
+  display: block;
+  overflow: hidden;
+  background: #f5f5f5;
+  border-radius: 5px;
+}
+
+.tpl-thumb svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.tpl-name {
+  font-size: 11px;
+  line-height: 1.2;
+  color: #4d5666;
+  text-align: center;
+}
+
+.tpl-card.on .tpl-name {
+  font-weight: 600;
+  color: #bf4520;
+}
+
+.palette-row {
+  margin-bottom: 0;
+}
+
 .inspector {
   flex: 0 0 248px;
   padding: 8px;

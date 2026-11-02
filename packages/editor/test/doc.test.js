@@ -15,6 +15,7 @@ import {
   setEdgeLabel,
   setTitle,
   setTemplate,
+  setPalette,
   applyLayout,
   serializeDoc,
   deserializeDoc,
@@ -276,4 +277,25 @@ test('setTemplate 只换模板名，不动几何数据', () => {
   const r = setTemplate(doc, 'tech');
   assert.equal(r.doc.template, 'tech');
   assert.deepEqual(r.doc.nodes, doc.nodes);
+});
+
+test('setPalette：换配色不改模板，空串回到模板自带', () => {
+  const doc = build();
+  const dark = setPalette(doc, 'dark');
+  assert.equal(dark.changed, true);
+  assert.equal(dark.doc.palette, 'dark');
+  assert.equal(dark.doc.template, doc.template);
+  // 重复设同一个值不算改动，否则会往撤销栈里塞空记录
+  assert.equal(setPalette(dark.doc, 'dark').changed, false);
+  const reset = setPalette(dark.doc, '');
+  assert.equal(reset.doc.palette, '');
+});
+
+test('palette 能存进 JSON 并被读回（否则刷新就丢配色）', () => {
+  const doc = setPalette(build(), 'slate').doc;
+  const round = deserializeDoc(serializeDoc(doc));
+  assert.equal(round.palette, 'slate');
+  // 老文件没有 palette 字段时按模板自带处理，不能变成 undefined
+  const legacy = deserializeDoc('{"version":1,"nodes":[],"edges":[]}');
+  assert.equal(legacy.palette, '');
 });

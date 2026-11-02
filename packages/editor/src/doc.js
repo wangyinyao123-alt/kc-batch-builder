@@ -26,6 +26,9 @@ export function emptyDoc(title = '') {
     version: DOC_VERSION,
     title,
     template: 'default',
+    // 空字符串 = 用模板自带的配色。非空时覆盖模板配色，
+    // 于是「模板（形状/字号/间距）」和「配色」是两个独立维度。
+    palette: '',
     nodes: [],
     edges: [],
   };
@@ -247,6 +250,13 @@ export function setTemplate(doc, template) {
   return { doc: { ...doc, template }, changed: true };
 }
 
+/** 换配色。传空串 = 回到模板自带配色。 */
+export function setPalette(doc, palette) {
+  const next = palette || '';
+  if ((doc.palette || '') === next) return { doc, changed: false };
+  return { doc: { ...doc, palette: next }, changed: true };
+}
+
 /**
  * 把排版结果写回文档：这是 dagre 坐标进入文档的唯一入口。
  * laid 是 core 的 layout() 返回值（节点带 x/y）。
@@ -273,6 +283,7 @@ export function serializeDoc(doc) {
       version: DOC_VERSION,
       title: doc.title,
       template: doc.template,
+      palette: doc.palette || '',
       nodes: doc.nodes,
       edges: doc.edges,
     },
@@ -301,6 +312,7 @@ export function deserializeDoc(text) {
     version: DOC_VERSION,
     title: typeof raw.title === 'string' ? raw.title : '',
     template: typeof raw.template === 'string' ? raw.template : 'default',
+    palette: typeof raw.palette === 'string' ? raw.palette : '',
     nodes: raw.nodes.map((n) => ({
       id: n.id,
       type: n.type,
