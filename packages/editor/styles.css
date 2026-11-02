@@ -97,73 +97,6 @@ body {
   background: #e3e7ec;
 }
 
-.btn {
-  height: 30px;
-  padding: 0 10px;
-  font: inherit;
-  color: #3d4654;
-  background: transparent;
-  border: 1px solid transparent;
-  border-radius: 6px;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: background 120ms, border-color 120ms, color 120ms;
-}
-
-.btn:hover:not(:disabled) {
-  background: #f2f4f7;
-  border-color: #e3e7ec;
-}
-
-.btn:active:not(:disabled) {
-  background: #e8ecf1;
-}
-
-.btn:disabled {
-  color: #b6bdc7;
-  cursor: default;
-}
-
-.btn.icon {
-  width: 30px;
-  padding: 0;
-  font-size: 15px;
-  line-height: 1;
-}
-
-.btn.primary {
-  color: #fff;
-  background: #1b1f27;
-  border-color: #1b1f27;
-}
-
-.btn.primary:hover:not(:disabled) {
-  background: #2b3240;
-  border-color: #2b3240;
-}
-
-.select,
-.number {
-  height: 30px;
-  padding: 0 8px;
-  font: inherit;
-  color: #3d4654;
-  background: #fff;
-  border: 1px solid #dfe3e8;
-  border-radius: 6px;
-  outline: none;
-}
-
-.select:focus,
-.number:focus {
-  border-color: #bf4520;
-}
-
-.select.small {
-  height: 26px;
-  font-size: 12px;
-}
-
 /* ---------------------------------------------------------------- 工作区 */
 
 .workspace {
@@ -432,10 +365,6 @@ body {
   color: #4d5666;
 }
 
-.number {
-  width: 72px;
-}
-
 .note {
   margin: 8px 0 0;
   font-size: 11px;
@@ -550,17 +479,6 @@ kbd {
   border-color: #1b1f27;
 }
 
-.danger {
-  width: 100%;
-  margin-top: 4px;
-  color: #a33a1c;
-}
-
-.danger:hover:not(:disabled) {
-  background: #fdf0ec;
-  border-color: #f0cfc5;
-}
-
 /* ---------------------------------------------------------------- 提示条 */
 
 .toast {
@@ -668,7 +586,7 @@ kbd {
   --wa-color-danger-border-quiet: #f0cfc5;
   --wa-color-danger-border-normal: #d8634a;
 
-  /* 表单控件：26px 高、6px 圆角、1px 描边 —— 与原有 .select.small 完全一致 */
+  /* 表单控件：26px 高、6px 圆角、1px 描边 —— 与改造前的原生下拉保持同一套尺寸 */
   --wa-form-control-height: 26px;
   --wa-form-control-border-radius: 6px;
   --wa-form-control-border-width: 1px;
@@ -690,7 +608,15 @@ kbd {
   --wa-shadow-l: 0 8px 24px rgba(27, 31, 39, 0.12);
 }
 
-/* 顶栏按钮：比面板里的高一档，视觉上给顶栏一点分量 */
+/*
+ * 顶栏里的控件比右侧面板高一档（30px vs 26px）。
+ * 理由：52px 高的顶栏里放 26px 的控件，上下各留 13px，视觉重心散；
+ * 30px 与改造前的按钮高度一致，顶栏不会因为换组件库而变矮。
+ */
+.topbar {
+  --wa-form-control-height: 30px;
+}
+
 .topbar wa-button::part(base) {
   font-weight: 500;
 }

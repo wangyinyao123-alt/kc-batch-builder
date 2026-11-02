@@ -28,6 +28,8 @@ npm run serve        # http://127.0.0.1:5173
 | `src/app.js` | 交互、状态、事件绑定、导出 |
 | `src/vsdx-bridge.js` | VSDX 导出桥（动态 import，独立 chunk） |
 | `src/shims/` | 浏览器替身：`fs` / `crypto` / `buffer` |
+| `src/waui.js` | Web Awesome 组件按需注册（按钮 / 下拉 / 数字框 / 文本域 / 单选组） |
+| `src/waui.css` | 只引组件库的 layers + theme 两层，esbuild 单独打 `dist/waui.css` |
 
 ## 关键设计：为什么编辑器不用 core 的 IR
 
@@ -97,6 +99,27 @@ ts-visio 是 CJS 且假设跑在 Node：
 
 配色和模板都写在文档 JSON 里（`template` / `palette` 两个字段），所以保存、重开、撤销都能带回来。
 
+## 为什么用 Web Awesome 而不是自己写控件
+
+右侧面板原来是一排原生 `<select>` / `<input>` / `<button>`。原生控件在
+macOS、Windows、Linux 上是三套完全不同的外观，而且没法定制（`appearance: none`
+之后下拉箭头、聚焦环、禁用态全要自己画）。
+
+选 `@awesome.me/webawesome`（MIT，Shoelace 的后续版本，Fonticons 维护）：
+
+- 组件是标准 Web Component，**不需要 React/Vue 运行时**，与本项目「零框架」的前提一致。
+- 它的样式全写在 `@layer wa-component` 里，我们的 `styles.css` 是普通 CSS，
+  天然在它之上 —— 想改外观不用 `!important`。
+- 语义变量整套公开（`--wa-color-brand-fill-normal`、`--wa-form-control-height`
+  等），把项目 token 灌进去就完成主题化，不逐个组件覆盖。
+
+**没有引 `native.css`**：那份 1442 行会把 `html/body/h1..h6/p/ul` 全重置，
+一进来就把编辑器自己的排版打乱。只引 `layers.css`（图层声明）+ `themes/default.css`
+（变量）两层，`dist/waui.css` 打包后 57KB / gzip 7KB。
+
+顶栏控件 30px、面板控件 26px：靠 `.topbar { --wa-form-control-height: 30px }`
+一处覆盖，不写每按钮的 height。
+
 ## 交互备忘
 
 - **双击进就地编辑**不用原生 `dblclick`：第一次点击的 `reselect()` 会 `render()`，
@@ -111,7 +134,7 @@ ts-visio 是 CJS 且假设跑在 Node：
 ## 测试
 
 ```bash
-npm test     # 93 个
+npm test     # 95 个
 ```
 
 `doc` (23) / `history` (11) / `viewport` (15) / `scene` (18) / `hit` (18) / `export` (8)。
@@ -121,7 +144,7 @@ npm test     # 93 个
 
 ## 已知限制
 
-- 只做了竖向（TB）排版；`direction` 参数在 core 里支持 LR，但编辑器 UI 未接。
+- 竖排（TB）与横排（LR）都支持，但只有这两档；斜向/自由方向没有。
 - 连线是正交路由，不支持用户手动加拐点。
 - 撤销基于全量快照，文档很大时内存会涨（当前规模无所谓）。
 - VSDX 未在真 Visio 里验证过（本机没有 Visio），只用 draw.io 与 XML 静态断言验过。

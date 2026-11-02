@@ -6,6 +6,8 @@
  *
  * 每个组件一个 import，构建时能按需摇树；下面这一组的代价约 90KB（gzip 后更小），
  * 换掉的是原生控件在 macOS / Windows 上三套完全不同的丑陋外观。
+ *
+ * 不引 tooltip：顶栏按钮的说明用原生 title 属性就够了，多引一个组件只是多几 KB。
  */
 import '@awesome.me/webawesome/dist/components/button/button.js';
 import '@awesome.me/webawesome/dist/components/select/select.js';
@@ -14,4 +16,3 @@ import '@awesome.me/webawesome/dist/components/number-input/number-input.js';
 import '@awesome.me/webawesome/dist/components/textarea/textarea.js';
 import '@awesome.me/webawesome/dist/components/radio-group/radio-group.js';
 import '@awesome.me/webawesome/dist/components/radio/radio.js';
-import '@awesome.me/webawesome/dist/components/tooltip/tooltip.js';
