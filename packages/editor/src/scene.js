@@ -45,7 +45,12 @@ export function buildScene(doc, spec = DEFAULT_SPEC) {
     const to = byId.get(e.to);
     // 悬空的边不画：宁可少一条线，也不要画一条指向不存在的框的线
     if (!from || !to) continue;
-    const points = orthogonalRoute(from, to);
+    // 沿用户指定的端口走。没指定时 orthogonalRoute 内部按相对位置推断，
+    // 所以自动排版出来的线行为不变，只有人手动拉的线才「指哪打哪」。
+    const points = orthogonalRoute(from, to, {
+      ...(e.fromSide ? { fromSide: e.fromSide } : {}),
+      ...(e.toSide ? { toSide: e.toSide } : {}),
+    });
     if (points.length < 2) continue;
     edges.push({
       id: e.id,
@@ -53,6 +58,8 @@ export function buildScene(doc, spec = DEFAULT_SPEC) {
       to: e.to,
       label: e.label,
       kind: e.kind,
+      fromSide: e.fromSide || '',
+      toSide: e.toSide || '',
       points,
       fromType: from.type,
       toType: to.type,

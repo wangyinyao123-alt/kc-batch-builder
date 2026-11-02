@@ -19,6 +19,7 @@ import {
   updateNodeText,
   setNodeType,
   setEdgeLabel,
+  setEdgeSides,
   setTitle,
   setTemplate,
   setPalette,
@@ -38,7 +39,15 @@ import {
   fitBox,
 } from './viewport.js';
 import { buildScene, sceneToLaid, snapToNeighbors } from './scene.js';
-import { pickNode, pickEdge, pickLabel, pickPort, pickInRect } from './hit.js';
+import {
+  pickNode,
+  pickEdge,
+  pickLabel,
+  pickPort,
+  pickInRect,
+  pickDropTarget,
+  nearestPort,
+} from './hit.js';
 import { nodeSvg, edgeSvg, labelSvg, rubberSvg, guidesSvg, marqueeSvg } from './canvas.js';
 import { resolveSpec, listTemplates, listPalettes } from '../../core/src/templates.js';
 import { renderSvg } from '../../core/src/render.js';
@@ -53,6 +62,21 @@ import './waui.js';
 const STORAGE_KEY = 'flowchart-elf:doc:v1';
 /** 两次按下间隔小于这个值、且落在同一节点上，就算双击。 */
 const DOUBLE_CLICK_MS = 350;
+
+/**
+ * 端口可点半径（**屏幕像素**，不是世界坐标）。
+ *
+ * 之前是 8 世界像素：100% 缩放下只有 8px 命中区，而画出来的圆点直径 10px，
+ * 用户得把指针精确压到框边中点上才拉得出线。12px 屏幕半径配「取最近端口」，
+ * 贴着半条边点都能命中。
+ */
+const PORT_HIT_PX = 12;
+
+/**
+ * 拉线落点容差（屏幕像素）。允许在目标框外一点点松手也算接上 ——
+ * 菱形四角不容易正好落在框内，完全零容差会让判断节点几乎连不上。
+ */
+const DROP_SLOP_PX = 12;
 
 const $ = (id) => document.getElementById(id);
 
@@ -139,11 +163,21 @@ function render() {
   els.labels.innerHTML = scene.labels
     .map((l) => labelSvg(l, spec, selection?.kind === 'edge' && selection.id === l.edgeId))
     .join('');
+  // 拉线时把「瞄准的那个节点 + 具体哪条边」传给绘制层，
+  // 让它把那条边的端口放大高亮 —— 松手前就能确认接在哪。
+  const connecting = dragState?.mode === 'connect';
+  const dropTargetId = connecting ? dragState.drop?.nodeId ?? null : null;
+  const dropTargetSide = connecting ? dragState.drop?.side ?? null : null;
+
   els.nodes.innerHTML = scene.nodes
     .map((n) =>
       nodeSvg(n, spec, {
         selected: selection?.kind === 'node' && selection.id === n.id,
         hovered: hovered === n.id,
+        // 拉线过程中把所有端口都亮出来：用户不用先悬停到目标框上去找把手，
+        // 一眼就能看到「哪些地方可以接」。
+        showPorts: connecting,
+        dropSide: n.id === dropTargetId ? dropTargetSide : null,
       }),
     )
     .join('');
@@ -175,11 +209,22 @@ function buildDefs() {
 
 function drawRubber() {
   if (!dragState || dragState.mode !== 'connect') return;
-  const from = lastScene.nodes.find((n) => n.id === dragState.fromId);
+  const from = lastScene?.nodes.find((n) => n.id === dragState.fromId);
   if (!from) return;
+
+  // 已经瞄准某个框时，橡皮筋直接画到那个端口上，并吸附成实线终点 ——
+  // 让用户松手前就知道「会接在这条边上」。
+  const dropNode = dragState.drop
+    ? lastScene?.nodes.find((n) => n.id === dragState.drop.nodeId)
+    : null;
+  const snapped = Boolean(dropNode && dragState.drop?.side);
+
   els.overlay.insertAdjacentHTML(
     'beforeend',
-    rubberSvg(from, dragState.pointer, dragState.side),
+    rubberSvg(from, dragState.pointer, dragState.side, {
+      dropNode: snapped ? dropNode : null,
+      dropSide: snapped ? dragState.drop.side : null,
+    }),
   );
 }
 
@@ -448,19 +493,23 @@ function onPointerDown(ev) {
     return;
   }
 
-  // 端口优先：端口画在框边上，用户想拉线时不该被「拖节点」抢走
+  // 端口优先：端口画在框边上，用户想拉线时不该被「拖节点」抢走。
+  // 半径按屏幕像素给（PORT_HIT_PX），缩放越小世界半径越大，
+  // 保证「看起来那么大的圆点」在任何缩放下都好点。
   if (lastScene) {
     for (const n of [...lastScene.nodes].reverse()) {
-      const port = pickPort(wp, n, 8 / view.scale);
+      const port = pickPort(wp, n, PORT_HIT_PX / view.scale);
       if (port) {
         dragState = {
           mode: 'connect',
           fromId: n.id,
           side: port.side,
           pointer: wp,
+          drop: null,
           moved: false,
         };
         els.stage.setPointerCapture(ev.pointerId);
+        hovered = n.id;
         drawRubber();
         return;
       }
@@ -629,11 +678,23 @@ function onPointerMove(ev) {
 
   if (dragState.mode === 'connect') {
     dragState.pointer = wp;
-    const target = lastScene ? pickNode(lastScene.nodes, wp, 0) : null;
-    if (target && target.id !== dragState.fromId) {
-      hovered = target.id;
+
+    // 落点判定用整个框体（不是端口小圆点）：拖到框里松手就接上，
+    // 接哪条边由离指针最近的端口决定 —— 所见即所得。
+    const drop = lastScene
+      ? pickDropTarget(lastScene.nodes, wp, dragState.fromId, DROP_SLOP_PX / view.scale)
+      : null;
+    dragState.drop = drop ? { nodeId: drop.node.id, side: drop.side } : null;
+
+    // 高亮会在框边画一圈提示，这需要重画节点层（不只是 overlay）；
+    // 只在目标变化时重画，避免每移动一像素就重建整棵树。
+    const nextHover = drop ? drop.node.id : null;
+    if (nextHover !== hovered) {
+      hovered = nextHover;
+      render();
+      return;
     }
-    // 只重画 overlay：拉线过程中不该重画整张图
+
     els.overlay.innerHTML = '';
     drawRubber();
     return;
@@ -673,14 +734,28 @@ function onPointerUp(ev) {
 
   if (mode === 'connect') {
     const wp = worldPoint(ev);
-    const target = lastScene ? pickNode(lastScene.nodes, wp, 0) : null;
+    // 用拖拽过程中持续更新的 drop，而不是再算一遍：
+    // 用户可能在框里松手，但鼠标最后几像素已经移出去了。
+    const drop = dragState.drop
+      ? lastScene?.nodes.find((n) => n.id === dragState.drop.nodeId)
+      : null;
+    const fallback =
+      !drop && lastScene
+        ? pickDropTarget(lastScene.nodes, wp, dragState.fromId, DROP_SLOP_PX / view.scale)
+        : null;
+    const target = drop || fallback?.node || null;
+    const toSide = dragState.drop?.side || fallback?.side || '';
+    const fromSide = dragState.side;
+
     const fromId = dragState.fromId;
     dragState = null;
+    hovered = null;
     els.overlay.innerHTML = '';
+
     if (target) {
-      const r = addEdge(doc, fromId, target.id);
+      // 两端端口都记下来，布线时照用户指的边走，不再自己猜方向
+      const r = addEdge(doc, fromId, target.id, '', 'flow', { fromSide, toSide });
       if (r.changed) {
-        // 新建连线后，如果起点是判断节点且这条边还没有标签，提示一下
         commit(r.doc);
         const from = doc.nodes.find((n) => n.id === fromId);
         const outDegree = doc.edges.filter((e) => e.from === fromId).length;

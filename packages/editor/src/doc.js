@@ -95,6 +95,8 @@ export function docFromDiagram(diagram) {
       to,
       label: e.label || '',
       kind: e.kind || 'flow',
+      fromSide: '',
+      toSide: '',
     });
   }
 
@@ -211,14 +213,49 @@ function hasEdge(doc, from, to, label) {
   return doc.edges.some((e) => e.from === from && e.to === to && e.label === label);
 }
 
-export function addEdge(doc, from, to, label = '', kind = 'flow') {
+/** 合法端口名。空串 = 没指定，布线时按两框相对位置自动推断。 */
+export const SIDES = ['top', 'right', 'bottom', 'left'];
+const cleanSide = (s) => (SIDES.includes(s) ? s : '');
+
+/**
+ * 建一条连线。两端可以指定端口。
+ *
+ * 为什么必须把端口存下来：用户从左边端口拉出去的线，如果布线时又按
+ * 两框中心点的主轴重新推断，可能被画成从下端口出 —— 手一松线就跳到
+ * 另一条边。这就是「连完没对齐」的直接原因。存下来，画的时候照用户
+ * 指的边走。空串表示没指定（自动排版生成的线都是空串），此时才推断。
+ */
+export function addEdge(doc, from, to, label = '', kind = 'flow', sides = {}) {
   if (!from || !to) return { doc, changed: false };
   if (!doc.nodes.some((n) => n.id === from) || !doc.nodes.some((n) => n.id === to)) {
     return { doc, changed: false };
   }
   if (hasEdge(doc, from, to, label)) return { doc, changed: false };
   const next = clone(doc);
-  next.edges.push({ id: nextId(next, 'e'), from, to, label, kind });
+  next.edges.push({
+    id: nextId(next, 'e'),
+    from,
+    to,
+    label,
+    kind,
+    fromSide: cleanSide(sides.fromSide),
+    toSide: cleanSide(sides.toSide),
+  });
+  return { doc: next, changed: true };
+}
+
+/** 改一条边两端的端口。传空串 = 回到自动推断。 */
+export function setEdgeSides(doc, id, sides = {}) {
+  const next = clone(doc);
+  const e = next.edges.find((x) => x.id === id);
+  if (!e) return { doc, changed: false };
+  const fromSide = cleanSide(sides.fromSide);
+  const toSide = cleanSide(sides.toSide);
+  if ((e.fromSide || '') === fromSide && (e.toSide || '') === toSide) {
+    return { doc, changed: false };
+  }
+  e.fromSide = fromSide;
+  e.toSide = toSide;
   return { doc: next, changed: true };
 }
 
@@ -329,6 +366,9 @@ export function deserializeDoc(text) {
         to: e.to,
         label: typeof e.label === 'string' ? e.label : '',
         kind: e.kind === 'merge' ? 'merge' : 'flow',
+        // 老文件没有这两个字段 → 空串 → 回到按位置推断，不会读崩
+        fromSide: SIDES.includes(e.fromSide) ? e.fromSide : '',
+        toSide: SIDES.includes(e.toSide) ? e.toSide : '',
       })),
   };
 }

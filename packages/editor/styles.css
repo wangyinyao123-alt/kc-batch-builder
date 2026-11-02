@@ -180,6 +180,19 @@ body {
   fill: #bf4520;
 }
 
+/* 拉线瞄准某条边：端口放大填充，整框描一圈提示「松手接这里」 */
+.canvas .port.armed {
+  fill: #bf4520;
+  stroke: #ffffff;
+  stroke-width: 2;
+  opacity: 1;
+}
+
+.canvas .node-drop .shape-strong {
+  stroke: #bf4520;
+  stroke-width: 2;
+}
+
 .canvas .guide {
   stroke: #bf4520;
   stroke-width: 1;
@@ -202,6 +215,12 @@ body {
   stroke-dasharray: 5 4;
   fill: none;
   pointer-events: none;
+}
+
+/* 已瞄准端口：变成实线，表示「松手就是这个结果」 */
+.canvas .rubber.armed {
+  stroke-dasharray: none;
+  stroke-width: 2;
 }
 
 /* ---------------------------------------------------------------- 就地编辑 */

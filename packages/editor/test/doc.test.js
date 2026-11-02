@@ -13,6 +13,7 @@ import {
   addEdge,
   removeEdge,
   setEdgeLabel,
+  setEdgeSides,
   setTitle,
   setTemplate,
   setPalette,
@@ -298,4 +299,67 @@ test('palette 能存进 JSON 并被读回（否则刷新就丢配色）', () => 
   // 老文件没有 palette 字段时按模板自带处理，不能变成 undefined
   const legacy = deserializeDoc('{"version":1,"nodes":[],"edges":[]}');
   assert.equal(legacy.palette, '');
+});
+
+// ---------------------------------------------------------------- 连线端口
+
+test('addEdge：端口被记下来，没传时是空串（表示自动推断）', () => {
+  let doc = emptyDoc();
+  const a = addNode(doc, { type: 'start', text: '开始', x: 0, y: 0 });
+  doc = a.doc;
+  const b = addNode(doc, { type: 'process', text: '执行', x: 0, y: 200 });
+  doc = b.doc;
+
+  const auto = addEdge(doc, a.id, b.id);
+  assert.equal(auto.doc.edges[0].fromSide, '');
+  assert.equal(auto.doc.edges[0].toSide, '');
+
+  const manual = addEdge(doc, a.id, b.id, '', 'flow', { fromSide: 'right', toSide: 'left' });
+  assert.equal(manual.doc.edges[0].fromSide, 'right');
+  assert.equal(manual.doc.edges[0].toSide, 'left');
+});
+
+test('addEdge：非法端口名被吞掉，不会写进文档', () => {
+  let doc = emptyDoc();
+  const a = addNode(doc, { type: 'process', text: 'A', x: 0, y: 0 });
+  doc = a.doc;
+  const b = addNode(doc, { type: 'process', text: 'B', x: 0, y: 200 });
+  doc = b.doc;
+  const r = addEdge(doc, a.id, b.id, '', 'flow', { fromSide: 'northeast', toSide: 'bottom' });
+  assert.equal(r.doc.edges[0].fromSide, '');
+  assert.equal(r.doc.edges[0].toSide, 'bottom');
+});
+
+test('setEdgeSides：改端口、重复设同值不算改动', () => {
+  let doc = emptyDoc();
+  const a = addNode(doc, { type: 'process', text: 'A', x: 0, y: 0 });
+  doc = a.doc;
+  const b = addNode(doc, { type: 'process', text: 'B', x: 0, y: 200 });
+  doc = b.doc;
+  doc = addEdge(doc, a.id, b.id).doc;
+  const id = doc.edges[0].id;
+
+  const set = setEdgeSides(doc, id, { fromSide: 'left', toSide: 'top' });
+  assert.equal(set.changed, true);
+  assert.equal(set.doc.edges[0].fromSide, 'left');
+  assert.equal(set.doc.edges[0].toSide, 'top');
+  assert.equal(setEdgeSides(set.doc, id, { fromSide: 'left', toSide: 'top' }).changed, false);
+});
+
+test('端口能存进 JSON 并被读回', () => {
+  let doc = emptyDoc();
+  const a = addNode(doc, { type: 'process', text: 'A', x: 0, y: 0 });
+  doc = a.doc;
+  const b = addNode(doc, { type: 'process', text: 'B', x: 0, y: 200 });
+  doc = b.doc;
+  doc = addEdge(doc, a.id, b.id, '', 'flow', { fromSide: 'bottom', toSide: 'top' }).doc;
+  const round = deserializeDoc(serializeDoc(doc));
+  assert.equal(round.edges[0].fromSide, 'bottom');
+  assert.equal(round.edges[0].toSide, 'top');
+
+  // 老文件没有这两个字段 → 空串，不能是 undefined
+  const legacy = deserializeDoc(
+    `{"version":1,"nodes":[{"id":"n1","type":"process","text":"A","x":0,"y":0}],"edges":[]}`,
+  );
+  assert.deepEqual(legacy.edges, []);
 });

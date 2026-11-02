@@ -112,18 +112,68 @@ export function pickLabel(sceneLabels, p, slop = 0) {
   return null;
 }
 
-/** 找被点中的连接端口（从框边拉出新线的把手）。 */
-export function pickPort(p, node, radius = 10) {
+/** 一个节点的四个连接端口（框边中点）。 */
+export function portsOf(node) {
   const cx = node.x + node.w / 2;
   const cy = node.y + node.h / 2;
-  const ports = [
+  return [
     { side: 'top', x: cx, y: node.y },
     { side: 'right', x: node.x + node.w, y: cy },
     { side: 'bottom', x: cx, y: node.y + node.h },
     { side: 'left', x: node.x, y: cy },
   ];
-  for (const port of ports) {
-    if (Math.hypot(p.x - port.x, p.y - port.y) <= radius) return port;
+}
+
+/**
+ * 离某个点最近的端口（不设半径上限）。
+ *
+ * 连线时用它决定「接到目标的哪条边」：用户把线拖到目标框的右下角，
+ * 接上的就是右边或下边里更近的那条，而不是按两框中心点的方向硬猜。
+ */
+export function nearestPort(p, node) {
+  let best = null;
+  let bestD = Infinity;
+  for (const port of portsOf(node)) {
+    const d = Math.hypot(p.x - port.x, p.y - port.y);
+    if (d < bestD) {
+      bestD = d;
+      best = port;
+    }
+  }
+  return { ...best, dist: bestD };
+}
+
+/**
+ * 找被点中的连接端口（从框边拉出新线的把手）。
+ *
+ * 取**半径内最近**的那个，而不是按 top/right/bottom/left 顺序第一个命中：
+ * 小框（比如 96×44 的起止）四条边离得很近，按顺序取会让人总觉得
+ * 「我点的是下边，怎么从右边出」。
+ *
+ * @param {{x:number,y:number}} p 世界坐标
+ * @param {number} [radius=10] 世界坐标下的可点半径。调用方按 屏幕px / scale 传进来
+ */
+export function pickPort(p, node, radius = 10) {
+  const near = nearestPort(p, node);
+  return near.dist <= radius ? near : null;
+}
+
+/**
+ * 拉线松手/经过时的落点：优先取指针所在的框，没有就返回 null。
+ *
+ * 判定用**整个框体**而不是端口圆点 —— 用户把线拖到框中间就该接上，
+ * 没必要精确压到边上那颗小圆点。落点选哪条边由 nearestPort 决定。
+ *
+ * @returns {{node:object, side:string, point:{x:number,y:number}}|null}
+ */
+export function pickDropTarget(sceneNodes, p, fromId = null, slop = 0) {
+  for (let i = sceneNodes.length - 1; i >= 0; i--) {
+    const n = sceneNodes[i];
+    if (n.id === fromId) continue;
+    if (hitNode(p, n, slop)) {
+      const port = nearestPort(p, n);
+      return { node: n, side: port.side, point: { x: port.x, y: port.y } };
+    }
   }
   return null;
 }

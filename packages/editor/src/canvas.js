@@ -7,8 +7,7 @@
  * 让交互层能定位到具体对象（paint.js 只管画，不管交互）。
  */
 import { renderEdge, renderLabel, renderShape, renderNodeText } from '../../core/src/paint.js';
-import { SIDES } from '../../core/src/route.js';
-import { OUT, portPoint } from '../../core/src/route.js';
+import { SIDES, portPoint, orthogonalRoute } from '../../core/src/route.js';
 
 /** 让 shape 与文字成为同一个可定位单元。 */
 function wrap(attrs, body) {
@@ -41,19 +40,32 @@ export function labelSvg(l, spec, selected = false) {
  * 一直画着四个小圆点会让整张图显脏。
  */
 export function nodeSvg(n, spec, opts = {}) {
-  const { selected = false, hovered = false, showPorts = false } = opts;
+  const {
+    selected = false,
+    hovered = false,
+    showPorts = false,
+    dropSide = null,
+  } = opts;
   const shape = renderShape(n, spec);
   const text = renderNodeText(n, spec);
-  const cls = ['node', selected ? 'node-selected' : '', hovered ? 'node-hover' : '']
+  const cls = [
+    'node',
+    selected ? 'node-selected' : '',
+    hovered ? 'node-hover' : '',
+    dropSide ? 'node-drop' : '',
+  ]
     .filter(Boolean)
     .join(' ');
 
   const ports = SIDES.map((side) => {
     const p = portPoint(n, side);
-    const visible = selected || hovered || showPorts;
+    // 被瞄准的那条边放大并高亮：拖线过来时能看清会接在哪
+    const armed = dropSide === side;
+    const visible = selected || hovered || showPorts || Boolean(dropSide);
     return (
-      `<circle class="port${visible ? ' visible' : ''}" data-port="${side}" data-node="${n.id}" ` +
-      `cx="${p.x}" cy="${p.y}" r="5"/>`
+      `<circle class="port${visible ? ' visible' : ''}${armed ? ' armed' : ''}" ` +
+      `data-port="${side}" data-node="${n.id}" ` +
+      `cx="${p.x}" cy="${p.y}" r="${armed ? 7 : 5}"/>`
     );
   }).join('');
 
@@ -61,18 +73,27 @@ export function nodeSvg(n, spec, opts = {}) {
 }
 
 /**
- * 正在拉的那根「橡皮筋」：从端口到鼠标。
- * 用虚线直角折线，让人提前看出接上后会怎么走。
+ * 正在拉的那根「橡皮筋」：从起点端口到指针。
+ *
+ * 用 core 的正交路由画，而不是手写三段折线 —— 这样橡皮筋的拐法
+ * 和松手后真实连线一模一样，拖的时候就能看出会不会绕一圈。
+ *
+ * 已瞄准某个框的端口时，终点吸附到那个端口并画成实线，
+ * 表示「松手就是这个结果」。
  */
-export function rubberSvg(from, to, side) {
-  const p0 = portPoint(from, side);
-  const vertical = side === 'top' || side === 'bottom';
-  const p1 = vertical
-    ? { x: p0.x, y: p0.y + (side === 'bottom' ? OUT : -OUT) }
-    : { x: p0.x + (side === 'right' ? OUT : -OUT), y: p0.y };
-  const d = vertical
-    ? `M${p0.x},${p0.y} L${p1.x},${p1.y} L${p1.x},${to.y} L${to.x},${to.y}`
-    : `M${p0.x},${p0.y} L${p1.x},${p1.y} L${to.x},${p1.y} L${to.x},${to.y}`;
+export function rubberSvg(from, to, side, opts = {}) {
+  const { dropNode = null, dropSide = null } = opts;
+
+  if (dropNode && dropSide) {
+    const pts = orthogonalRoute(from, dropNode, { fromSide: side, toSide: dropSide });
+    const d = 'M' + pts.map((p) => `${p.x},${p.y}`).join(' L');
+    return `<path class="rubber armed" d="${d}"/>`;
+  }
+
+  // 还没瞄准目标：把指针当成零尺寸虚拟框，复用同一套路由
+  const ghost = { x: to.x, y: to.y, w: 0, h: 0 };
+  const pts = orthogonalRoute(from, ghost, { fromSide: side });
+  const d = 'M' + pts.map((p) => `${p.x},${p.y}`).join(' L');
   return `<path class="rubber" d="${d}"/>`;
 }
 

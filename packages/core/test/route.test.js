@@ -169,18 +169,57 @@ test('正交路由：不产生重复点或共线的中间点', () => {
   }
 });
 
-test('正交路由：拐点吸 4px 网格，首尾点保持精确贴边', () => {
+test('正交路由：拐点吸 4px 网格，与端口相邻的出线点保持端口坐标', () => {
   const a = box(101, 3);
   const b = box(307, 213);
   const pts = orthogonalRoute(a, b);
   // 首尾必须精确在框边（不吸格）
   assert.deepEqual(pts[0], portPoint(a, inferSides(a, b).fromSide));
   assert.deepEqual(pts.at(-1), portPoint(b, inferSides(a, b).toSide));
-  // 中间拐点必须守网格
+
+  // 中间拐点守网格。例外是紧挨端点的「出线点」：它必须和端口在垂直轴上一模一样，
+  // 否则第一段会变成斜线（端口 y 不一定是 4 的倍数）。
+  const first = pts[0];
+  const last = pts.at(-1);
   for (let i = 1; i < pts.length - 1; i++) {
-    assert.equal(pts[i].x % 4, 0, `拐点 ${i} 的 x 不在网格上：${pts[i].x}`);
-    assert.equal(pts[i].y % 4, 0, `拐点 ${i} 的 y 不在网格上：${pts[i].y}`);
+    for (const axis of ['x', 'y']) {
+      const v = pts[i][axis];
+      const holdsPort =
+        (i === 1 && v === first[axis]) || (i === pts.length - 2 && v === last[axis]);
+      assert.ok(
+        v % 4 === 0 || holdsPort,
+        `拐点 ${i} 的 ${axis} 既不在网格上，也不与端口对齐：${v}`,
+      );
+    }
   }
+});
+
+test('正交路由：斜后方目标不会让线倒着压回起点框', () => {
+  // 起点在左上，目标在右下但偏左：从右边出线、从下边进线时，
+  // 单肘点方案要求横段往左走 = 倒车，会穿过起点框。
+  const a = box(300, 400, 160, 48);
+  const b = box(220, 520, 160, 48);
+  const pts = orthogonalRoute(a, b, { fromSide: 'right', toSide: 'bottom' });
+
+  // 第一段必须水平向右（法线朝外），不能向左
+  assert.equal(pts[0].y, pts[1].y, '第一段必须是水平段');
+  assert.ok(pts[1].x > pts[0].x, `第一段必须向右走，实际到 ${pts[1].x}`);
+
+  // 任何点在横向上都不能落回起点框内部区间、纵向上也不能压在框体里
+  const insideA = (p) =>
+    p.x > a.x && p.x < a.x + a.w && p.y > a.y && p.y < a.y + a.h;
+  for (const p of pts) {
+    assert.ok(!insideA(p), `拐点 ${p.x},${p.y} 落进了起点框内部`);
+  }
+});
+
+test('正交路由：第一段与端口严格垂直，不是斜线', () => {
+  // 框高 49 → 中线 y 是 .5 结尾，不是 4 的倍数
+  const a = box(100, 0, 120, 49);
+  const b = box(400, 300, 120, 49);
+  const pts = orthogonalRoute(a, b, { fromSide: 'right', toSide: 'left' });
+  assert.equal(pts[0].y, pts[1].y, '从右边出线，第一段必须水平');
+  assert.equal(pts[0].x, a.x + a.w);
 });
 
 test('正交路由：可指定端口方向覆盖推断', () => {
@@ -252,4 +291,71 @@ test('退化输入不崩：零尺寸框', () => {
   const b = { id: 'b', x: 100, y: 100, w: 0, h: 0 };
   const pts = orthogonalRoute(a, b);
   assert.ok(pts.length >= 2);
+});
+
+test('orthogonalRoute：只指定一端时另一端仍按位置推断', () => {
+  const a = box(100, 0, 120, 48);
+  const b = box(100, 200, 120, 48);
+  const both = orthogonalRoute(a, b, { fromSide: 'bottom', toSide: 'top' });
+  const onlyFrom = orthogonalRoute(a, b, { fromSide: 'bottom' });
+  assert.deepEqual(onlyFrom, both, 'B 在下方，toSide 本就该是 top');
+
+  // 只指定出口为右边，入口仍按位置推断：B 在正下方 → top
+  const right = orthogonalRoute(a, b, { fromSide: 'right' });
+  assert.deepEqual(right[0], portPoint(a, 'right'), '出口照指定的走');
+  assert.deepEqual(right.at(-1), portPoint(b, 'top'), '入口按位置推断');
+});
+
+test('正交路由：各种竖/横组合都不出现重复点和斜线段', () => {
+  const cases = [
+    ['竖→横 目标在右下', { x: 240, y: 300, w: 120, h: 48 }, { x: 560, y: 300, w: 120, h: 48 }, { fromSide: 'bottom', toSide: 'left' }],
+    ['竖→横 目标在左下', { x: 560, y: 300, w: 120, h: 48 }, { x: 240, y: 300, w: 120, h: 48 }, { fromSide: 'bottom', toSide: 'right' }],
+    ['横→竖 目标在正下', { x: 240, y: 80, w: 120, h: 48 }, { x: 240, y: 300, w: 120, h: 48 }, { fromSide: 'right', toSide: 'bottom' }],
+    ['横→竖 目标偏左', { x: 300, y: 400, w: 160, h: 48 }, { x: 220, y: 520, w: 160, h: 48 }, { fromSide: 'right', toSide: 'bottom' }],
+    ['同一水平线', { x: 100, y: 100, w: 100, h: 48 }, { x: 400, y: 100, w: 100, h: 48 }, { fromSide: 'bottom', toSide: 'left' }],
+  ];
+
+  for (const [label, a, b, opts] of cases) {
+    const pts = orthogonalRoute({ id: 'a', ...a }, { id: 'b', ...b }, opts);
+    for (let i = 1; i < pts.length; i++) {
+      const p = pts[i];
+      const prev = pts[i - 1];
+      assert.ok(
+        !(p.x === prev.x && p.y === prev.y),
+        `${label}：第 ${i} 段是零长度（重复点 ${p.x},${p.y}）`,
+      );
+      assert.ok(
+        p.x === prev.x || p.y === prev.y,
+        `${label}：第 ${i} 段是斜线 ${JSON.stringify([prev, p])}`,
+      );
+    }
+  }
+});
+
+test('正交路由：竖横混合时第一段必须朝外，不折返压住起点框', () => {
+  // 起点右边的端口，目标却在左边下方：单肘点方案会往左倒车
+  const a = { id: 'a', x: 560, y: 300, w: 120, h: 48 };
+  const b = { id: 'b', x: 240, y: 300, w: 120, h: 48 };
+  const pts = orthogonalRoute(a, b, { fromSide: 'bottom', toSide: 'right' });
+  const [p0, p1] = pts;
+  // 从下边出线：第一段必须向下（y 增大）
+  assert.equal(p0.x, p1.x, '第一段应竖直');
+  assert.ok(p1.y > p0.y, `第一段必须在框外方向，实际 ${p0.y} → ${p1.y}`);
+});
+
+test('正交路由：任何一段都不穿过起点框或终点框', () => {
+  const a = { id: 'a', x: 240, y: 300, w: 120, h: 48 };
+  const b = { id: 'b', x: 560, y: 300, w: 120, h: 48 };
+  const pts = orthogonalRoute(a, b, { fromSide: 'bottom', toSide: 'left' });
+
+  const inside = (p, box, pad = 2) =>
+    p.x > box.x + pad && p.x < box.x + box.w - pad &&
+    p.y > box.y + pad && p.y < box.y + box.h - pad;
+
+  for (let i = 0; i < pts.length - 1; i++) {
+    for (const seg of [pts[i], pts[i + 1]]) {
+      assert.ok(!inside(seg, a), `点 ${seg.x},${seg.y} 在起点框内`);
+      assert.ok(!inside(seg, b), `点 ${seg.x},${seg.y} 在终点框内`);
+    }
+  }
 });

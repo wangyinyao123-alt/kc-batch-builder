@@ -11,6 +11,9 @@
 
 import { colorOf, shapeOf } from './templates.js';
 
+/** 画布上的小写端口名 → vsdx 连接点名。 */
+const SIDE_TO_PORT = { top: 'Top', right: 'Right', bottom: 'Bottom', left: 'Left' };
+
 /**
  * 由两个框的相对位置推出连线该从哪一侧出去、从哪一侧进来。
  * 规则与 dagre 的正交路由一致：主要沿 y 走就用上下，否则用左右。
@@ -80,7 +83,11 @@ export function toVsdxInput(laid, spec, opts = {}) {
     const from = byId.get(e.from);
     const to = byId.get(e.to);
     if (!from || !to) continue;
-    const { fromPort, toPort } = inferPorts(from, to);
+    // 用户在画布上指定过端口就跟用户走，否则按位置推断。
+    // 两边不一致的话，「屏幕上从左边出、导出后从下边出」这种问题会很难查。
+    const guessed = inferPorts(from, to);
+    const fromPort = SIDE_TO_PORT[e.fromSide] || guessed.fromPort;
+    const toPort = SIDE_TO_PORT[e.toSide] || guessed.toPort;
     edges.push({
       from: e.from,
       to: e.to,

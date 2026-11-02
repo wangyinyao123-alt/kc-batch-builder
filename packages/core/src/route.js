@@ -73,27 +73,109 @@ export function inferSides(from, to) {
     : { fromSide: 'left', toSide: 'right' };
 }
 
-/** 去掉重复点与共线的中间点，避免 SVG 里出现 0 长度的线段。 */
+/**
+ * 去掉重复点与共线的中间点，避免 SVG 里出现 0 长度的线段。
+ *
+ * 必须反复做到稳定为止：删掉一个共线点后，它两侧的点可能刚刚好重合，
+ * 于是又冒出一个重复点。只扫一遍会留下 `L300,348 L300,348` 这种
+ * 自相矛盾的路径段。
+ */
 function simplify(points) {
-  const out = [];
+  let out = [];
   for (const p of points) {
     const last = out[out.length - 1];
     if (last && last.x === p.x && last.y === p.y) continue;
     out.push(p);
   }
-  for (let i = out.length - 2; i > 0; i--) {
-    const a = out[i - 1];
-    const b = out[i];
-    const c = out[i + 1];
-    const collinear = (a.x === b.x && b.x === c.x) || (a.y === b.y && b.y === c.y);
-    if (collinear) out.splice(i, 1);
+
+  let changed = true;
+  while (changed) {
+    changed = false;
+    for (let i = out.length - 2; i > 0; i--) {
+      const a = out[i - 1];
+      const b = out[i];
+      const c = out[i + 1];
+      const collinear =
+        (a.x === b.x && b.x === c.x) || (a.y === b.y && b.y === c.y);
+      const duplicate = (a.x === b.x && a.y === b.y) || (b.x === c.x && b.y === c.y);
+      if (collinear || duplicate) {
+        out.splice(i, 1);
+        changed = true;
+      }
+    }
   }
   return out;
 }
 
-/** 两个「离开框边的点」之间怎么连。 */
-function connect(p1, s1, p2, s2) {
+/**
+ * 出线点只沿法线方向吸格，另一轴保持与端口完全对齐。
+ *
+ * 两轴都吸会出事：端口中线在 y=102（不是 4 的倍数），吸格成 104 之后
+ * 第一段就成了斜线 —— 正交路由里冒出斜线段，看起来像画歪了。
+ */
+function snapOut(p, side) {
+  return isVertical(side)
+    ? { x: p.x, y: snapGrid(p.y) }
+    : { x: snapGrid(p.x), y: p.y };
+}
+
+const EDGE_PAD = 2;
+
+/** 一条轴对齐线段是否穿过了某个框（内缩 pad，贴着边走不算穿）。 */
+function segHitsBox(a, b, box, pad = EDGE_PAD) {
+  const x1 = box.x + pad;
+  const x2 = box.x + box.w - pad;
+  const y1 = box.y + pad;
+  const y2 = box.y + box.h - pad;
+
+  if (a.x === b.x) {
+    if (a.x <= x1 || a.x >= x2) return false;
+    const lo = Math.min(a.y, b.y);
+    const hi = Math.max(a.y, b.y);
+    return hi > y1 && lo < y2;
+  }
+  if (a.y === b.y) {
+    if (a.y <= y1 || a.y >= y2) return false;
+    const lo = Math.min(a.x, b.x);
+    const hi = Math.max(a.x, b.x);
+    return hi > x1 && lo < x2;
+  }
+  // 斜线一律当作「穿过了」：正交路由里不该出现斜线
+  return true;
+}
+
+/** 整条折线是否完全不穿过给定的框。 */
+function routeIsClean(pts, boxes) {
+  const list = boxes.filter(Boolean);
+  for (let i = 0; i < pts.length - 1; i++) {
+    for (const box of list) {
+      if (segHitsBox(pts[i], pts[i + 1], box)) return false;
+    }
+  }
+  return true;
+}
+
+/** 第一段是否沿法线朝外走（而不是原地折回压住自己的框）。 */
+function exitsForward(p1, p2, side) {
+  const n = normalOf(side);
+  const dx = p2.x - p1.x;
+  const dy = p2.y - p1.y;
+  return dx * n.x + dy * n.y >= 0;
+}
+
+/**
+ * 两个「离开框边的点」之间怎么连。
+ *
+ * @param {object} p1 出线点（起点框外 out 处）
+ * @param {string} s1 出口方向
+ * @param {object} p2 入线点（终点框外 out 处）
+ * @param {string} s2 入口方向
+ * @param {object[]} boxes 需要避让的两个框
+ */
+function connect(p1, s1, p2, s2, boxes = []) {
   if (p1.x === p2.x || p1.y === p2.y) return [p1, p2];
+
+  // 两竖 → 中间高度横向并线；两横 → 中间宽度纵向并线
   if (isVertical(s1) && isVertical(s2)) {
     const midY = snapGrid((p1.y + p2.y) / 2);
     return [p1, { x: p1.x, y: midY }, { x: p2.x, y: midY }, p2];
@@ -102,10 +184,27 @@ function connect(p1, s1, p2, s2) {
     const midX = snapGrid((p1.x + p2.x) / 2);
     return [p1, { x: midX, y: p1.y }, { x: midX, y: p2.y }, p2];
   }
-  // 一竖一横：单个肘点
-  return isVertical(s1)
-    ? [p1, { x: p1.x, y: p2.y }, p2]
-    : [p1, { x: p2.x, y: p1.y }, p2];
+
+  // 一竖一横：有两种肘点摆法，挑一条既不折返、又不穿过框的
+  const verticalFirst = [p1, { x: p1.x, y: p2.y }, p2];
+  const horizontalFirst = [p1, { x: p2.x, y: p1.y }, p2];
+
+  const ok = (route) =>
+    exitsForward(p1, route[1], s1) && routeIsClean(route, boxes);
+
+  if (ok(verticalFirst)) return verticalFirst;
+  if (ok(horizontalFirst)) return horizontalFirst;
+
+  // 两种单肘都不行（目标在斜后方）：先沿法线走出去，再从两框之间横穿。
+  // 中间那条线要放在两个框之外，才不会压在框体上。
+  if (isVertical(s1)) {
+    const outward = p1.y + (normalOf(s1).y > 0 ? Math.max(0, p2.y - p1.y) : Math.min(0, p2.y - p1.y));
+    const midY = snapGrid(Math.abs(p2.y - p1.y) < 1 ? p1.y : outward);
+    return [p1, { x: p1.x, y: midY }, { x: p2.x, y: midY }, p2];
+  }
+  const outwardX = p1.x + (normalOf(s1).x > 0 ? Math.max(0, p2.x - p1.x) : Math.min(0, p2.x - p1.x));
+  const midX = snapGrid(Math.abs(p2.x - p1.x) < 1 ? p1.x : outwardX);
+  return [p1, { x: midX, y: p1.y }, { x: midX, y: p2.y }, p2];
 }
 
 /**
@@ -135,9 +234,10 @@ export function orthogonalRoute(from, to, opts = {}) {
     ]);
   }
 
-  const { fromSide, toSide } = opts.fromSide && opts.toSide
-    ? opts
-    : inferSides(from, to);
+  // 允许只指定一端：另一端仍按位置推断。编辑器的连线可能只记了出口。
+  const inferred = inferSides(from, to);
+  const fromSide = opts.fromSide || inferred.fromSide;
+  const toSide = opts.toSide || inferred.toSide;
 
   const p0 = portPoint(from, fromSide);
   const p3 = portPoint(to, toSide);
@@ -148,10 +248,10 @@ export function orthogonalRoute(from, to, opts = {}) {
   const p2 = { x: p3.x + n2.x * out, y: p3.y + n2.y * out };
 
   // 只把「离开框边的点」吸格；p0/p3 必须精确贴边
-  const s1 = { x: snapGrid(p1.x), y: snapGrid(p1.y) };
-  const s2 = { x: snapGrid(p2.x), y: snapGrid(p2.y) };
+  const s1 = snapOut(p1, fromSide);
+  const s2 = snapOut(p2, toSide);
 
-  const mid = connect(s1, fromSide, s2, toSide);
+  const mid = connect(s1, fromSide, s2, toSide, [from, to]);
   return simplify([p0, ...mid, p3]);
 }
 

@@ -199,3 +199,46 @@ test('snapToNeighbors：吸附后坐标仍守 4px 网格', () => {
   if (r.x !== null) assert.equal(r.x % GRID, 0);
   if (r.y !== null) assert.equal(r.y % GRID, 0);
 });
+
+// ---------------------------------------------------------------- 指定端口后布线
+
+test('buildScene：连线按文档里记的端口出/入，不受两框相对位置影响', () => {
+  let doc = emptyDoc();
+  const a = addNode(doc, { type: 'process', text: 'A', x: 0, y: 0 });
+  doc = a.doc;
+  // B 在 A 正下方：自动推断必然是 bottom → top
+  const b = addNode(doc, { type: 'process', text: 'B', x: 0, y: 200 });
+  doc = b.doc;
+
+  const scene = buildScene(doc, spec);
+  const A = scene.nodes.find((n) => n.id === a.id);
+  const B = scene.nodes.find((n) => n.id === b.id);
+
+  const auto = buildScene(addEdge(doc, a.id, b.id).doc, spec).edges[0];
+  assert.deepEqual(auto.points[0], { x: A.cx, y: A.y + A.h }, '自动应从 A 底边出');
+  assert.deepEqual(auto.points.at(-1), { x: B.cx, y: B.y }, '自动应从 B 顶边进');
+
+  // 用户指定从右边出、左边进：即使 B 在正下方，也必须照办。
+  // 这正是「连完线跳到另一条边」那个问题的回归测试。
+  const manual = buildScene(
+    addEdge(doc, a.id, b.id, '', 'flow', { fromSide: 'right', toSide: 'left' }).doc,
+    spec,
+  ).edges[0];
+  assert.deepEqual(manual.points[0], { x: A.x + A.w, y: A.cy }, '必须从 A 右边出');
+  assert.deepEqual(manual.points.at(-1), { x: B.x, y: B.cy }, '必须从 B 左边进');
+});
+
+test('buildScene：端口原样带进场景，导出时不用再猜', () => {
+  let doc = emptyDoc();
+  const a = addNode(doc, { type: 'process', text: 'A', x: 0, y: 0 });
+  doc = a.doc;
+  const b = addNode(doc, { type: 'process', text: 'B', x: 300, y: 0 });
+  doc = b.doc;
+  doc = addEdge(doc, a.id, b.id, '', 'flow', { fromSide: 'top', toSide: 'right' }).doc;
+  const e = buildScene(doc, spec).edges[0];
+  assert.equal(e.fromSide, 'top');
+  assert.equal(e.toSide, 'right');
+  // 起点必须是 A 的上边中点
+  const aScene = buildScene(doc, spec).nodes.find((n) => n.id === a.id);
+  assert.deepEqual(e.points[0], { x: aScene.x + aScene.w / 2, y: aScene.y });
+});

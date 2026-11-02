@@ -11,6 +11,8 @@ import {
   pickEdge,
   pickLabel,
   pickPort,
+  nearestPort,
+  pickDropTarget,
   pickInRect,
 } from '../src/hit.js';
 
@@ -135,4 +137,53 @@ test('pickInRect：反向拖框（负宽高）也能用', () => {
 test('pickInRect：空框不选中任何东西', () => {
   const a = box(0, 0, 100, 40, { id: 'a' });
   assert.deepEqual(pickInRect([a], { x: 500, y: 500, w: 0, h: 0 }), []);
+});
+
+// ---------------------------------------------------------------- 端口取最近 + 落点判定
+
+test('nearestPort：不设半径上限，永远给出最近的那条边', () => {
+  const n = box(0, 0, 100, 40);
+  // 右下角外侧：右边中点 (100,20) 距 22.4，下边中点 (50,40) 距 33.5 → 右边更近
+  assert.equal(nearestPort({ x: 120, y: 40 }, n).side, 'right');
+  // 正下方远处：下边比右边近
+  assert.equal(nearestPort({ x: 50, y: 90 }, n).side, 'bottom');
+});
+
+test('pickPort：同一处有两个端口同样近时不会按数组顺序乱来', () => {
+  // 正方形中心点到四条边等距，取到的一定是其中之一且不重复跳变
+  const sq = box(0, 0, 40, 40);
+  const a = pickPort({ x: 20, y: -2 }, sq, 10);
+  assert.equal(a.side, 'top');
+  const b = pickPort({ x: -2, y: 20 }, sq, 10);
+  assert.equal(b.side, 'left');
+});
+
+test('pickPort：小框上贴着半条边点也能命中（半径按屏幕像素给）', () => {
+  const small = box(0, 0, 96, 44);
+  // 下边中点是 (48,44)。距离 14px 处：半径 12 不中、半径 16 命中
+  assert.equal(pickPort({ x: 48, y: 58 }, small, 12), null);
+  assert.equal(pickPort({ x: 48, y: 58 }, small, 16)?.side, 'bottom');
+});
+
+test('pickDropTarget：拖到框内任意位置都算接上，端口取最近的边', () => {
+  const a = box(0, 0, 100, 40, { id: 'a' });
+  const b = box(0, 200, 100, 40, { id: 'b' });
+  // 落在 b 框内部靠下的位置 → 接 b 的下边（离得最近）
+  const d = pickDropTarget([a, b], { x: 50, y: 235 }, 'a');
+  assert.equal(d.node.id, 'b');
+  assert.equal(d.side, 'bottom');
+  assert.deepEqual(d.point, { x: 50, y: 240 });
+});
+
+test('pickDropTarget：永远不返回起点自己（自连另有入口）', () => {
+  const a = box(0, 0, 100, 40, { id: 'a' });
+  assert.equal(pickDropTarget([a], { x: 50, y: 20 }, 'a'), null);
+});
+
+test('pickDropTarget：容差让菱形四角也能接上', () => {
+  const diamond = { id: 'd', type: 'decision', x: 0, y: 0, w: 100, h: 100 };
+  // (80,80) 在菱形外（0.6+0.6=1.2 > 1），加上 12px 容差后落进来
+  const p = { x: 80, y: 80 };
+  assert.equal(pickDropTarget([diamond], p, null, 0), null);
+  assert.equal(pickDropTarget([diamond], p, null, 12)?.node.id, 'd');
 });
