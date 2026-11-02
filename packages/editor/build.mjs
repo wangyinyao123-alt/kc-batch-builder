@@ -20,6 +20,7 @@ const here = dirname(fileURLToPath(import.meta.url));
 
 const shim = (name) => resolve(here, 'src/shims', name);
 
+// 1) JS / 组件
 await build({
   entryPoints: [resolve(here, 'src/app.js')],
   outdir: resolve(here, 'dist'),
@@ -40,4 +41,16 @@ await build({
     'node:crypto': shim('crypto-browser.js'),
     crypto: shim('crypto-browser.js'),
   },
+});
+
+// 2) Web Awesome 的主题变量层，单独出一个 CSS。
+//    不能直接 @import node_modules 路径（浏览器不认 bare specifier），
+//    也不能并进 styles.css（styles.css 是手写的、要能直接改），
+//    所以走 esbuild 把 @import 展开成一份 dist/waui.css。
+await build({
+  entryPoints: [resolve(here, 'src/waui.css')],
+  outfile: resolve(here, 'dist/waui.css'),
+  bundle: true,
+  loader: { '.css': 'css' },
+  logLevel: 'info',
 });

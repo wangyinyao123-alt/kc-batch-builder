@@ -48,6 +48,8 @@ import { orthogonalRoute } from '../../core/src/route.js';
 import { snapGrid, titleHeight as calcTitleHeight } from '../../core/src/theme.js';
 import { toVsdxInput, toVsdxTheme } from '../../core/src/vsdx-input.js';
 
+import './waui.js';
+
 const STORAGE_KEY = 'flowchart-elf:doc:v1';
 /** 两次按下间隔小于这个值、且落在同一节点上，就算双击。 */
 const DOUBLE_CLICK_MS = 350;
@@ -287,20 +289,17 @@ function syncSelectionPanel() {
       </div>
       <div class="field">
         <label>文字（换行会被自动折行）</label>
-        <textarea id="insp-text" rows="3"></textarea>
+        <wa-textarea id="insp-text" size="s" rows="3" resize="none"></wa-textarea>
       </div>
       <div class="field">
         <label>形状</label>
-        <div class="type-row">
+        <wa-radio-group id="insp-type" size="s" orientation="horizontal" value="${n.type}" class="type-row">
           ${['start', 'process', 'decision', 'end']
-            .map(
-              (t) =>
-                `<button class="type-btn${n.type === t ? ' on' : ''}" data-type="${t}">${TYPE_LABEL[t]}</button>`,
-            )
+            .map((t) => `<wa-radio appearance="button" value="${t}">${TYPE_LABEL[t]}</wa-radio>`)
             .join('')}
-        </div>
+        </wa-radio-group>
       </div>
-      <button class="btn danger" id="btn-del-node">删除节点</button>
+      <wa-button size="s" appearance="filled-outlined" variant="danger" class="block-btn" id="btn-del-node">删除节点</wa-button>
     `;
     const ta = $('insp-text');
     ta.value = n.text;
@@ -308,12 +307,10 @@ function syncSelectionPanel() {
       const r = updateNodeText(doc, n.id, ta.value);
       if (r.changed) commit(r.doc, `text:${n.id}`);
     });
-    for (const btn of body.querySelectorAll('.type-btn')) {
-      btn.addEventListener('click', () => {
-        const r = setNodeType(doc, n.id, btn.dataset.type);
-        if (r.changed) commit(r.doc);
-      });
-    }
+    $('insp-type').addEventListener('change', (ev) => {
+      const r = setNodeType(doc, n.id, ev.target.value);
+      if (r.changed) commit(r.doc);
+    });
     $('btn-del-node').addEventListener('click', () => deleteSelection());
     return;
   }
@@ -330,9 +327,9 @@ function syncSelectionPanel() {
     </div>
     <div class="field">
       <label>标签（如「是」「否」）</label>
-      <input id="insp-edge-label" type="text" />
+      <wa-input id="insp-edge-label" size="s" type="text"></wa-input>
     </div>
-    <button class="btn danger" id="btn-del-edge">删除连线</button>
+    <wa-button size="s" appearance="filled-outlined" variant="danger" class="block-btn" id="btn-del-edge">删除连线</wa-button>
   `;
   const input = $('insp-edge-label');
   input.value = e.label;
@@ -1169,9 +1166,9 @@ function syncTemplateGrid() {
 function buildPaletteSelect() {
   const tpl = listTemplates().find((t) => t.name === doc.template);
   els.paletteSelect.innerHTML =
-    `<option value="">模板自带${tpl ? `（${paletteLabel(tpl.palette)}）` : ''}</option>` +
+    `<wa-option value="">模板自带${tpl ? `（${paletteLabel(tpl.palette)}）` : ''}</wa-option>` +
     listPalettes()
-      .map((p) => `<option value="${p}">${paletteLabel(p)}</option>`)
+      .map((p) => `<wa-option value="${p}">${paletteLabel(p)}</wa-option>`)
       .join('');
 }
 

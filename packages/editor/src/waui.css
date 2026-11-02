@@ -1,0 +1,13 @@
+/*
+ * Web Awesome 的设计变量层（主题 + 调色板），不含它的 native reset。
+ *
+ * 为什么只要这两层：
+ * native.css 会重置 html/body/h1..h6/p/ul 等所有标签的排版，
+ * 一进来就把编辑器自己的 CSS 全打乱。组件本身需要的是 --wa-* 变量，
+ * 那些变量全在 themes/default.css + color/palettes/default.css 里。
+ *
+ * 必须先引 layers.css：Web Awesome 的组件样式都写在 @layer wa-component 里，
+ * 没有图层声明时组件样式优先级比普通 CSS 高，导致我们改不动它的外观。
+ */
+@import '@awesome.me/webawesome/dist/styles/layers.css';
+@import '@awesome.me/webawesome/dist/styles/themes/default.css';

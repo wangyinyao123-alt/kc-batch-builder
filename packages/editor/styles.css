@@ -596,7 +596,135 @@ kbd {
   .inspector {
     display: none;
   }
-  .actions .btn:not(.primary) {
+  .actions .export {
     display: none;
   }
+}
+
+/* 窄屏：顶栏的次级操作（撤销/重做、缩放）先让位，保证标题与主操作不被挤出屏幕 */
+@media (max-width: 560px) {
+  .brand .title-input {
+    max-width: 140px;
+  }
+  .tools .sep,
+  #btn-undo,
+  #btn-redo,
+  #btn-zoom-out,
+  #btn-zoom-in {
+    display: none;
+  }
+}
+
+/* ---------------------------------------------------------------- Web Awesome 对齐 */
+
+/*
+ * 把 Web Awesome 的语义变量灌成项目自己的 token。
+ *
+ * 为什么不是直接给每个组件写 width/height：
+ * 逐个覆盖是 20 行 × N 个组件的排列组合，且组件内部一变就要重跟。
+ * 灌变量只做一次，所有 wa-* 自动跟着变 —— 换主题时改这几行就够。
+ */
+:root {
+  --wa-font-family-body: 'Geist', 'Noto Sans TC', 'PingFang SC', -apple-system,
+    BlinkMacSystemFont, 'Microsoft YaHei', system-ui, sans-serif;
+  --wa-font-size-xs: 11px;
+  --wa-font-size-s: 12px;
+  --wa-font-size-m: 13px;
+  --wa-font-size-l: 14px;
+
+  --wa-color-text-normal: #1b1f27;
+  --wa-color-text-quiet: #8b95a3;
+  --wa-color-text-link: #bf4520;
+
+  --wa-color-surface-default: #ffffff;
+  --wa-color-surface-raised: #ffffff;
+  --wa-color-surface-border: #dfe3e8;
+
+  --wa-color-neutral-fill-quiet: #f2f4f7;
+  --wa-color-neutral-fill-normal: #e3e7ec;
+  --wa-color-neutral-fill-loud: #1b1f27;
+  --wa-color-neutral-on-quiet: #1b1f27;
+  --wa-color-neutral-on-normal: #1b1f27;
+  --wa-color-neutral-on-loud: #ffffff;
+  --wa-color-neutral-border-quiet: #f0f2f5;
+  --wa-color-neutral-border-normal: #dfe3e8;
+  --wa-color-neutral-border-loud: #c8cfd8;
+
+  /* 强调色 = 项目 accent（#bf4520），不是 Web Awesome 默认的蓝 */
+  --wa-color-brand-fill-quiet: #fdf0ec;
+  --wa-color-brand-fill-normal: #bf4520;
+  --wa-color-brand-fill-loud: #a33a1c;
+  --wa-color-brand-on-quiet: #a33a1c;
+  --wa-color-brand-on-normal: #ffffff;
+  --wa-color-brand-on-loud: #ffffff;
+  --wa-color-brand-border-quiet: #f0cfc5;
+  --wa-color-brand-border-normal: #bf4520;
+  --wa-color-brand-border-loud: #a33a1c;
+
+  --wa-color-danger-fill-quiet: #fdf0ec;
+  --wa-color-danger-fill-normal: #a33a1c;
+  --wa-color-danger-on-quiet: #a33a1c;
+  --wa-color-danger-on-normal: #ffffff;
+  --wa-color-danger-border-quiet: #f0cfc5;
+  --wa-color-danger-border-normal: #d8634a;
+
+  /* 表单控件：26px 高、6px 圆角、1px 描边 —— 与原有 .select.small 完全一致 */
+  --wa-form-control-height: 26px;
+  --wa-form-control-border-radius: 6px;
+  --wa-form-control-border-width: 1px;
+  --wa-form-control-border-color: #dfe3e8;
+  --wa-form-control-background-color: #ffffff;
+  --wa-form-control-padding-inline: 8px;
+  --wa-form-control-value-color: #3d4654;
+  --wa-form-control-value-line-height: 1.4;
+
+  --wa-border-radius-s: 4px;
+  --wa-border-radius-m: 6px;
+  --wa-border-radius-l: 8px;
+
+  --wa-focus-ring: 0 0 0 2px rgba(191, 69, 32, 0.25);
+  --wa-focus-ring-width: 2px;
+  --wa-transition-fast: 120ms;
+  --wa-shadow-s: none;
+  --wa-shadow-m: 0 2px 8px rgba(27, 31, 39, 0.08);
+  --wa-shadow-l: 0 8px 24px rgba(27, 31, 39, 0.12);
+}
+
+/* 顶栏按钮：比面板里的高一档，视觉上给顶栏一点分量 */
+.topbar wa-button::part(base) {
+  font-weight: 500;
+}
+
+/* 面板里的按钮撑满一行（删除节点/删除连线） */
+.block-btn {
+  display: block;
+  width: 100%;
+  margin-top: 4px;
+}
+
+/* 右侧面板里「标签 + 控件」的一行：控件吃掉剩余宽度 */
+.row .grow {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* 形状选择：四个按钮均分一行 */
+.type-row {
+  display: block;
+  width: 100%;
+}
+
+.type-row wa-radio {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.type-row wa-radio::part(button) {
+  width: 100%;
+  padding-inline: 0;
+}
+
+/* 文字编辑框跟着面板宽度走 */
+#insp-text {
+  width: 100%;
 }
