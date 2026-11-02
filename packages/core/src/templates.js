@@ -237,13 +237,18 @@ export function resolveSpec(name = 'default', overrides = {}) {
     title: { ...DEFAULT_SPEC.title, ...(tpl.title || {}) },
     arrowLabel: { ...DEFAULT_SPEC.arrowLabel, ...(tpl.arrowLabel || {}) },
     shape: resolveShapes(tpl.shape),
-    edge: { color: 'muted', width: DEFAULT_SPEC.stroke.default, arrow: 'triangle', ...(tpl.edge || {}) },
+    edge: { ...DEFAULT_SPEC.edge, ...(tpl.edge || {}) },
     ...Object.fromEntries(
       Object.entries(tpl.spacing || {}).map(([k, v]) => [k, v])
     ),
   };
 
-  return { ...spec, ...stripKeys(overrides, ['palette']) };
+  const rest = stripKeys(overrides, ['palette']);
+  const out = { ...spec, ...rest };
+  // edge 是嵌套对象，直接展开会整块替换 —— 只覆盖一个字段（比如「只要粗一点」）
+  // 时就把 color / arrow 一起丢了。这里改成逐字段合并。
+  if (rest.edge) out.edge = { ...spec.edge, ...rest.edge };
+  return out;
 }
 
 /** 形状表补齐：模板只写要改的类型，其余继承 BASE_SHAPE。 */

@@ -23,6 +23,7 @@ import {
   setTitle,
   setTemplate,
   setPalette,
+  setEdgeStyle,
   applyLayout,
   serializeDoc,
   deserializeDoc,
@@ -98,6 +99,12 @@ const els = {
   direction: $('direction'),
   nodeGap: $('node-gap'),
   rankGap: $('rank-gap'),
+  edgeWidth: $('edge-width'),
+  edgeCorner: $('edge-corner'),
+  edgeArrow: $('edge-arrow'),
+  edgeWidthOut: $('edge-width-out'),
+  edgeCornerOut: $('edge-corner-out'),
+  edgeArrowOut: $('edge-arrow-out'),
   zoomLabel: $('zoom-label'),
   selectionBody: $('selection-body'),
   toast: $('toast'),
@@ -224,6 +231,8 @@ function drawRubber() {
     rubberSvg(from, dragState.pointer, dragState.side, {
       dropNode: snapped ? dropNode : null,
       dropSide: snapped ? dragState.drop.side : null,
+      // 橡皮筋也走模板的圆角设置，否则拉线时是直角、松手后突然变圆
+      spec,
     }),
   );
 }
@@ -282,6 +291,8 @@ function restoreDoc(next) {
     selection = null;
   }
   render();
+  // 撤销 / 打开文件 / 撤销一次滑块拖动之后，滑块都得回到文档里的真实值
+  syncEdgeSliders();
 }
 
 let persistTimer = 0;
@@ -1125,6 +1136,8 @@ function bindUI() {
     layoutOpts = { ...layoutOpts, rankGap: Number(els.rankGap.value) || 0 };
   });
 
+  bindEdgeSliders();
+
   $('btn-add').addEventListener('click', addNodeAtCenter);
   $('btn-layout').addEventListener('click', runLayout);
   els.btnUndo.addEventListener('click', () => {
@@ -1166,7 +1179,12 @@ function bindUI() {
  * 直接调 resolveSpec(doc.template)，加了配色维度后会静默丢掉配色。
  */
 function specForDoc(d) {
-  return resolveSpec(d.template || 'default', d.palette ? { palette: d.palette } : {});
+  const overrides = {};
+  if (d.palette) overrides.palette = d.palette;
+  // 文档里存的连线外观覆盖项。resolveSpec 会把 edge 逐字段合并，
+  // 所以这里只放用户真改过的项，其余仍跟模板走。
+  if (d.edge && Object.keys(d.edge).length) overrides.edge = d.edge;
+  return resolveSpec(d.template || 'default', overrides);
 }
 
 /** 配色在界面上显示的名字。PALETTES 里没有 label，这里补一份。 */
@@ -1265,6 +1283,79 @@ function applyTemplate(name) {
 function applyDoc(next) {
   spec = specForDoc(next);
   commit(next);
+  syncEdgeSliders();
+}
+
+// ---------------------------------------------------------------- 连线外观
+
+/** 三根滑块的默认取值（模板没写时用这几个数），与 theme.js 的 DEFAULT_SPEC.edge 一致。 */
+const EDGE_FALLBACK = { width: 1, corner: 0, arrowSize: 12 };
+
+/**
+ * 把滑块、数字回显、文档三者接起来。
+ *
+ * 用 input 事件而不是 change：拖滑块时要实时看到画布变化。
+ * input 用 mergeTag，所以一次拖动只产生一个撤销点（history 的合并窗口）。
+ */
+function bindEdgeSliders() {
+  // 一次拖动 = 一个撤销点。用「按下时入栈一次、拖动中一直覆盖同一帧」
+  // 而不是靠 push 的时间窗口：帧间隔取决于渲染耗时，慢的时候会跨过
+  // 合并窗口，一次拖动就变成好几个撤销点。
+  let dragging = false;
+
+  const bind = (el, out, key) => {
+    el.addEventListener('pointerdown', () => {
+      dragging = false;
+    });
+    el.addEventListener('input', () => {
+      const v = Number(el.value);
+      if (out) out.textContent = String(v);
+      const r = setEdgeStyle(doc, { [key]: v });
+      if (!r.changed) return;
+      spec = specForDoc(r.doc);
+      doc = r.doc;
+      if (dragging) {
+        history.replace(doc); // 同一段拖动：覆盖当前帧，不新增撤销点
+        render();
+        schedulePersist();
+      } else {
+        dragging = true;
+        commit(doc); // 第一帧：入栈，这一帧就是「拖动前」之后的状态
+      }
+    });
+    el.addEventListener('change', () => {
+      if (out) out.textContent = String(Number(el.value));
+      dragging = false;
+    });
+  };
+  bind(els.edgeWidth, els.edgeWidthOut, 'width');
+  bind(els.edgeCorner, els.edgeCornerOut, 'corner');
+  bind(els.edgeArrow, els.edgeArrowOut, 'arrowSize');
+
+  $('btn-edge-reset').addEventListener('click', () => {
+    // 三项一起清空要用一次提交，否则会进三条撤销历史
+    const r = setEdgeStyle(doc, { width: null, corner: null, arrowSize: null });
+    if (r.changed) {
+      spec = specForDoc(r.doc);
+      commit(r.doc);
+    }
+    syncEdgeSliders();
+  });
+}
+
+/** 把当前 spec 里的实际取值写回滑块（换模板、撤销、打开文件后都要调）。 */
+function syncEdgeSliders() {
+  if (!els.edgeWidth) return;
+  const e = spec.edge || {};
+  const width = e.width ?? EDGE_FALLBACK.width;
+  const corner = e.corner ?? EDGE_FALLBACK.corner;
+  const arrowSize = e.arrowSize ?? EDGE_FALLBACK.arrowSize;
+  els.edgeWidth.value = width;
+  els.edgeCorner.value = corner;
+  els.edgeArrow.value = arrowSize;
+  if (els.edgeWidthOut) els.edgeWidthOut.textContent = String(width);
+  if (els.edgeCornerOut) els.edgeCornerOut.textContent = String(corner);
+  if (els.edgeArrowOut) els.edgeArrowOut.textContent = String(arrowSize);
 }
 
 // ---------------------------------------------------------------- 启动
@@ -1324,6 +1415,7 @@ function boot() {
   history.reset(doc);
   spec = specForDoc(doc);
   render();
+  syncEdgeSliders();
   requestAnimationFrame(() => {
     zoomToFit();
     applyViewBox();

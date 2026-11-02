@@ -76,6 +76,22 @@ export function createHistory(initial, opts = {}) {
       return true;
     },
 
+    /**
+     * 覆盖当前栈帧（不新增）。
+     *
+     * 用于「一次连续操作」的场景：滑块拖动每帧都要重画，但整段拖动
+     * 只该是一个撤销点。靠 push 的时间窗口不可靠 —— 帧间隔取决于渲染
+     * 耗时，慢的时候超过合并窗口就会变成两个撤销点。由调用方明确
+     * 划定操作边界（按下 → 松手），边界内一律 replace。
+     */
+    replace(doc) {
+      if (doc === this.current) return false;
+      stack[index] = doc;
+      lastTag = null;
+      lastTime = 0;
+      return true;
+    },
+
     undo() {
       if (!this.canUndo) return null;
       index--;

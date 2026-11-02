@@ -236,3 +236,30 @@ test('listTemplates / listPalettes 与常量表一致', () => {
     assert.ok(t.name && t.label, '模板列表项缺 name/label');
   }
 });
+
+// ---------------------------------------------------------------- edge 覆盖项
+
+test('resolveSpec：edge 是逐字段合并，只覆盖一个字段不会丢其他', () => {
+  const base = resolveSpec('default');
+  const spec = resolveSpec('default', { edge: { corner: 6 } });
+  assert.equal(spec.edge.corner, 6);
+  // 这三项必须还在，否则箭头消失、连线变黑
+  assert.equal(spec.edge.color, base.edge.color);
+  assert.equal(spec.edge.arrow, base.edge.arrow);
+  assert.equal(spec.edge.width, base.edge.width);
+});
+
+test('resolveSpec：每套模板都有完整的 edge 字段（含 arrowSize 与 corner）', () => {
+  for (const t of listTemplates()) {
+    const spec = resolveSpec(t.name);
+    assert.ok(Number.isFinite(spec.edge.width), `${t.name} 缺 width`);
+    assert.ok(Number.isFinite(spec.edge.arrowSize), `${t.name} 缺 arrowSize`);
+    assert.ok(Number.isFinite(spec.edge.corner), `${t.name} 缺 corner`);
+    assert.ok(['triangle', 'open', 'none'].includes(spec.edge.arrow), `${t.name} 箭头类型异常`);
+  }
+});
+
+test('resolveSpec：覆盖项不会污染下一次调用', () => {
+  resolveSpec('default', { edge: { width: 4 } });
+  assert.notEqual(resolveSpec('default').edge.width, 4);
+});

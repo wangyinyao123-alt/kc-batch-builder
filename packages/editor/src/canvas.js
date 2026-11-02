@@ -6,7 +6,7 @@
  * 这一层只额外加了一件事：给每个元素包一层带 data-id 的 <g>，
  * 让交互层能定位到具体对象（paint.js 只管画，不管交互）。
  */
-import { renderEdge, renderLabel, renderShape, renderNodeText } from '../../core/src/paint.js';
+import { renderEdge, renderLabel, renderShape, renderNodeText, pathData } from '../../core/src/paint.js';
 import { SIDES, portPoint, orthogonalRoute } from '../../core/src/route.js';
 
 /** 让 shape 与文字成为同一个可定位单元。 */
@@ -16,8 +16,9 @@ function wrap(attrs, body) {
 
 /** 连线：可见路径 + 一条加宽的透明「命中带」，细线才好点。 */
 export function edgeSvg(e, spec, selected = false) {
-  const d = 'M' + e.points.map((p) => `${p.x},${p.y}`).join(' L');
-  const hit = `<path d="${d}" class="edge-hit" data-edge="${e.id}"/>`;
+  // 命中带用原始点列的直线段：圆角只是视觉修饰，不该改变「哪里能点中」
+  const dHit = 'M' + e.points.map((p) => `${p.x},${p.y}`).join(' L');
+  const hit = `<path d="${dHit}" class="edge-hit" data-edge="${e.id}"/>`;
   const visible = renderEdge({ ...e, points: e.points }, spec).replace(
     '<path ',
     `<path data-edge-path="${e.id}" class="${selected ? 'edge-selected' : ''}" `,
@@ -82,18 +83,18 @@ export function nodeSvg(n, spec, opts = {}) {
  * 表示「松手就是这个结果」。
  */
 export function rubberSvg(from, to, side, opts = {}) {
-  const { dropNode = null, dropSide = null } = opts;
+  const { dropNode = null, dropSide = null, spec = null } = opts;
+  const corner = spec?.edge?.corner ?? 0;
 
   if (dropNode && dropSide) {
     const pts = orthogonalRoute(from, dropNode, { fromSide: side, toSide: dropSide });
-    const d = 'M' + pts.map((p) => `${p.x},${p.y}`).join(' L');
-    return `<path class="rubber armed" d="${d}"/>`;
+    return `<path class="rubber armed" d="${pathData(pts, corner)}"/>`;
   }
 
   // 还没瞄准目标：把指针当成零尺寸虚拟框，复用同一套路由
   const ghost = { x: to.x, y: to.y, w: 0, h: 0 };
   const pts = orthogonalRoute(from, ghost, { fromSide: side });
-  const d = 'M' + pts.map((p) => `${p.x},${p.y}`).join(' L');
+  const d = pathData(pts, corner);
   return `<path class="rubber" d="${d}"/>`;
 }
 

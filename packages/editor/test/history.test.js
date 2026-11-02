@@ -110,3 +110,36 @@ test('合并窗口可配置为 0（禁用合并）', () => {
   h.push(d(2), 'drag:n1');
   assert.equal(h.size, 3, 'mergeMs=0 时不该合并');
 });
+
+test('replace：覆盖当前帧而不新增撤销点（滑块拖动的边界）', () => {
+  const h = createHistory(d(0));
+  h.push(d(1), null);
+  assert.equal(h.size, 2);
+
+  // 模拟一次拖动：按下后每一帧都 replace，栈深度不能涨
+  const last = d(4);
+  h.replace(d(2));
+  h.replace(d(3));
+  h.replace(last);
+  assert.equal(h.size, 2, `replace 不该新增帧，size=${h.size}`);
+  assert.equal(h.current, last);
+
+  // 撤销一次回到拖动开始前，而不是回到中间某一帧
+  assert.equal(h.undo().title, 't0');
+});
+
+test('replace：内容相同时不做任何事', () => {
+  const h = createHistory(d(0));
+  const one = d(1);
+  h.push(one, null);
+  assert.equal(h.replace(one), false);
+  assert.equal(h.size, 2);
+});
+
+test('replace：会切断合并窗口，下一次同类 push 不被并进旧操作', () => {
+  const h = createHistory(d(0));
+  h.push(d(1), 'edge:width');
+  h.replace(d(2));
+  h.push(d(3), 'edge:width');
+  assert.equal(h.size, 3, `replace 后同 tag 被错误合并，size=${h.size}`);
+});

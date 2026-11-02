@@ -70,6 +70,24 @@ export const DEFAULT_SPEC = {
 
   stroke: { thin: 0.8, default: 1, strong: 1.2 },
   radius: { sm: 4, md: 6, lg: 8 },
+
+  /**
+   * 连线的可调项。模板可以整块覆盖（见 templates.js 的 edge）。
+   *
+   * arrowSize 默认 12 而不是 8：8px 的实心三角在 12px 字号的图里太小，
+   * 屏幕上要放大才看得见，用户第一反应是「箭头没有了」。
+   *
+   * corner 是转折处的圆角半径（px）。0 = 严格直角；给到段长一半以上
+   * 就会自然收敛成曲线 —— 所以「圆角」和「曲线」是同一条路径算法的两端，
+   * 不需要两套实现。
+   */
+  edge: {
+    color: 'muted',
+    width: 1,
+    arrow: 'triangle',
+    arrowSize: 12,
+    corner: 0,
+  },
   // 起止椭圆的圆角、汇合点的半径，直接来自 type-flowchart.md
   ovalRadius: 20,
   mergeDotRadius: 4,

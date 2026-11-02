@@ -17,6 +17,7 @@ import {
   setTitle,
   setTemplate,
   setPalette,
+  setEdgeStyle,
   applyLayout,
   serializeDoc,
   deserializeDoc,
@@ -362,4 +363,61 @@ test('端口能存进 JSON 并被读回', () => {
     `{"version":1,"nodes":[{"id":"n1","type":"process","text":"A","x":0,"y":0}],"edges":[]}`,
   );
   assert.deepEqual(legacy.edges, []);
+});
+
+// ---------------------------------------------------------------- 连线外观
+
+test('setEdgeStyle：只存改过的项，没改的键不出现', () => {
+  const r = setEdgeStyle(emptyDoc(), { width: 2.5 });
+  assert.equal(r.changed, true);
+  assert.deepEqual(r.doc.edge, { width: 2.5 });
+});
+
+test('setEdgeStyle：值没变返回 changed=false（拖动时每帧都会调）', () => {
+  const first = setEdgeStyle(emptyDoc(), { corner: 8 });
+  const again = setEdgeStyle(first.doc, { corner: 8 });
+  assert.equal(again.changed, false);
+  assert.equal(again.doc, first.doc);
+});
+
+test('setEdgeStyle：传 null 表示这一项回到模板默认', () => {
+  const a = setEdgeStyle(emptyDoc(), { width: 3, corner: 12 });
+  const b = setEdgeStyle(a.doc, { width: null });
+  assert.deepEqual(b.doc.edge, { corner: 12 });
+  // 三项全部清空 → 回到空对象，不是留下 {width:undefined}
+  const c = setEdgeStyle(b.doc, { width: null, corner: null, arrowSize: null });
+  assert.deepEqual(c.doc.edge, {});
+});
+
+test('setEdgeStyle：不认识的键被忽略（防止 JSON 里塞进无关键）', () => {
+  const r = setEdgeStyle(emptyDoc(), { color: '#ff0000', width: 2 });
+  assert.deepEqual(r.doc.edge, { width: 2 });
+});
+
+test('setEdgeStyle：不原地修改输入文档', () => {
+  const doc = setEdgeStyle(emptyDoc(), { width: 2 }).doc;
+  const before = JSON.stringify(doc.edge);
+  setEdgeStyle(doc, { corner: 6 });
+  assert.equal(JSON.stringify(doc.edge), before);
+});
+
+test('连线外观能存进 JSON 并被读回', () => {
+  const doc = setEdgeStyle(emptyDoc('t'), { width: 2, corner: 10, arrowSize: 20 }).doc;
+  const round = deserializeDoc(serializeDoc(doc));
+  assert.deepEqual(round.edge, { width: 2, corner: 10, arrowSize: 20 });
+});
+
+test('老文件没有 edge 字段 → 空对象，不崩', () => {
+  const legacy = deserializeDoc(
+    `{"version":1,"nodes":[{"id":"n1","type":"process","text":"A","x":0,"y":0}],"edges":[]}`,
+  );
+  assert.deepEqual(legacy.edge, {});
+});
+
+test('连线外观里的坏值被丢掉，只留有限数', () => {
+  const bad = deserializeDoc(
+    `{"version":1,"edge":{"width":2,"corner":"粗","arrowSize":null,"nope":9},` +
+      `"nodes":[{"id":"n1","type":"process","text":"A","x":0,"y":0}],"edges":[]}`,
+  );
+  assert.deepEqual(bad.edge, { width: 2 });
 });

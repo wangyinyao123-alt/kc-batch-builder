@@ -91,6 +91,27 @@
         </section>
 
         <section class="group">
+          <h2>连线</h2>
+          <div class="slider-row">
+            <span class="slider-label">粗细</span>
+            <wa-slider id="edge-width" class="grow" min="0.5" max="4" step="0.5" value="1"></wa-slider>
+            <output id="edge-width-out" class="slider-out">1</output>
+          </div>
+          <div class="slider-row">
+            <span class="slider-label">拐角</span>
+            <wa-slider id="edge-corner" class="grow" min="0" max="24" step="2" value="0"></wa-slider>
+            <output id="edge-corner-out" class="slider-out">0</output>
+          </div>
+          <div class="slider-row">
+            <span class="slider-label">箭头</span>
+            <wa-slider id="edge-arrow" class="grow" min="6" max="28" step="2" value="12"></wa-slider>
+            <output id="edge-arrow-out" class="slider-out">12</output>
+          </div>
+          <button id="btn-edge-reset" class="link-btn" type="button">恢复模板默认</button>
+          <p class="note">拐角调大就会变成圆角，拉到最右接近曲线。</p>
+        </section>
+
+        <section class="group">
           <h2>快捷键</h2>
           <ul class="keys">
             <li><kbd>双击</kbd> 节点改文字 / 空白新建</li>

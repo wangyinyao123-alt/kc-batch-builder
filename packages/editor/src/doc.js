@@ -20,6 +20,16 @@ import { DEFAULT_SPEC, snapGrid } from '../../core/src/theme.js';
 
 export const DOC_VERSION = 1;
 
+/**
+ * 连线外观的可调项。
+ *
+ * 存在文档里而不是界面上：这是「这张图怎么画的」的一部分，
+ * 和模板/配色同级 —— 换了机器打开、导出 SVG，粗细和圆角必须跟着走。
+ * 每项用 null 表示「沿用模板」，而不是抄一份模板的值存进来，
+ * 否则换模板后线条样式会卡在旧值上。
+ */
+export const EDGE_STYLE_KEYS = ['width', 'corner', 'arrowSize'];
+
 /** 新建一份空文档。 */
 export function emptyDoc(title = '') {
   return {
@@ -29,6 +39,8 @@ export function emptyDoc(title = '') {
     // 空字符串 = 用模板自带的配色。非空时覆盖模板配色，
     // 于是「模板（形状/字号/间距）」和「配色」是两个独立维度。
     palette: '',
+    // 连线外观覆盖项（null = 用模板的）。只存用户真改过的那几项。
+    edge: {},
     nodes: [],
     edges: [],
   };
@@ -295,6 +307,29 @@ export function setPalette(doc, palette) {
 }
 
 /**
+ * 改连线外观（粗细 / 圆角 / 箭头大小）。
+ *
+ * 传 null 或 undefined 的字段表示「这一项回到模板默认」，而不是忽略 ——
+ * 否则用户没法把「改粗过的线」改回和模板一致。
+ */
+export function setEdgeStyle(doc, patch = {}) {
+  const cur = doc.edge || {};
+  const next = { ...cur };
+  for (const k of EDGE_STYLE_KEYS) {
+    if (!(k in patch)) continue;
+    const v = patch[k];
+    if (v === null || v === undefined) delete next[k];
+    else next[k] = Number(v);
+  }
+  // 值没变就不产生撤销点：拖动滑块时不能每帧记一笔
+  const same =
+    Object.keys(next).length === Object.keys(cur).length &&
+    EDGE_STYLE_KEYS.every((k) => next[k] === cur[k]);
+  if (same) return { doc, changed: false };
+  return { doc: { ...doc, edge: next }, changed: true };
+}
+
+/**
  * 把排版结果写回文档：这是 dagre 坐标进入文档的唯一入口。
  * laid 是 core 的 layout() 返回值（节点带 x/y）。
  */
@@ -321,6 +356,7 @@ export function serializeDoc(doc) {
       title: doc.title,
       template: doc.template,
       palette: doc.palette || '',
+      edge: doc.edge || {},
       nodes: doc.nodes,
       edges: doc.edges,
     },
@@ -345,11 +381,19 @@ export function deserializeDoc(text) {
     if (typeof e.id !== 'string' || typeof e.from !== 'string' || typeof e.to !== 'string') return null;
   }
   const ids = new Set(raw.nodes.map((n) => n.id));
+  // 连线外观：只保留认识的键、且必须是有限数，坏值一律当作「用模板的」
+  const edge = {};
+  if (raw.edge && typeof raw.edge === 'object') {
+    for (const k of EDGE_STYLE_KEYS) {
+      if (Number.isFinite(raw.edge[k])) edge[k] = raw.edge[k];
+    }
+  }
   return {
     version: DOC_VERSION,
     title: typeof raw.title === 'string' ? raw.title : '',
     template: typeof raw.template === 'string' ? raw.template : 'default',
     palette: typeof raw.palette === 'string' ? raw.palette : '',
+    edge,
     nodes: raw.nodes.map((n) => ({
       id: n.id,
       type: n.type,

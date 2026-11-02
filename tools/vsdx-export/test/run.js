@@ -205,6 +205,46 @@ test('无 theme 时用默认值，不抛错', async () => {
   assert.ok(bytes.length > 0);
 });
 
+test('连线可关掉箭头（arrow: "none" → EndArrow=0）', async () => {
+  const dia = {
+    meta: { pageW: 300, pageH: 400 },
+    nodes: [
+      { id: 'a', type: 'process', text: 'A', x: 20, y: 20, w: 100, h: 40, style: {} },
+      { id: 'b', type: 'process', text: 'B', x: 20, y: 200, w: 100, h: 40, style: {} },
+    ],
+    edges: [{ from: 'a', to: 'b', style: { arrow: 'none' } }],
+    labels: [],
+  };
+  const bytes = await buildVsdx(dia, {}, zip);
+  const { pageXml: xml } = await unzip(bytes);
+  const arrows = [];
+  const re = /EndArrow" V="(\d+)"/g;
+  let m;
+  while ((m = re.exec(xml))) arrows.push(m[1]);
+  assert.deepStrictEqual(arrows, ['0'], `期望箭头关闭，实际 ${arrows}`);
+});
+
+test('每条连线可以用自己的颜色与线宽', async () => {
+  const dia = {
+    meta: { pageW: 300, pageH: 400 },
+    nodes: [
+      { id: 'a', type: 'process', text: 'A', x: 20, y: 20, w: 100, h: 40, style: {} },
+      { id: 'b', type: 'process', text: 'B', x: 20, y: 200, w: 100, h: 40, style: {} },
+    ],
+    edges: [{ from: 'a', to: 'b', style: { lineColor: '#ff0000', lineWeightPt: 3 } }],
+    labels: [],
+  };
+  const bytes = await buildVsdx(dia, {}, zip);
+  const { pageXml: xml } = await unzip(bytes);
+  assert.ok(/#ff0000/i.test(xml), '连线颜色没写进 vsdx');
+  // 3pt = 3/72 英寸；单位是 IN，不换算就会变成 3 英寸粗的线
+  const weights = [];
+  const lw = /LineWeight" V="([\d.]+)"/g;
+  let w;
+  while ((w = lw.exec(xml))) weights.push(Number(w[1]));
+  assert.ok(weights.includes(3 / 72), `连线线宽没写进 vsdx：${JSON.stringify(weights)}`);
+});
+
 test('文本估算：中文比英文宽，且随行数线性增长', () => {
   assert.ok(estimateTextWidth('中文四字', 16) > estimateTextWidth('abcd', 16));
   assert.strictEqual(estimateTextHeight('a\nb\nc', 10), 45);

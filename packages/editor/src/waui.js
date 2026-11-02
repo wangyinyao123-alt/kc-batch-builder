@@ -16,3 +16,6 @@ import '@awesome.me/webawesome/dist/components/number-input/number-input.js';
 import '@awesome.me/webawesome/dist/components/textarea/textarea.js';
 import '@awesome.me/webawesome/dist/components/radio-group/radio-group.js';
 import '@awesome.me/webawesome/dist/components/radio/radio.js';
+// 连线粗细 / 拐角 / 箭头大小三个滑块。用滑块而不是数字框：
+// 这些是「调到手感对」的参数，用户需要一边拖一边看画布，不是输入一个精确值。
+import '@awesome.me/webawesome/dist/components/slider/slider.js';

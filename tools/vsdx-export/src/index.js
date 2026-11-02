@@ -290,14 +290,22 @@ async function buildVsdx(diagram, theme, zipImpl) {
     const fromPort = e.fromPort || infer.fromPort;
     const toPort = e.toPort || infer.toPort;
 
+    // 每条线可以自己带外观（模板切换后连线颜色/粗细会变）；
+    // 没给就退回主题值，保证老调用方不受影响。
+    const es = e.style || {};
+    const noArrow = es.arrow === 'none';
     await page.connectShapes(
       fromShape,
       toShape,
       ArrowHeads.None,
       // 注意：枚举名是 Open，不是 OpenArrow。
       // 写成 ArrowHeads.OpenArrow 会得到 undefined，最终 EndArrow="0"，图上没有箭头。
-      ArrowHeads.Open,
-      { lineColor: t.lineColor, lineWeight: t.lineWeightPt, routing: 'orthogonal' },
+      noArrow ? ArrowHeads.None : ArrowHeads.Open,
+      {
+        lineColor: es.lineColor ?? t.lineColor,
+        lineWeight: es.lineWeightPt ?? t.lineWeightPt,
+        routing: 'orthogonal',
+      },
       { name: fromPort },
       { name: toPort }
     );

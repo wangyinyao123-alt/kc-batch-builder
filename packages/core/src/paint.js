@@ -25,14 +25,54 @@ export function arrowMarkers(spec) {
   const color = colorOf(spec, spec.edge.color);
   const kind = spec.edge.arrow || 'triangle';
   if (kind === 'none') return '';
+  // 箭头尺寸可调。默认 12（原来写死 8）——8px 的实心三角在 A4 尺寸的图里
+  // 缩到 50% 就只剩 3px，用户会以为「箭头没画出来」。
+  const s = Math.max(4, Number(spec.edge.arrowSize) || 12);
+  const half = s / 2;
   const body =
     kind === 'open'
-      ? `<path d="M0,0 L8,4 L0,8" fill="none" stroke="${color}" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>`
-      : `<path d="M0,0 L8,4 L0,8 z" fill="${color}"/>`;
+      ? `<path d="M0,0 L${s},${half} L0,${s}" fill="none" stroke="${color}" ` +
+        `stroke-width="${Math.max(1, s / 8).toFixed(2)}" stroke-linecap="round" stroke-linejoin="round"/>`
+      : `<path d="M0,0 L${s},${half} L0,${s} z" fill="${color}"/>`;
   return (
-    `<marker id="arrow" viewBox="0 0 8 8" refX="7" refY="4" ` +
-    `markerWidth="8" markerHeight="8" orient="auto-start-reverse">${body}</marker>`
+    `<marker id="arrow" viewBox="0 0 ${s} ${s}" refX="${s - 1}" refY="${half}" ` +
+    `markerWidth="${s}" markerHeight="${s}" orient="auto-start-reverse">${body}</marker>`
   );
+}
+
+/**
+ * 折线转路径。corner = 0 时是严格直角（输出与逐点拼接完全一致），
+ * 大于 0 时在每个拐点用二次贝塞尔把尖角磨圆。
+ *
+ * 为什么不另写一套「曲线」算法：圆角半径给到段长的一半以上就自然变成曲线，
+ * 所以「直角 / 圆角 / 曲线」是同一条路径的三个取值，而不是三种模式。
+ * 折线段本身仍受最外圈矩形约束，不会因为磨圆而穿出框体。
+ */
+export function pathData(points, corner = 0) {
+  if (!points || points.length < 2) return '';
+  const r0 = Number(corner) || 0;
+  let d = `M${points[0].x},${points[0].y}`;
+  for (let i = 1; i < points.length - 1; i += 1) {
+    const p0 = points[i - 1];
+    const p1 = points[i];
+    const p2 = points[i + 1];
+    const d1 = Math.hypot(p1.x - p0.x, p1.y - p0.y);
+    const d2 = Math.hypot(p2.x - p1.x, p2.y - p1.y);
+    // 半径不能超过相邻两段长度的一半，否则相邻圆角会互相吞掉，路径折回来
+    const r = Math.min(r0, d1 / 2, d2 / 2);
+    if (r <= 0.5) {
+      d += ` L${p1.x},${p1.y}`;
+      continue;
+    }
+    const ax = p1.x + ((p0.x - p1.x) * r) / d1;
+    const ay = p1.y + ((p0.y - p1.y) * r) / d1;
+    const bx = p1.x + ((p2.x - p1.x) * r) / d2;
+    const by = p1.y + ((p2.y - p1.y) * r) / d2;
+    d += ` L${ax},${ay} Q${p1.x},${p1.y} ${bx},${by}`;
+  }
+  const last = points[points.length - 1];
+  d += ` L${last.x},${last.y}`;
+  return d;
 }
 
 /** 一个形状的描边宽度：细/中/粗三档里取中档，除非模板给了 stroke.default。 */
@@ -107,9 +147,9 @@ export function renderEdge(e, spec) {
   const color = colorOf(spec, spec.edge.color);
   const width = spec.edge.width ?? nodeStroke(spec);
   const marker = spec.edge.arrow === 'none' ? '' : ' marker-end="url(#arrow)"';
-  // 用正交折线（dagre 给的是带拐点的路径）
-  const d = 'M' + pts.map((p) => `${p.x},${p.y}`).join(' L');
-  return `<path d="${d}" fill="none" stroke="${color}" stroke-width="${width}"${marker} stroke-linejoin="round"/>`;
+  // 正交折线（dagre 给的是带拐点的路径）；corner > 0 时拐点磨圆
+  const d = pathData(pts, spec.edge.corner);
+  return `<path d="${d}" fill="none" stroke="${color}" stroke-width="${width}"${marker} stroke-linejoin="round" stroke-linecap="round"/>`;
 }
 
 /** 分支标签：先铺一块与纸同色的底把线切断，再写字。 */

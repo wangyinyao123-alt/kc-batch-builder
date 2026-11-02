@@ -98,6 +98,9 @@ export function toVsdxInput(laid, spec, opts = {}) {
       style: {
         lineColor: colorOf(spec, spec.edge?.color || 'muted'),
         lineWeightPt: pxToPt(spec.edge?.width ?? spec.stroke?.default ?? 1),
+        // vsdx 只有「有箭头 / 没箭头」两档，没有尺寸档（ts-visio 把
+        // EndArrowSize 写死成 2 = 大号）。所以只把「关掉箭头」传下去。
+        arrow: spec.edge?.arrow ?? 'triangle',
       },
     });
   }

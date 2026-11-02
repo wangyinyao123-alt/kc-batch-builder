@@ -653,6 +653,52 @@ kbd {
   min-width: 0;
 }
 
+/* 滑块行：标签定宽，滑块占满，数值右对齐 —— 三行要能对齐成一列 */
+.slider-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+  font-size: 12px;
+  color: #4d5666;
+}
+
+.slider-row .slider-label {
+  flex: 0 0 28px;
+  white-space: nowrap;
+}
+
+.slider-row wa-slider {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* 数值用等宽体 + 固定宽度：拖动时数字宽度变化不会把滑块挤得抖 */
+.slider-row .slider-out {
+  flex: 0 0 24px;
+  text-align: right;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+  color: #7f8a99;
+  font-variant-numeric: tabular-nums;
+}
+
+.link-btn {
+  margin-top: 4px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: 11px;
+  color: #bf4520;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.link-btn:hover {
+  color: #a03a1b;
+}
+
 /* 形状选择：四个按钮均分一行 */
 .type-row {
   display: block;
