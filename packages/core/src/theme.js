@@ -9,6 +9,17 @@
 /** 4px 网格：所有坐标、尺寸、间距都必须是它的倍数（硬规则）。 */
 export const GRID = 4;
 
+/**
+ * 节点宽高的量化步长 = 2 个网格。
+ *
+ * 为什么宽高必须是 8 的倍数、而不是 4 就够了：连线端口取的是「框边中点」，
+ * 也就是 x + w/2。若 w 只是 4 的倍数（比如 148 → w/2 = 74），中心点就会落在
+ * 半格上（74 % 4 === 2）。这时两个框的端口一竖一横，正交路由必须用一个
+ * 2px 的小折角去消化这半个格差 —— 画出来就是肉眼可见的「线是歪的」。
+ * 宽高取 8 的倍数后 w/2、h/2 必为 4 的倍数，中心点与端口全部落回网格。
+ */
+export const CELL = GRID * 2;
+
 export const LIGHT = {
   name: 'light',
   paper: '#f5f5f5',
@@ -89,6 +100,17 @@ export function titleHeight(spec, hasTitle) {
 
 /** 向上取整到 4 的倍数（框宽、坐标一律向上取整，避免文字被切）。 */
 export function ceilGrid(v, grid = GRID) {
+  return Math.ceil(v / grid) * grid;
+}
+
+/**
+ * 向上取整到 8 的倍数（节点宽、高专用）。
+ *
+ * 与 ceilGrid 的区别只有一处，但很关键：尺寸走这个函数，中心点才会落在网格上。
+ * 坐标 x/y 仍然用 ceilGrid/snapGrid（4 的倍数）—— 中心 = x + w/2，
+ * w/2 是 4 的倍数 ⇒ 中心也是 4 的倍数，端口与折线才对得齐。
+ */
+export function ceilCell(v, grid = CELL) {
   return Math.ceil(v / grid) * grid;
 }
 

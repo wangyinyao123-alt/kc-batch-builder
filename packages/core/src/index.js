@@ -9,7 +9,17 @@ export { ASCII_WIDTHS, EXTRA_WIDTHS, FULLWIDTH_RANGES, FALLBACK_WIDTH } from './
 export { DIAGRAM_VERSION, emptyDiagram, isRenderable, makeId } from './ir.js';
 export { layout, measureNode } from './layout.js';
 export { renderSvg } from './render.js';
-export { GRID, LIGHT, DARK, DEFAULT_SPEC, ceilGrid, snapGrid, titleHeight } from './theme.js';
+export {
+  GRID,
+  CELL,
+  LIGHT,
+  DARK,
+  DEFAULT_SPEC,
+  ceilGrid,
+  ceilCell,
+  snapGrid,
+  titleHeight,
+} from './theme.js';
 export {
   PALETTES,
   TEMPLATES,

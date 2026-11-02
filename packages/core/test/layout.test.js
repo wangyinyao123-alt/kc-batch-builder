@@ -67,6 +67,40 @@ test('所有节点的坐标与尺寸都在 4px 网格上', () => {
   }
 });
 
+test('节点中心点也落在 4px 网格上（端口对齐的前提）', () => {
+  // 只保证 w/h 是 4 的倍数是不够的：148/2 = 74，中心就落在半格上，
+  // 两个端口一竖一横时正交路由必须用 2px 小折角消化，线看着就是歪的。
+  for (const src of [SIMPLE, COMPLEX, LONG]) {
+    const out = laid(src);
+    for (const n of out.nodes) {
+      assert.ok(isGrid(n.cx), `${n.id} 中心 x=${n.cx} 偏了 ${n.cx % 4}px`);
+      assert.ok(isGrid(n.cy), `${n.id} 中心 y=${n.cy} 偏了 ${n.cy % 4}px`);
+    }
+  }
+});
+
+test('连线只有正交线段，没有斜线与短折角', () => {
+  for (const src of [SIMPLE, COMPLEX, LONG]) {
+    const out = laid(src);
+    for (const e of out.edges) {
+      const p = e.points;
+      assert.ok(p.length >= 2, `${e.from}->${e.to} 路径点不足`);
+      for (let i = 1; i < p.length; i++) {
+        const dx = Math.abs(p[i].x - p[i - 1].x);
+        const dy = Math.abs(p[i].y - p[i - 1].y);
+        assert.ok(
+          dx === 0 || dy === 0,
+          `${e.from}->${e.to} 第 ${i} 段斜走 (${p[i - 1].x},${p[i - 1].y})->(${p[i].x},${p[i].y})`,
+        );
+        assert.ok(
+          Math.hypot(dx, dy) >= 8,
+          `${e.from}->${e.to} 第 ${i} 段过短，是折角毛刺 (${p[i - 1].x},${p[i - 1].y})->(${p[i].x},${p[i].y})`,
+        );
+      }
+    }
+  }
+});
+
 test('节点之间互不重叠', () => {
   const out = laid(COMPLEX);
   for (let i = 0; i < out.nodes.length; i++) {

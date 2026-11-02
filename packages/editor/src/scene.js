@@ -66,7 +66,7 @@ export function buildScene(doc, spec = DEFAULT_SPEC) {
     });
 
     if (e.label) {
-      const l = placeLabel(e.label, points, spec);
+      const l = placeLabel(e.label, points, spec, nodes);
       if (l) labels.push({ ...l, text: e.label, edgeId: e.id });
     }
   }

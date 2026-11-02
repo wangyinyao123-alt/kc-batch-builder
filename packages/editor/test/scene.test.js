@@ -37,6 +37,22 @@ test('节点尺寸来自度量，且守 4px 网格', () => {
     assert.equal(n.cx, n.x + n.w / 2);
     assert.equal(n.cy, n.y + n.h / 2);
     assert.ok(Array.isArray(n.lines) && n.lines.length > 0);
+    // 中心点也要在网格上：端口取的就是中心，半格偏移会让连线出现 2px 折角
+    assert.equal(n.cx % GRID, 0, `${n.id} 中心 x ${n.cx} 偏网格 ${n.cx % GRID}px`);
+    assert.equal(n.cy % GRID, 0, `${n.id} 中心 y ${n.cy} 偏网格 ${n.cy % GRID}px`);
+  }
+});
+
+test('场景里的连线全是正交线段，无斜线、无短折角', () => {
+  const { doc } = twoNodeDoc();
+  const scene = buildScene(doc, spec);
+  for (const e of scene.edges) {
+    for (let i = 1; i < e.points.length; i++) {
+      const dx = Math.abs(e.points[i].x - e.points[i - 1].x);
+      const dy = Math.abs(e.points[i].y - e.points[i - 1].y);
+      assert.ok(dx === 0 || dy === 0, `第 ${i} 段斜走 ${JSON.stringify([e.points[i - 1], e.points[i]])}`);
+      assert.ok(Math.hypot(dx, dy) >= 8, `第 ${i} 段过短（折角毛刺）`);
+    }
   }
 });
 

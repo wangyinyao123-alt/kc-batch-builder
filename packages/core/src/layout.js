@@ -6,7 +6,8 @@
  */
 import dagre from '@dagrejs/dagre';
 import { measureBlock, textWidth } from './measure.js';
-import { DEFAULT_SPEC, ceilGrid, snapGrid } from './theme.js';
+import { DEFAULT_SPEC, ceilCell, ceilGrid, snapGrid } from './theme.js';
+import { inferSides, orthogonalRoute } from './route.js';
 
 const NODE_TEXT_MAX = 200;
 
@@ -35,22 +36,22 @@ export function measureNode(node, spec = DEFAULT_SPEC) {
     // 菱形：文字要装进内接区域，实际需要比文字宽 1.6~2 倍
     const maxTextWidth = g.decision.maxTextWidth / FONT_SAFETY;
     const m = measureBlock(node.text, maxTextWidth, t.size, t.lineHeight);
-    const w = Math.max(ceilGrid(m.width * FONT_SAFETY * g.decision.aspect + 32), 128);
-    const h = Math.max(ceilGrid(m.height * 1.7 + 24), 80);
-    return { w: ceilGrid(w), h: ceilGrid(h), lines: m.lines };
+    const w = Math.max(ceilCell(m.width * FONT_SAFETY * g.decision.aspect + 32), 128);
+    const h = Math.max(ceilCell(m.height * 1.7 + 24), 80);
+    return { w: ceilCell(w), h: ceilCell(h), lines: m.lines };
   }
 
   if (node.type === 'start' || node.type === 'end') {
     const m = measureBlock(node.text, NODE_TEXT_MAX / FONT_SAFETY, t.size, t.lineHeight);
-    const w = ceilGrid(Math.max(m.width * FONT_SAFETY + g.terminal.padX, g.terminal.minW));
-    const h = ceilGrid(Math.max(m.height + g.terminal.padY, 44));
+    const w = ceilCell(Math.max(m.width * FONT_SAFETY + g.terminal.padX, g.terminal.minW));
+    const h = ceilCell(Math.max(m.height + g.terminal.padY, 44));
     return { w, h, lines: m.lines };
   }
 
   // process / note
   const m = measureBlock(node.text, NODE_TEXT_MAX / FONT_SAFETY, t.size, t.lineHeight);
-  const w = ceilGrid(Math.max(m.width * FONT_SAFETY + g.process.padX, g.process.minW));
-  const h = ceilGrid(Math.max(m.height + g.process.padY, spec.minRowHeight));
+  const w = ceilCell(Math.max(m.width * FONT_SAFETY + g.process.padX, g.process.minW));
+  const h = ceilCell(Math.max(m.height + g.process.padY, spec.minRowHeight));
   return { w, h, lines: m.lines };
 }
 
@@ -116,9 +117,12 @@ export function layout(diagram, spec = DEFAULT_SPEC, opts = {}) {
   diagram.edges.forEach((e, i) => {
     const de = g.edge(e.from, e.to, `e${i}`);
     if (!de) return;
-    const points = de.points.map((p) => ({ x: snapGrid(p.x), y: snapGrid(p.y) }));
     const from = byId.get(e.from);
     const to = byId.get(e.to);
+    // 不用 dagre 原始折线：它带斜线段（从菱形斜边直接拉过去），且节点被拖开后
+    // 会从框中间穿过。统一走正交路由，屏幕与导出才是同一套走线。
+    const points = from && to ? orthogonalRoute(from, to, inferSides(from, to)) : [];
+    if (points.length < 2) return;
 
     const rendered = {
       ...e,
@@ -130,7 +134,7 @@ export function layout(diagram, spec = DEFAULT_SPEC, opts = {}) {
     };
 
     if (e.label) {
-      const box = placeLabel(e.label, points, spec);
+      const box = placeLabel(e.label, points, spec, outNodes);
       rendered.labelBox = box;
       outLabels.push({ ...box, text: e.label, edgeIndex: outEdges.length });
     }
@@ -168,9 +172,18 @@ export function layout(diagram, spec = DEFAULT_SPEC, opts = {}) {
 }
 
 /**
- * 分支标签的位置：取路径 40% 处，并把标签框向左/右挪开连线。
+ * 分支标签的位置：沿路径找一个不压节点的位置，并把标签框挪开连线。
+ *
+ * 为什么不能写死「42% 处」：那条比值是按 dagre 的原始折线调的，而折线一改成
+ * 正交路由，同一条边的总长与形状都变了，42% 很容易正好落在源框或目标框里。
+ * 与其反复手调比例，不如在路径上扫一遍，取第一个不与任何节点相交的落点。
+ *
+ * @param {string} text
+ * @param {{x:number,y:number}[]} points
+ * @param {object} spec
+ * @param {object[]} [nodes] 用于避让的节点框；不传则退回固定 42%
  */
-export function placeLabel(text, points, spec) {
+export function placeLabel(text, points, spec, nodes = []) {
   if (points.length < 2) return null;
   const a = spec.arrowLabel;
   const size = isCjk(text) ? a.cjkSize : a.size;
@@ -178,14 +191,29 @@ export function placeLabel(text, points, spec) {
   const w = ceilGrid(textWidth(text, size) + 12);
   const h = ceilGrid(size * 1.5 + 8);
 
-  const at = pointAtRatio(points, 0.42);
   const isVertical =
     Math.abs(points.at(-1).y - points[0].y) > Math.abs(points.at(-1).x - points[0].x);
-  // 竖排连线：标签放在线的右侧并留 6px 间隙，绝不压线；
-  // 横排连线：放在线的上方。这样标签不需要靠底色去切断连线。
-  const x = snapGrid(isVertical ? at.x + 6 : at.x - w / 2);
-  const y = snapGrid(isVertical ? at.y - h / 2 : at.y - h - 4);
-  return { x, y, w, h, size };
+
+  const boxAt = (at) => {
+    // 竖排连线：标签放在线的右侧并留 6px 间隙，绝不压线；
+    // 横排连线：放在线的上方。这样标签不需要靠底色去切断连线。
+    const x = snapGrid(isVertical ? at.x + 6 : at.x - w / 2);
+    const y = snapGrid(isVertical ? at.y - h / 2 : at.y - h - 4);
+    return { x, y, w, h, size };
+  };
+
+  const hitsNode = (b) =>
+    nodes.some((n) => b.x < n.x + n.w && n.x < b.x + b.w && b.y < n.y + n.h && n.y < b.y + b.h);
+
+  if (nodes.length === 0) return boxAt(pointAtRatio(points, 0.42));
+
+  // 从中间往两边扫：先试 50%，再 42/58、34/66……靠近端点处最容易压框
+  for (const ratio of [0.5, 0.42, 0.58, 0.34, 0.66, 0.26, 0.74, 0.18, 0.82]) {
+    const b = boxAt(pointAtRatio(points, ratio));
+    if (!hitsNode(b)) return b;
+  }
+  const fallback = boxAt(pointAtRatio(points, 0.5));
+  return fallback;
 }
 
 export function isCjk(text) {
