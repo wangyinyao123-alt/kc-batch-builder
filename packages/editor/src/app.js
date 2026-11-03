@@ -24,6 +24,9 @@ import {
   setTemplate,
   setPalette,
   setEdgeStyle,
+  setEdgeBend,
+  EDGE_ARROWS,
+  EDGE_DASHES,
   applyLayout,
   serializeDoc,
   deserializeDoc,
@@ -102,6 +105,9 @@ const els = {
   edgeWidth: $('edge-width'),
   edgeCorner: $('edge-corner'),
   edgeArrow: $('edge-arrow'),
+  edgeArrowStyle: $('edge-arrow-style'),
+  edgeDash: $('edge-dash'),
+  edgeColor: $('edge-color'),
   edgeWidthOut: $('edge-width-out'),
   edgeCornerOut: $('edge-corner-out'),
   edgeArrowOut: $('edge-arrow-out'),
@@ -293,6 +299,7 @@ function restoreDoc(next) {
   render();
   // 撤销 / 打开文件 / 撤销一次滑块拖动之后，滑块都得回到文档里的真实值
   syncEdgeSliders();
+  syncEdgeControls();
 }
 
 let persistTimer = 0;
@@ -385,6 +392,14 @@ function syncSelectionPanel() {
       <label>标签（如「是」「否」）</label>
       <wa-input id="insp-edge-label" size="s" type="text"></wa-input>
     </div>
+    <div class="field">
+      <label>拐点位置</label>
+      <div class="slider-row">
+        <wa-slider id="insp-edge-bend" class="grow" min="-240" max="240" step="4" value="0"></wa-slider>
+        <output id="insp-edge-bend-out" class="slider-out">0</output>
+      </div>
+      <p class="note">两框不在一水平线时，这条线中间横着走的那一段可以上下移。0 = 正中间。</p>
+    </div>
     <wa-button size="s" appearance="filled-outlined" variant="danger" class="block-btn" id="btn-del-edge">删除连线</wa-button>
   `;
   const input = $('insp-edge-label');
@@ -393,6 +408,39 @@ function syncSelectionPanel() {
     const r = setEdgeLabel(doc, e.id, input.value);
     if (r.changed) commit(r.doc, `label:${e.id}`);
   });
+
+  // 拐点滑块：与「连线」组的三根滑块同一套「一次拖动一个撤销点」策略
+  const bendEl = $('insp-edge-bend');
+  const bendOut = $('insp-edge-bend-out');
+  let bendDragging = false;
+  const bend0 = e.bend || 0;
+  bendEl.value = bend0;
+  if (bendOut) bendOut.textContent = String(bend0);
+  bendEl.addEventListener('pointerdown', () => {
+    bendDragging = false;
+  });
+  bendEl.addEventListener('input', () => {
+    const v = Number(bendEl.value);
+    if (bendOut) bendOut.textContent = String(v);
+    const r = setEdgeBend(doc, e.id, v);
+    if (!r.changed) return;
+    spec = specForDoc(r.doc);
+    doc = r.doc;
+    if (bendDragging) {
+      history.replace(doc);
+      render();
+      schedulePersist();
+    } else {
+      bendDragging = true;
+      commit(doc);
+    }
+    // 面板里显示的是这条线自己的 bend，不是全局样式，所以不用 syncEdgeControls
+  });
+  bendEl.addEventListener('change', () => {
+    if (bendOut) bendOut.textContent = String(Number(bendEl.value) || 0);
+    bendDragging = false;
+  });
+
   $('btn-del-edge').addEventListener('click', () => deleteSelection());
 }
 
@@ -1137,6 +1185,7 @@ function bindUI() {
   });
 
   bindEdgeSliders();
+  buildEdgeControls();
 
   $('btn-add').addEventListener('click', addNodeAtCenter);
   $('btn-layout').addEventListener('click', runLayout);
@@ -1284,12 +1333,114 @@ function applyDoc(next) {
   spec = specForDoc(next);
   commit(next);
   syncEdgeSliders();
+  syncEdgeControls();
 }
 
 // ---------------------------------------------------------------- 连线外观
 
 /** 三根滑块的默认取值（模板没写时用这几个数），与 theme.js 的 DEFAULT_SPEC.edge 一致。 */
 const EDGE_FALLBACK = { width: 1, corner: 0, arrowSize: 12 };
+
+/** 箭头样式与线型的中文名。值必须与 doc.js 的 EDGE_ARROWS / EDGE_DASHES 一致。 */
+const ARROW_LABEL = {
+  triangle: '实心三角',
+  open: '人字形',
+  diamond: '菱形',
+  circle: '圆点',
+  none: '无箭头',
+};
+const DASH_LABEL = { solid: '实线', dashed: '虚线', dotted: '点线' };
+
+/** 连线颜色可选的色值（与设计系统的 ink / muted / soft / accent 对齐）。 */
+const EDGE_SWATCHES = ['#2d3142', '#4f5d75', '#5a6580', '#bf4520', '#2e5aa8', '#3d7a5a'];
+
+/** 把下拉选项灌进去（只灌一次，值变化靠 syncEdgeControls 同步）。 */
+function buildEdgeControls() {
+  const arrowSel = els.edgeArrowStyle;
+  // 注意：wa-select 不是原生 <select>，没有 .options —— 只能数子节点里的 wa-option
+  const optCount = (el) => el.querySelectorAll('wa-option').length;
+  if (arrowSel && optCount(arrowSel) === 0) {
+    for (const v of EDGE_ARROWS) {
+      const o = document.createElement('wa-option');
+      o.value = v;
+      o.textContent = ARROW_LABEL[v] || v;
+      arrowSel.append(o);
+    }
+    arrowSel.addEventListener('change', () => {
+      const r = setEdgeStyle(doc, { arrow: arrowSel.value });
+      if (!r.changed) return;
+      spec = specForDoc(r.doc);
+      commit(r.doc);
+      syncEdgeControls();
+    });
+  }
+
+  const dashSel = els.edgeDash;
+  if (dashSel && optCount(dashSel) === 0) {
+    for (const v of EDGE_DASHES) {
+      const o = document.createElement('wa-option');
+      o.value = v;
+      o.textContent = DASH_LABEL[v] || v;
+      dashSel.append(o);
+    }
+    dashSel.addEventListener('change', () => {
+      const r = setEdgeStyle(doc, { dash: dashSel.value });
+      if (!r.changed) return;
+      spec = specForDoc(r.doc);
+      commit(r.doc);
+      syncEdgeControls();
+    });
+  }
+
+  const slot = els.edgeColor;
+  if (slot && !slot.firstChild) {
+    for (const color of EDGE_SWATCHES) {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'swatch';
+      b.dataset.color = color;
+      b.style.background = color;
+      b.title = color;
+      b.setAttribute('aria-label', `连线颜色 ${color}`);
+      b.addEventListener('click', () => {
+        const r = setEdgeStyle(doc, { color });
+        if (!r.changed) return;
+        spec = specForDoc(r.doc);
+        commit(r.doc);
+        syncEdgeControls();
+      });
+      slot.append(b);
+    }
+    // 「跟随模板」一档：清掉 color，回到模板给的颜色
+    const reset = document.createElement('button');
+    reset.type = 'button';
+    reset.className = 'swatch swatch-auto';
+    reset.dataset.color = '';
+    reset.title = '跟随模板';
+    reset.setAttribute('aria-label', '连线颜色跟随模板');
+    reset.addEventListener('click', () => {
+      const r = setEdgeStyle(doc, { color: null });
+      if (!r.changed) return;
+      spec = specForDoc(r.doc);
+      commit(r.doc);
+      syncEdgeControls();
+    });
+    slot.append(reset);
+  }
+}
+
+/** 下拉与色块跟着 spec 走（换模板、撤销、打开文件后都要调）。 */
+function syncEdgeControls() {
+  const e = spec.edge || {};
+  if (els.edgeArrowStyle) els.edgeArrowStyle.value = e.arrow || 'triangle';
+  if (els.edgeDash) els.edgeDash.value = e.dash || 'solid';
+  if (els.edgeColor) {
+    const current = String(e.color || '');
+    for (const b of els.edgeColor.children) {
+      b.classList.toggle('on', (b.dataset.color || '') === current);
+    }
+  }
+}
 
 /**
  * 把滑块、数字回显、文档三者接起来。
@@ -1333,12 +1484,20 @@ function bindEdgeSliders() {
   bind(els.edgeArrow, els.edgeArrowOut, 'arrowSize');
 
   $('btn-edge-reset').addEventListener('click', () => {
-    // 三项一起清空要用一次提交，否则会进三条撤销历史
-    const r = setEdgeStyle(doc, { width: null, corner: null, arrowSize: null });
+    // 五类一起清空要用一次提交，否则会进五条撤销历史
+    const r = setEdgeStyle(doc, {
+      width: null,
+      corner: null,
+      arrowSize: null,
+      arrow: null,
+      dash: null,
+      color: null,
+    });
     if (r.changed) {
       spec = specForDoc(r.doc);
       commit(r.doc);
     }
+    syncEdgeControls();
     syncEdgeSliders();
   });
 }
@@ -1416,6 +1575,7 @@ function boot() {
   spec = specForDoc(doc);
   render();
   syncEdgeSliders();
+  syncEdgeControls();
   requestAnimationFrame(() => {
     zoomToFit();
     applyViewBox();

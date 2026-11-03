@@ -84,8 +84,11 @@ export const DEFAULT_SPEC = {
   edge: {
     color: 'muted',
     width: 1,
+    // arrow 取 triangle / open / diamond / circle / none
     arrow: 'triangle',
     arrowSize: 12,
+    // dash 取 solid / dashed / dotted
+    dash: 'solid',
     corner: 0,
   },
   // 起止椭圆的圆角、汇合点的半径，直接来自 type-flowchart.md

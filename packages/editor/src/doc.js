@@ -30,6 +30,22 @@ export const DOC_VERSION = 1;
  */
 export const EDGE_STYLE_KEYS = ['width', 'corner', 'arrowSize'];
 
+/**
+ * 连线外观的两组「枚举」项，与上面的数值项分开存：
+ * 数值项存 null 表示回退模板，枚举项存空串表示回退模板。
+ *
+ * - arrow: triangle / open / diamond / circle / none
+ * - dash:  solid / dashed / dotted
+ * - color: 颜色角色名（muted/ink/soft…）或 #rrggbb
+ */
+export const EDGE_ENUM_KEYS = ['arrow', 'dash', 'color'];
+
+export const EDGE_ARROWS = ['triangle', 'open', 'diamond', 'circle', 'none'];
+export const EDGE_DASHES = ['solid', 'dashed', 'dotted'];
+
+/** 拐点偏移的可调范围（px）。允许负值：并线段可以往起点方向推。 */
+export const BEND_LIMIT = 240;
+
 /** 新建一份空文档。 */
 export function emptyDoc(title = '') {
   return {
@@ -321,12 +337,39 @@ export function setEdgeStyle(doc, patch = {}) {
     if (v === null || v === undefined) delete next[k];
     else next[k] = Number(v);
   }
+  for (const k of EDGE_ENUM_KEYS) {
+    if (!(k in patch)) continue;
+    const v = patch[k];
+    if (v === null || v === undefined || v === '') delete next[k];
+    else next[k] = String(v);
+  }
   // 值没变就不产生撤销点：拖动滑块时不能每帧记一笔
+  const keys = [...EDGE_STYLE_KEYS, ...EDGE_ENUM_KEYS];
   const same =
-    Object.keys(next).length === Object.keys(cur).length &&
-    EDGE_STYLE_KEYS.every((k) => next[k] === cur[k]);
+    Object.keys(next).length === Object.keys(cur).length && keys.every((k) => next[k] === cur[k]);
   if (same) return { doc, changed: false };
   return { doc: { ...doc, edge: next }, changed: true };
+}
+
+/**
+ * 改一条连线的拐点偏移。
+ *
+ * 只对「两个框不在同一水平线 / 竖直线」的连接有意义 —— 那种连接中间必须
+ * 横着（或竖着）走一段，这一段放在哪由 bend 决定。同一水平线上的直连没有
+ * 拐点，bend 存下来也不会生效，这里照存不误（换位置后就会生效）。
+ *
+ * 传 0 或 null 表示回到正中间。
+ */
+export function setEdgeBend(doc, id, bend) {
+  const v = Number(bend);
+  const next = clone(doc);
+  const e = next.edges.find((x) => x.id === id);
+  if (!e) return { doc, changed: false };
+  const clean = Number.isFinite(v) ? Math.max(-BEND_LIMIT, Math.min(BEND_LIMIT, Math.round(v))) : 0;
+  if ((e.bend || 0) === clean) return { doc, changed: false };
+  if (clean === 0) delete e.bend;
+  else e.bend = clean;
+  return { doc: next, changed: true };
 }
 
 /**
@@ -381,11 +424,19 @@ export function deserializeDoc(text) {
     if (typeof e.id !== 'string' || typeof e.from !== 'string' || typeof e.to !== 'string') return null;
   }
   const ids = new Set(raw.nodes.map((n) => n.id));
-  // 连线外观：只保留认识的键、且必须是有限数，坏值一律当作「用模板的」
+  // 连线外观：只保留认识的键；数值键必须是有限数，枚举键必须在白名单里，
+  // 坏值一律当作「用模板的」
   const edge = {};
   if (raw.edge && typeof raw.edge === 'object') {
     for (const k of EDGE_STYLE_KEYS) {
       if (Number.isFinite(raw.edge[k])) edge[k] = raw.edge[k];
+    }
+    for (const k of EDGE_ENUM_KEYS) {
+      const v = raw.edge[k];
+      if (typeof v !== 'string' || v === '') continue;
+      if (k === 'arrow' && !EDGE_ARROWS.includes(v)) continue;
+      if (k === 'dash' && !EDGE_DASHES.includes(v)) continue;
+      edge[k] = v;
     }
   }
   return {
@@ -413,6 +464,8 @@ export function deserializeDoc(text) {
         // 老文件没有这两个字段 → 空串 → 回到按位置推断，不会读崩
         fromSide: SIDES.includes(e.fromSide) ? e.fromSide : '',
         toSide: SIDES.includes(e.toSide) ? e.toSide : '',
+        // 老文件没有 bend → 不写这个键（等价于 0 = 正中间）
+        ...(Number.isFinite(e.bend) && e.bend !== 0 ? { bend: e.bend } : {}),
       })),
   };
 }

@@ -20,24 +20,59 @@ export function isCjk(text) {
   return /[\u3000-\u303f\u3040-\u33ff\u3400-\u4dbf\u4e00-\u9fff\uff00-\uffef]/.test(text);
 }
 
-/** 箭头样式：triangle 实心三角、open 细描边人字、none 不画箭头。 */
+/**
+ * 箭头样式。五种，语义取自 Visio 的 EndArrow 那组：
+ *   triangle 实心三角（默认）· open 细描边人字 · diamond 实心菱形
+ *   circle 实心圆点 · none 不画箭头
+ *
+ * 尺寸由 spec.edge.arrowSize 控制。默认 12（原来写死 8）——8px 的实心三角
+ * 在 A4 尺寸的图里缩到 50% 就只剩 3px，用户会以为「箭头没画出来」。
+ */
 export function arrowMarkers(spec) {
   const color = colorOf(spec, spec.edge.color);
   const kind = spec.edge.arrow || 'triangle';
   if (kind === 'none') return '';
-  // 箭头尺寸可调。默认 12（原来写死 8）——8px 的实心三角在 A4 尺寸的图里
-  // 缩到 50% 就只剩 3px，用户会以为「箭头没画出来」。
   const s = Math.max(4, Number(spec.edge.arrowSize) || 12);
   const half = s / 2;
-  const body =
-    kind === 'open'
-      ? `<path d="M0,0 L${s},${half} L0,${s}" fill="none" stroke="${color}" ` +
-        `stroke-width="${Math.max(1, s / 8).toFixed(2)}" stroke-linecap="round" stroke-linejoin="round"/>`
-      : `<path d="M0,0 L${s},${half} L0,${s} z" fill="${color}"/>`;
+  let body;
+  switch (kind) {
+    case 'open':
+      body =
+        `<path d="M0,0 L${s},${half} L0,${s}" fill="none" stroke="${color}" ` +
+        `stroke-width="${Math.max(1, s / 8).toFixed(2)}" stroke-linecap="round" stroke-linejoin="round"/>`;
+      break;
+    case 'diamond':
+      // 菱形箭头比三角窄一点才不显笨（三角占满 s×s，菱形取 s×0.75s）
+      body = `<path d="M0,${half} L${half},${half - s * 0.34} L${s},${half} L${half},${half + s * 0.34} z" fill="${color}"/>`;
+      break;
+    case 'circle':
+      body = `<circle cx="${half}" cy="${half}" r="${s * 0.34}" fill="${color}"/>`;
+      break;
+    default:
+      body = `<path d="M0,0 L${s},${half} L0,${s} z" fill="${color}"/>`;
+  }
   return (
     `<marker id="arrow" viewBox="0 0 ${s} ${s}" refX="${s - 1}" refY="${half}" ` +
     `markerWidth="${s}" markerHeight="${s}" orient="auto-start-reverse">${body}</marker>`
   );
+}
+
+/**
+ * 线型 → SVG 的 stroke-dasharray。
+ *
+ * 虚线间隔跟着线宽走，否则把线调粗之后虚线还是 4px 一格，密集得像实线。
+ * 返回空串表示实线（SVG 里不写这个属性）。
+ */
+export function dashArray(spec) {
+  const kind = spec.edge?.dash || 'solid';
+  if (kind === 'none' || kind === 'solid') return '';
+  const w = Math.max(0.5, Number(spec.edge.width) || 1);
+  if (kind === 'dotted') {
+    // 点线：极短的点 + 圆头（stroke-linecap=round 让 0.1 长的段看起来是个圆点）
+    return `${(w * 0.1).toFixed(2)} ${(w * 2.6).toFixed(2)}`;
+  }
+  // 虚线：4 倍线宽一段，空 3 倍
+  return `${(w * 4).toFixed(2)} ${(w * 3).toFixed(2)}`;
 }
 
 /**
@@ -149,7 +184,9 @@ export function renderEdge(e, spec) {
   const marker = spec.edge.arrow === 'none' ? '' : ' marker-end="url(#arrow)"';
   // 正交折线（dagre 给的是带拐点的路径）；corner > 0 时拐点磨圆
   const d = pathData(pts, spec.edge.corner);
-  return `<path d="${d}" fill="none" stroke="${color}" stroke-width="${width}"${marker} stroke-linejoin="round" stroke-linecap="round"/>`;
+  const dash = dashArray(spec);
+  const dashAttr = dash ? ` stroke-dasharray="${dash}"` : '';
+  return `<path d="${d}" fill="none" stroke="${color}" stroke-width="${width}"${dashAttr}${marker} stroke-linejoin="round" stroke-linecap="round"/>`;
 }
 
 /** 分支标签：先铺一块与纸同色的底把线切断，再写字。 */

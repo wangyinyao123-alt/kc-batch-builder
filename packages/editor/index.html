@@ -92,6 +92,18 @@
 
         <section class="group">
           <h2>连线</h2>
+          <div class="row">
+            <span>箭头</span>
+            <wa-select id="edge-arrow-style" size="s" class="grow" aria-label="箭头样式"></wa-select>
+          </div>
+          <div class="row">
+            <span>线型</span>
+            <wa-select id="edge-dash" size="s" class="grow" aria-label="线型"></wa-select>
+          </div>
+          <div class="row">
+            <span>颜色</span>
+            <div id="edge-color" class="grow color-slot"></div>
+          </div>
           <div class="slider-row">
             <span class="slider-label">粗细</span>
             <wa-slider id="edge-width" class="grow" min="0.5" max="4" step="0.5" value="1"></wa-slider>
@@ -103,25 +115,12 @@
             <output id="edge-corner-out" class="slider-out">0</output>
           </div>
           <div class="slider-row">
-            <span class="slider-label">箭头</span>
+            <span class="slider-label">大小</span>
             <wa-slider id="edge-arrow" class="grow" min="6" max="28" step="2" value="12"></wa-slider>
             <output id="edge-arrow-out" class="slider-out">12</output>
           </div>
           <button id="btn-edge-reset" class="link-btn" type="button">恢复模板默认</button>
           <p class="note">拐角调大就会变成圆角，拉到最右接近曲线。</p>
-        </section>
-
-        <section class="group">
-          <h2>快捷键</h2>
-          <ul class="keys">
-            <li><kbd>双击</kbd> 节点改文字 / 空白新建</li>
-            <li><kbd>拖动</kbd> 移动（自动对齐吸附）</li>
-            <li><kbd>拖端口</kbd> 拉出连线</li>
-            <li><kbd>空格+拖</kbd> 平移画布</li>
-            <li><kbd>⌘滚轮</kbd> 缩放</li>
-            <li><kbd>⌘Z</kbd> 撤销</li>
-            <li><kbd>⌫</kbd> 删除选中</li>
-          </ul>
         </section>
       </aside>
     </main>

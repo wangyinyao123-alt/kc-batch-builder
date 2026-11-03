@@ -359,3 +359,59 @@ test('正交路由：任何一段都不穿过起点框或终点框', () => {
     }
   }
 });
+
+// ---------------------------------------------------------------- 拐点偏移（bend）
+
+test('bend：默认 0 等于原来「并线放正中间」', () => {
+  const a = box(100, 0);
+  const b = box(300, 200);
+  const mid = orthogonalRoute(a, b);
+  const zero = orthogonalRoute(a, b, { bend: 0 });
+  assert.deepEqual(zero, mid);
+});
+
+test('bend：正值把并线段往下推，负值往上推', () => {
+  const a = box(100, 0);
+  const b = box(300, 200);
+  // 两框都从底部出/顶部进，路由含一段横线，它的 y 就是并线高度
+  const flat = orthogonalRoute(a, b, { fromSide: 'bottom', toSide: 'top' });
+  const down = orthogonalRoute(a, b, { fromSide: 'bottom', toSide: 'top', bend: 40 });
+  const up = orthogonalRoute(a, b, { fromSide: 'bottom', toSide: 'top', bend: -40 });
+  const midY = (pts) => pts[1].y;
+  assert.ok(midY(down) > midY(flat), 'bend 正值没有下移并线段');
+  assert.ok(midY(up) < midY(flat), 'bend 负值没有上移并线段');
+});
+
+test('bend：偏移量被夹在两端之间，不会跑到框外去', () => {
+  const a = box(100, 0);
+  const b = box(300, 200);
+  const pts = orthogonalRoute(a, b, { fromSide: 'bottom', toSide: 'top', bend: 100000 });
+  // 并线段的 y 必须仍在两个端口之间（留 8px 余量）
+  const y0 = pts[0].y;
+  const y1 = pts.at(-1).y;
+  assert.ok(pts[1].y > y0 && pts[1].y < y1, `并线段跑到端口外：${pts[1].y} 不在 (${y0}, ${y1})`);
+});
+
+test('bend：结果仍是纯正交、无零长度段（换了拐点也不能把线画歪）', () => {
+  const a = box(100, 0);
+  const b = box(300, 200);
+  for (const bend of [-120, -40, 0, 40, 120]) {
+    const pts = orthogonalRoute(a, b, { fromSide: 'bottom', toSide: 'top', bend });
+    for (let i = 1; i < pts.length; i++) {
+      const p = pts[i - 1];
+      const q = pts[i];
+      assert.ok(p.x === q.x || p.y === q.y, `bend=${bend} 出现斜线段`);
+      assert.ok(Math.hypot(q.x - p.x, q.y - p.y) > 0, `bend=${bend} 出现零长度段`);
+    }
+  }
+});
+
+test('bend：两端贴得比 8px 还近时忽略偏移（没有可调空间，不能把线折回去）', () => {
+  // 端口 y 相距 10px，小于 2*BEND_KEEP(8)，clampBend 直接返回中点
+  const a = { id: 'a', x: 0, y: 0, w: 40, h: 10 };
+  const b = { id: 'b', x: 200, y: 0, w: 40, h: 10 };
+  const pts = orthogonalRoute(a, b, { fromSide: 'bottom', toSide: 'bottom', bend: 60 });
+  for (let i = 1; i < pts.length; i++) {
+    assert.ok(pts[i].x === pts[i - 1].x || pts[i].y === pts[i - 1].y, '出现斜线段');
+  }
+});

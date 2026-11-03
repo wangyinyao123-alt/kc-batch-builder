@@ -18,6 +18,7 @@ import {
   setTemplate,
   setPalette,
   setEdgeStyle,
+  setEdgeBend,
   applyLayout,
   serializeDoc,
   deserializeDoc,
@@ -390,8 +391,16 @@ test('setEdgeStyle：传 null 表示这一项回到模板默认', () => {
 });
 
 test('setEdgeStyle：不认识的键被忽略（防止 JSON 里塞进无关键）', () => {
-  const r = setEdgeStyle(emptyDoc(), { color: '#ff0000', width: 2 });
+  const r = setEdgeStyle(emptyDoc(), { bogus: 1, shadow: '#ff0000', width: 2 });
   assert.deepEqual(r.doc.edge, { width: 2 });
+});
+
+test('setEdgeStyle：箭头 / 线型 / 颜色三个枚举项可写可清', () => {
+  const a = setEdgeStyle(emptyDoc(), { arrow: 'diamond', dash: 'dashed', color: '#bf4520' });
+  assert.deepEqual(a.doc.edge, { arrow: 'diamond', dash: 'dashed', color: '#bf4520' });
+  // 空串与 null 都表示「回到模板」
+  const b = setEdgeStyle(a.doc, { dash: '', arrow: null });
+  assert.deepEqual(b.doc.edge, { color: '#bf4520' });
 });
 
 test('setEdgeStyle：不原地修改输入文档', () => {
@@ -420,4 +429,72 @@ test('连线外观里的坏值被丢掉，只留有限数', () => {
       `"nodes":[{"id":"n1","type":"process","text":"A","x":0,"y":0}],"edges":[]}`,
   );
   assert.deepEqual(bad.edge, { width: 2 });
+});
+
+// ---------------------------------------------------------------- 拐点与枚举项
+
+test('setEdgeBend：写入、夹值、清零即删键', () => {
+  const a1 = addNode(emptyDoc(), { type: 'process', text: 'A', x: 0, y: 0 });
+  const a2 = addNode(a1.doc, { type: 'process', text: 'B', x: 0, y: 200 });
+  const doc = addEdge(a2.doc, a1.id, a2.id).doc;
+  const id = doc.edges[0].id;
+
+  const a = setEdgeBend(doc, id, 24);
+  assert.equal(a.changed, true);
+  assert.equal(a.doc.edges[0].bend, 24);
+
+  // 0 不是「存一个 0」，而是把键删掉 —— 老文档与「正中间」是同一种表示
+  const b = setEdgeBend(a.doc, id, 0);
+  assert.equal('bend' in b.doc.edges[0], false);
+
+  // 夹到 ±BEND_LIMIT（240）
+  assert.equal(setEdgeBend(doc, id, 9999).doc.edges[0].bend, 240);
+  assert.equal(setEdgeBend(doc, id, -9999).doc.edges[0].bend, -240);
+});
+
+test('setEdgeBend：值没变不产生撤销点，找不到的边不改文档', () => {
+  const a1 = addNode(emptyDoc(), { type: 'process', text: 'A', x: 0, y: 0 });
+  const a2 = addNode(a1.doc, { type: 'process', text: 'B', x: 0, y: 200 });
+  const doc = addEdge(a2.doc, a1.id, a2.id).doc;
+  const id = doc.edges[0].id;
+  const moved = setEdgeBend(doc, id, 16).doc;
+  assert.equal(setEdgeBend(moved, id, 16).changed, false);
+  assert.equal(setEdgeBend(moved, 'nope', 16).changed, false);
+  assert.equal(setEdgeBend(moved, 'nope', 16).doc, moved);
+});
+
+test('setEdgeBend：不原地修改输入文档', () => {
+  const a1 = addNode(emptyDoc(), { type: 'process', text: 'A', x: 0, y: 0 });
+  const a2 = addNode(a1.doc, { type: 'process', text: 'B', x: 0, y: 200 });
+  const doc = addEdge(a2.doc, a1.id, a2.id).doc;
+  const before = JSON.stringify(doc.edges);
+  setEdgeBend(doc, doc.edges[0].id, 32);
+  assert.equal(JSON.stringify(doc.edges), before);
+});
+
+test('拐点能存进 JSON 并被读回；0 不落盘', () => {
+  const a1 = addNode(emptyDoc(), { type: 'process', text: 'A', x: 0, y: 0 });
+  const a2 = addNode(a1.doc, { type: 'process', text: 'B', x: 0, y: 200 });
+  const doc = addEdge(a2.doc, a1.id, a2.id).doc;
+  const id = doc.edges[0].id;
+  const bent = setEdgeBend(doc, id, -48).doc;
+  assert.equal(deserializeDoc(serializeDoc(bent)).edges[0].bend, -48);
+  // 清零后存出来不应该有 bend 键
+  const cleared = setEdgeBend(bent, id, 0).doc;
+  assert.equal(JSON.parse(serializeDoc(cleared)).edges[0].bend, undefined);
+});
+
+test('枚举项能存进 JSON 并被读回，非法值被丢弃', () => {
+  const doc = setEdgeStyle(emptyDoc(), { arrow: 'circle', dash: 'dotted', color: '#2e5aa8' }).doc;
+  assert.deepEqual(deserializeDoc(serializeDoc(doc)).edge, {
+    arrow: 'circle',
+    dash: 'dotted',
+    color: '#2e5aa8',
+  });
+  const bad = deserializeDoc(
+    `{"version":1,"edge":{"arrow":"rocket","dash":"wavy","color":"#123456"},` +
+      `"nodes":[{"id":"n1","type":"process","text":"A","x":0,"y":0}],"edges":[]}`,
+  );
+  // arrow/dash 在白名单外 → 丢；color 是任意字符串 → 留
+  assert.deepEqual(bad.edge, { color: '#123456' });
 });

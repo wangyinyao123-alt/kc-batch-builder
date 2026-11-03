@@ -18,6 +18,16 @@
 
 const { VisioDocument, ArrowHeads, StandardConnectionPoints } = require('ts-visio');
 
+/**
+ * Visio 的 EndArrow 用编号区分箭头样式。ts-visio 只导出了 Open 一个常量，
+ * 其余的（实心三角 / 菱形 / 圆点）要直接写编号。
+ * 参考 OOXML：0 无 / 1 实心三角 / 2 空心头 / 4 实心菱形 / 8 实心圆。
+ */
+const ARROW_CODE = { none: '0', triangle: '1', open: '2', diamond: '4', circle: '8' };
+
+/** 线型 → Visio 的 LinePattern 编号（1 实线 / 2 虚线 / 3 点线）。 */
+const DASH_CODE = { solid: 1, dashed: 2, dotted: 3 };
+
 const INCH_PX = 96; // 1 英寸 = 96 画布像素
 
 /** 画布像素 → 英寸 */
@@ -293,17 +303,18 @@ async function buildVsdx(diagram, theme, zipImpl) {
     // 每条线可以自己带外观（模板切换后连线颜色/粗细会变）；
     // 没给就退回主题值，保证老调用方不受影响。
     const es = e.style || {};
-    const noArrow = es.arrow === 'none';
     await page.connectShapes(
       fromShape,
       toShape,
       ArrowHeads.None,
       // 注意：枚举名是 Open，不是 OpenArrow。
       // 写成 ArrowHeads.OpenArrow 会得到 undefined，最终 EndArrow="0"，图上没有箭头。
-      noArrow ? ArrowHeads.None : ArrowHeads.Open,
+      ARROW_CODE[es.arrow] ?? ArrowHeads.Open,
       {
         lineColor: es.lineColor ?? t.lineColor,
         lineWeight: es.lineWeightPt ?? t.lineWeightPt,
+        // 1 = 实线 / 2 = 虚线 / 3 = 点线，与 Visio 的 LinePattern 编号一致
+        linePattern: DASH_CODE[es.dash] ?? 1,
         routing: 'orthogonal',
       },
       { name: fromPort },

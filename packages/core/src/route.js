@@ -164,6 +164,22 @@ function exitsForward(p1, p2, side) {
 }
 
 /**
+ * 把「拐点位置」夹在一段正数区间里。
+ *
+ * 为什么必须夹：拐点越过两端就会让线折回去，画出来是一个套子。
+ * 留 BEND_KEEP 的余量，保证拐点离两端端口至少还有一小段直线，
+ * 否则拐点贴着端口时圆角会把整段吃掉，看着像「线没接上」。
+ */
+const BEND_KEEP = 8;
+
+function clampBend(base, a, b) {
+  const lo = Math.min(a, b) + BEND_KEEP;
+  const hi = Math.max(a, b) - BEND_KEEP;
+  if (hi < lo) return base; // 两端太近，没有可调空间
+  return snapGrid(Math.min(Math.max(base, lo), hi));
+}
+
+/**
  * 两个「离开框边的点」之间怎么连。
  *
  * @param {object} p1 出线点（起点框外 out 处）
@@ -171,17 +187,20 @@ function exitsForward(p1, p2, side) {
  * @param {object} p2 入线点（终点框外 out 处）
  * @param {string} s2 入口方向
  * @param {object[]} boxes 需要避让的两个框
+ * @param {number} [bend=0] 拐点偏移（px）。0 = 正中间，正负把并线段往两端推。
  */
-function connect(p1, s1, p2, s2, boxes = []) {
+function connect(p1, s1, p2, s2, boxes = [], bend = 0) {
   if (p1.x === p2.x || p1.y === p2.y) return [p1, p2];
 
-  // 两竖 → 中间高度横向并线；两横 → 中间宽度纵向并线
+  // 两竖 → 中间高度横向并线；两横 → 中间宽度纵向并线。
+  // bend 让用户能把这条并线段往上/往下挪 —— 默认在中点，但两个框
+  // 之间有别的图形、或者想让几根线分开走时，中点往往不是想要的位置。
   if (isVertical(s1) && isVertical(s2)) {
-    const midY = snapGrid((p1.y + p2.y) / 2);
+    const midY = clampBend(snapGrid((p1.y + p2.y) / 2) + bend, p1.y, p2.y);
     return [p1, { x: p1.x, y: midY }, { x: p2.x, y: midY }, p2];
   }
   if (!isVertical(s1) && !isVertical(s2)) {
-    const midX = snapGrid((p1.x + p2.x) / 2);
+    const midX = clampBend(snapGrid((p1.x + p2.x) / 2) + bend, p1.x, p2.x);
     return [p1, { x: midX, y: p1.y }, { x: midX, y: p2.y }, p2];
   }
 
@@ -214,10 +233,16 @@ function connect(p1, s1, p2, s2, boxes = []) {
  * @param {{id?:string,x:number,y:number,w:number,h:number}} to
  * @param {object} [opts]
  * @param {number} [opts.out=OUT] 出线距离
+ * @param {number} [opts.bend=0] 拐点偏移（px）。只在「两竖」或「两横」的
+ *   并线段上生效 —— 也就是两个框不在同一水平线/竖直线、中间必须横着
+ *   （或竖着）走一段的那种连接。0 是正中间，正负把这段往两端推。
+ *   一竖一横的单肘连接只有一个拐点，位置由两个端口唯一确定，
+ *   没有可调空间，此时 bend 被忽略。
  * @returns {{x:number,y:number}[]} 折线拐点，首点在起点框边上，末点在终点框边上
  */
 export function orthogonalRoute(from, to, opts = {}) {
   const out = opts.out ?? OUT;
+  const bend = Number(opts.bend) || 0;
 
   // 自连：从右侧出去，绕到框上方再回来。画在框外，不压住自己。
   if (from === to || (from.id && from.id === to.id)) {
@@ -251,7 +276,7 @@ export function orthogonalRoute(from, to, opts = {}) {
   const s1 = snapOut(p1, fromSide);
   const s2 = snapOut(p2, toSide);
 
-  const mid = connect(s1, fromSide, s2, toSide, [from, to]);
+  const mid = connect(s1, fromSide, s2, toSide, [from, to], bend);
   return simplify([p0, ...mid, p3]);
 }
 

@@ -101,6 +101,8 @@ export function toVsdxInput(laid, spec, opts = {}) {
         // vsdx 只有「有箭头 / 没箭头」两档，没有尺寸档（ts-visio 把
         // EndArrowSize 写死成 2 = 大号）。所以只把「关掉箭头」传下去。
         arrow: spec.edge?.arrow ?? 'triangle',
+        // 线型交给导出器翻成 Visio 的 LinePattern 编号
+        dash: spec.edge?.dash ?? 'solid',
       },
     });
   }

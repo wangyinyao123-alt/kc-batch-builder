@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { arrowMarkers, pathData, renderEdge } from '../src/paint.js';
+import { arrowMarkers, dashArray, pathData, renderEdge } from '../src/paint.js';
 import { resolveSpec } from '../src/templates.js';
 import { DEFAULT_SPEC } from '../src/theme.js';
 
@@ -116,4 +116,82 @@ test('renderEdge：arrow 为 none 时不挂 marker', () => {
 test('renderEdge：两条点不足的边不产空路径之外的脏东西', () => {
   assert.equal(renderEdge({ points: [] }, DEFAULT_SPEC), '');
   assert.equal(renderEdge({ points: [{ x: 0, y: 0 }] }, DEFAULT_SPEC), '');
+});
+
+// ---------------------------------------------------------------- 箭头种类与线型
+
+test('箭头五种：triangle / open / diamond / circle / none 各画各的', () => {
+  const spec = resolveSpec('default');
+  const withArrow = (arrow) => arrowMarkers({ ...spec, edge: { ...spec.edge, arrow } });
+
+  // 实心三角：闭合路径 + fill
+  const tri = withArrow('triangle');
+  assert.match(tri, / z"/, 'triangle 不是闭合路径');
+  assert.match(tri, /fill="#/, 'triangle 没有填充');
+
+  // 人字：闭合路径不能有，且要描边
+  const open = withArrow('open');
+  assert.doesNotMatch(open, / z"/, 'open 不该闭合');
+  assert.match(open, /stroke="/, 'open 没有描边');
+
+  // 菱形：四段折线闭合
+  assert.match(withArrow('diamond'), / z"/);
+  // 圆点：用 circle 元素
+  assert.match(withArrow('circle'), /<circle /);
+  // none：整段不画
+  assert.equal(withArrow('none'), '');
+});
+
+test('箭头种类不影响尺寸（换箭头不该让框里的线错位）', () => {
+  const spec = resolveSpec('default');
+  for (const arrow of ['triangle', 'open', 'diamond', 'circle']) {
+    const { vb, markerWidth } = markerSize(arrowMarkers({ ...spec, edge: { ...spec.edge, arrow } }));
+    assert.equal(vb, 12, `${arrow} 的 viewBox 尺寸变了`);
+    assert.equal(markerWidth, 12, `${arrow} 的 markerWidth 变了`);
+  }
+});
+
+test('线型：solid 不加 dasharray，dashed/dotted 各给不同节奏', () => {
+  const spec = resolveSpec('default');
+  const withDash = (dash) => dashArray({ ...spec, edge: { ...spec.edge, dash } });
+  assert.equal(withDash('solid'), '');
+  const dashed = withDash('dashed');
+  const dotted = withDash('dotted');
+  assert.ok(dashed.length > 0 && dotted.length > 0);
+  assert.notEqual(dashed, dotted, '虚线点线不能是同一套节奏');
+  // 两段数值（划线长度 + 间隔）
+  assert.match(dashed, /^[\d.]+ [\d.]+$/);
+  assert.match(dotted, /^[\d.]+ [\d.]+$/);
+});
+
+test('线型：间隔跟着线宽走（线越粗，虚线也越粗）', () => {
+  const spec = resolveSpec('default');
+  const thin = dashArray({ ...spec, edge: { ...spec.edge, dash: 'dashed', width: 1 } });
+  const thick = dashArray({ ...spec, edge: { ...spec.edge, dash: 'dashed', width: 3 } });
+  const first = (s) => Number(s.split(' ')[0]);
+  assert.ok(first(thick) > first(thin), '线宽变了但虚线节奏没变');
+});
+
+test('renderEdge：虚线真的落进 SVG 的 stroke-dasharray', () => {
+  const spec = resolveSpec('default');
+  const dashed = renderEdge(
+    { points: [{ x: 0, y: 0 }, { x: 100, y: 0 }] },
+    { ...spec, edge: { ...spec.edge, dash: 'dashed' } },
+  );
+  assert.match(dashed, /stroke-dasharray="[\d.]+ [\d.]+"/);
+
+  const solid = renderEdge(
+    { points: [{ x: 0, y: 0 }, { x: 100, y: 0 }] },
+    { ...spec, edge: { ...spec.edge, dash: 'solid' } },
+  );
+  assert.doesNotMatch(solid, /stroke-dasharray/, '实线不该带 dasharray');
+});
+
+test('renderEdge：连线颜色可直接写 #rrggbb（不查配色角色表）', () => {
+  const spec = resolveSpec('default');
+  const svg = renderEdge(
+    { points: [{ x: 0, y: 0 }, { x: 100, y: 0 }] },
+    { ...spec, edge: { ...spec.edge, color: '#2e5aa8' } },
+  );
+  assert.match(svg, /stroke="#2e5aa8"/);
 });

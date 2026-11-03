@@ -50,6 +50,9 @@ export function buildScene(doc, spec = DEFAULT_SPEC) {
     const points = orthogonalRoute(from, to, {
       ...(e.fromSide ? { fromSide: e.fromSide } : {}),
       ...(e.toSide ? { toSide: e.toSide } : {}),
+      // 拐点偏移：两个框不在一水平线/竖直线时，中间那段并线放哪由它决定。
+      // 没设过就是 0，等于原来「放正中间」的行为，老文档完全不受影响。
+      ...(e.bend ? { bend: e.bend } : {}),
     });
     if (points.length < 2) continue;
     edges.push({
@@ -60,6 +63,7 @@ export function buildScene(doc, spec = DEFAULT_SPEC) {
       kind: e.kind,
       fromSide: e.fromSide || '',
       toSide: e.toSide || '',
+      bend: e.bend || 0,
       points,
       fromType: from.type,
       toType: to.type,
