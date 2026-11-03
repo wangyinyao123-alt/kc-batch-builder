@@ -536,6 +536,21 @@ function endEdit(commitIt) {
 
 // ---------------------------------------------------------------- 指针交互
 
+/**
+ * 指针捕获：把后续 pointermove/up 都收到 stage 上，指针划出画布也不丢事件。
+ *
+ * 必须包 try/catch —— 合成事件、指针已被系统释放、或元素此刻不在文档里时
+ * 浏览器会抛 NotFoundError。让它冒出去的话 onPointerDown 会执行到一半中断，
+ * dragState 已置位但捕获没成功，鼠标一动就变成「拖不动还卡着」。
+ */
+function capturePointer(ev) {
+  try {
+    els.stage.setPointerCapture(ev.pointerId);
+  } catch {
+    // 捕获失败不影响主流程：pointermove 仍然会派发到 stage（事件目标是它）
+  }
+}
+
 function onPointerDown(ev) {
   if (ev.button === 2) return; // 右键交给 contextmenu
   els.stage.focus();
@@ -548,7 +563,7 @@ function onPointerDown(ev) {
   if (spaceDown || ev.button === 1) {
     dragState = { mode: 'pan', startScreen: sp, startView: view };
     els.stage.classList.add('panning');
-    els.stage.setPointerCapture(ev.pointerId);
+    capturePointer(ev);
     return;
   }
 
@@ -567,7 +582,7 @@ function onPointerDown(ev) {
           drop: null,
           moved: false,
         };
-        els.stage.setPointerCapture(ev.pointerId);
+        capturePointer(ev);
         hovered = n.id;
         drawRubber();
         return;
@@ -598,7 +613,7 @@ function onPointerDown(ev) {
       startPos: { x: node.x, y: node.y },
       moved: false,
     };
-    els.stage.setPointerCapture(ev.pointerId);
+    capturePointer(ev);
     return;
   }
 
@@ -635,7 +650,7 @@ function onPointerDown(ev) {
 
   selection = null;
   dragState = { mode: 'marquee', startWorld: wp, rect: { x: wp.x, y: wp.y, w: 0, h: 0 } };
-  els.stage.setPointerCapture(ev.pointerId);
+  capturePointer(ev);
   render();
 }
 

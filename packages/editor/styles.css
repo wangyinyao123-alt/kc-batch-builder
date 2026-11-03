@@ -681,19 +681,22 @@ body {
    不用 color-picker 是为了「一眼看全所有可选色」，也省掉弹层遮挡画布。 */
 .color-slot {
   display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
+  flex-wrap: nowrap;
+  gap: 5px;
   align-items: center;
 }
 
+/* 7 个色块要挤在一行里：面板内宽约 168px，18*7 + 5*6 = 156 刚好放得下，
+   多一行会把「连线」这组撑得太高。 */
 .swatch {
-  width: 22px;
-  height: 22px;
+  width: 18px;
+  height: 18px;
   padding: 0;
   border: 1px solid rgba(45, 49, 66, 0.18);
-  border-radius: 4px;
+  border-radius: 3px;
   cursor: pointer;
   position: relative;
+  flex: 0 0 auto;
 }
 
 .swatch.on {
