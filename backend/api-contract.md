@@ -8,9 +8,9 @@
 | 任务类型 | 脚本 | 契约文档 | 状态 |
 |---|---|---|---|
 | 导入图片 | `kc-import-images-ui.ps1` | [kc-import-contract.md](kc-import-contract.md) | ✅ 已就绪（2026-10-29 实测版拆解，用户三确认完成） |
-| 新建 Topic | （待用户提供） | 待写 | ⏳ 等脚本 |
-| 新建 Map | （待用户提供） | 待写 | ⏳ 等脚本 |
-| 搭建 Pub | （待用户提供） | 待写 | ⏳ 等脚本 |
+| 新建 Topic / Map / Pub | `kc-create-objects-ui.ps1`（本仓 [scripts/](scripts/)） | [kc-create-contract.md](kc-create-contract.md) | ✅ 契约已写（2026-11-03 归档 3293 行原文）；4 个待确认项见契约第 9 节 |
+
+**四类任务后端脚本已全部到齐**：P3 的四张类型卡片 = import（图片）+ create（Topic/Map/Pub）。
 
 ## 四脚本共性（待验证的假设）
 
