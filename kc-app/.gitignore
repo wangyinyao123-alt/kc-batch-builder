@@ -6,3 +6,11 @@ dist/
 .shots/
 *.log
 .DS_Store
+
+# 打包相关
+release/
+.electron-cache/
+.home-pack/
+.home-*/
+.npm-cache/
+build/icon.png

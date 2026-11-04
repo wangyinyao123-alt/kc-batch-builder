@@ -9,18 +9,74 @@
     "build": "vite build",
     "start": "npm run build && electron .",
     "dev:electron": "concurrently -k \"vite\" \"wait-on tcp:5173 && cross-env KC_DEV=1 electron .\"",
-    "test": "node --test electron/parsers/kc-log-parser.test.js"
+    "test": "node --test electron/parsers/kc-log-parser.test.js",
+    "dist:win": "npm run build && electron-builder --win --x64 --publish never",
+    "dist:win:dir": "npm run build && electron-builder --win --x64 --dir --publish never"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.3.4",
     "concurrently": "^9.1.2",
     "cross-env": "^7.0.3",
     "electron": "^33.4.11",
+    "electron-builder": "^25.1.8",
     "vite": "^6.0.7",
     "wait-on": "^8.0.1"
   },
   "dependencies": {
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
+  },
+  "build": {
+    "appId": "com.hikvision.kc.batchbuilder",
+    "productName": "KC 批量建库工具",
+    "directories": {
+      "output": "release",
+      "buildResources": "build"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "package.json",
+      "!**/*.map",
+      "!**/*.test.js"
+    ],
+    "extraResources": [
+      {
+        "from": "../backend/scripts",
+        "to": "scripts",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "artifactName": "KC-BatchBuilder-${version}-win-x64.${ext}",
+      "icon": "build/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "KC 批量建库工具",
+      "installerLanguages": [
+        "zh_CN"
+      ],
+      "language": "2052",
+      "deleteAppDataOnUninstall": false
+    }
+  },
+  "author": {
+    "name": "Hikvision",
+    "email": "noreply@hikvision.com"
   }
 }
