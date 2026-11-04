@@ -39,6 +39,7 @@ const SCENE = {
     { src: './img/stickers/p4-error-combo.png', x: 1081, y: 424, w: 147, h: 114 },
   ],
   p5: [
+    { src: './img/stickers/p5-gear.png', x: 144, y: 122, w: 42, h: 42, rot: 0 },
     { src: './img/stickers/p5-net-cat.png', x: 520, y: 194, w: 58, h: 47, rot: 0 },
     { src: './img/stickers/p5-picasso.png', x: 1091, y: 415, w: 86, h: 67, rot: 0 },
     { src: './img/stickers/p5-notes.png', x: 535, y: 537, w: 54, h: 58, rot: 0 },

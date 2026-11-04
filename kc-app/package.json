@@ -1,6 +1,6 @@
 {
   "name": "kc-app",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "private": true,
   "description": "KC 内容生产助手 — Electron 客户端",
   "main": "electron/main.js",
