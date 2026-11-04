@@ -1,6 +1,6 @@
 {
   "name": "kc-app",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "private": true,
   "description": "KC 内容生产助手 — Electron 客户端",
   "main": "electron/main.js",
@@ -79,7 +79,12 @@
         "zh_CN"
       ],
       "language": "2052",
-      "deleteAppDataOnUninstall": false
+      "deleteAppDataOnUninstall": false,
+      "installerSidebar": "build/nsis/sidebar.bmp",
+      "uninstallerSidebar": "build/nsis/sidebar.bmp",
+      "installerHeader": "build/nsis/header.bmp",
+      "installerHeaderIcon": "build/nsis/header.ico",
+      "include": "build/installer.nsh"
     },
     "portable": {
       "artifactName": "KC-BatchBuilder-${version}-win-x64-portable.${ext}"
