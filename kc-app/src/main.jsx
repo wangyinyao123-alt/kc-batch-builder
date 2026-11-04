@@ -103,7 +103,7 @@ function StatusBar({ tasks, route, setRoute }) {
           </button>
         ))}
       </nav>
-      <span className="sb-right">ISHRemote 驱动 · v0.2.3</span>
+      <span className="sb-right">ISHRemote 驱动 · v0.2.4</span>
     </footer>
   );
 }
