@@ -8,7 +8,8 @@ export function useRun() {
   const [phase, setPhase] = useState('idle');
   const [events, setEvents] = useState([]); // 原始事件（日志抽屉）
   const [summary, setSummary] = useState(null);
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState([]); // 预检清单（item 事件）
+  const [results, setResults] = useState([]); // 执行明细（progress 事件累计，P4 结果清单用）
   const [progress, setProgress] = useState({ i: 0, n: 0, title: '' });
   const [login, setLogin] = useState(null);
   const [warns, setWarns] = useState([]);
@@ -31,6 +32,7 @@ export function useRun() {
     setEvents([]);
     setSummary(null);
     setItems([]);
+    setResults([]);
     setProgress({ i: 0, n: 0, title: '' });
     setLogin(null);
     setWarns([]);
@@ -63,6 +65,19 @@ export function useRun() {
         break;
       case 'progress':
         setProgress({ i: evt.i, n: evt.n, title: evt.title });
+        // 同一序号可能先报 FAILED 再被重试成功，按 i 去重保留最后一条
+        setResults((prev) => {
+          const next = prev.filter((r) => r.i !== evt.i);
+          next.push({
+            i: evt.i,
+            n: evt.n,
+            title: evt.title,
+            state: evt.state,
+            error: evt.error || '',
+            objectRef: evt.objectRef || '',
+          });
+          return next.sort((a, b) => a.i - b.i);
+        });
         break;
       case 'warn':
         setWarns((prev) => [...prev, evt.text]);
@@ -114,7 +129,7 @@ export function useRun() {
   const busy = phase === 'prechecking' || phase === 'committing';
 
   return {
-    phase, busy, events, summary, items, progress, login, warns, error,
+    phase, busy, events, summary, items, results, progress, login, warns, error,
     artifacts, attach, exitCode, startedAt, endedAt,
     start, cancel, reset,
   };

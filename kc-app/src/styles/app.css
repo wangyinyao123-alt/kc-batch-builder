@@ -1048,3 +1048,51 @@
 .wfull {
   width: 100%;
 }
+
+/* ---------------------------------------------------------------- P4 任务详情 */
+
+.gap8 {
+  gap: 8px;
+}
+
+/* 执行日志：等宽、可滚动、按级别着色 */
+.log-view {
+  max-height: 360px;
+  overflow: auto;
+  background: var(--c-surface-muted);
+  border: 1px solid rgba(240, 176, 200, 0.5);
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 11px;
+  line-height: 1.7;
+}
+.log-line {
+  display: flex;
+  gap: 8px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.log-line + .log-line {
+  border-top: 1px dotted rgba(233, 154, 184, 0.28);
+}
+.log-time {
+  flex: 0 0 auto;
+  color: var(--c-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+.log-text {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.log-line.is-step .log-text {
+  color: var(--c-accent-strong);
+  font-weight: 600;
+}
+.log-line.is-warn .log-text {
+  color: #a8720f;
+}
+.log-line.is-error .log-text {
+  color: var(--c-danger);
+  font-weight: 600;
+}

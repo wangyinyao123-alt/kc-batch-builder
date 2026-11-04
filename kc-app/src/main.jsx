@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, createContext, useContext } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, createContext, useContext } from 'react';
 import { createRoot } from 'react-dom/client';
 import './styles/tokens.css';
 import './styles/app.css';
@@ -6,6 +6,7 @@ import LoginPage from './pages/LoginPage';
 import TaskCenterPage from './pages/TaskCenterPage';
 import NewTaskPage from './pages/NewTaskPage';
 import SettingsPage from './pages/SettingsPage';
+import TaskDetailPage from './pages/TaskDetailPage';
 import { loadState, saveState } from './store';
 import { installMockBridge } from './mockBridge';
 
@@ -63,8 +64,15 @@ function Shell() {
     keepLogs: 20,
   }));
   const [tasks, setTasks] = useState(() => loadState('tasks', []));
-  const [route, setRoute] = useState('tasks');
+  const [route, setRouteRaw] = useState('tasks');
+  // 路由附带的数据（比如「只重试失败项」把失败标题带到新建页）
+  const [routePayload, setRoutePayload] = useState(null);
   const [activeTaskId, setActiveTaskId] = useState(null);
+
+  const setRoute = useCallback((next, payload) => {
+    setRoutePayload(payload || null);
+    setRouteRaw(next);
+  }, []);
 
   useEffect(() => saveState('settings', settings), [settings]);
   useEffect(() => saveState('tasks', tasks), [tasks]);
@@ -91,9 +99,11 @@ function Shell() {
       logout,
       activeTaskId,
       setActiveTaskId,
+      route,
+      routePayload,
       setRoute,
     }),
-    [creds, settings, tasks, activeTaskId]
+    [creds, settings, tasks, activeTaskId, route, routePayload]
   );
 
   if (!creds) return <LoginPage onLogin={login} />;
@@ -104,7 +114,9 @@ function Shell() {
         <Sidebar route={route} setRoute={setRoute} tasks={tasks} />
         <main className="main">
           {route === 'tasks' && <TaskCenterPage />}
+          {route === 'detail' && <TaskDetailPage />}
           {route === 'new' && <NewTaskPage />}
+          {route === 'retry' && <NewTaskPage />}
           {route === 'settings' && <SettingsPage />}
         </main>
       </div>

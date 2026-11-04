@@ -123,6 +123,8 @@ export function installMockBridge() {
       ok: true,
       text: '任务一\n任务二\n概念一\n',
     }),
+    // 浏览器演示没有真保存框，直接返回成功
+    saveText: async ({ defaultName } = {}) => ({ ok: true, path: `C:\\工作\\导出\\${defaultName || 'result.csv'}` }),
 
     startRun: async (payload) => {
       const { id, taskType, mode, params = {} } = payload;

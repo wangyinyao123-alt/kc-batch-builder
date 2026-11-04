@@ -7,9 +7,25 @@ import { useRun } from '../hooks/useRun';
 import RunResult from '../components/RunResult';
 
 export default function NewTaskPage() {
-  const { creds, settings, tasks, setTasks, setActiveTaskId, setRoute } = useApp();
+  const { creds, settings, tasks, setTasks, setActiveTaskId, setRoute, routePayload } = useApp();
   const [type, setType] = useState('import');
   const run = useRun();
+
+  // 「只重试失败项」：从 P4 详情页带过来的失败标题
+  useEffect(() => {
+    if (!routePayload || !routePayload.titles) return;
+    const from = routePayload.from;
+    if (from) {
+      setType(from.type);
+      setFolderPath(from.folderPath || '');
+      const p = from.params || {};
+      if (p.xmlDir) setXmlDir(p.xmlDir);
+    }
+    setSourceKind('titles');
+    setSourceText(routePayload.titles.join('\n'));
+    // 只在带 payload 进入时执行一次
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [routePayload]);
 
   // 共用字段
   const [folderPath, setFolderPath] = useState('');
@@ -152,6 +168,9 @@ export default function NewTaskPage() {
       status: statusOverride || (run.exitCode === 0 ? 'done' : 'failed'),
       counts: { ...counts, ...resultCounts },
       items: run.items,
+      results: run.results,
+      events: run.events,
+      summary: run.summary,
       artifacts: run.artifacts,
       progress: run.progress,
       login: run.login,

@@ -5,6 +5,7 @@ contextBridge.exposeInMainWorld('kc', {
   pickFile: (filters) => ipcRenderer.invoke('dialog:pick-file', filters),
   reveal: (p) => ipcRenderer.invoke('shell:reveal', p),
   readText: (p) => ipcRenderer.invoke('fs:read-text', p),
+  saveText: (payload) => ipcRenderer.invoke('fs:save-text', payload),
 
   startRun: (payload) => ipcRenderer.invoke('run:start', payload),
   cancelRun: (id) => ipcRenderer.invoke('run:cancel', id),

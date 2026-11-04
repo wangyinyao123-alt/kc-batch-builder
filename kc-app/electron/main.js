@@ -55,6 +55,9 @@ app.on('window-all-closed', () => {
 
 /** 选目录 */
 ipcMain.handle('dialog:pick-dir', async () => {
+  // 自动化测试钩子：系统弹窗无法被脚本点击，端到端用例用环境变量直接喂路径。
+  // 仅在设置了 KC_E2E_PICK_DIR 时生效，正常运行时该变量不存在，行为不变。
+  if (process.env.KC_E2E_PICK_DIR) return process.env.KC_E2E_PICK_DIR;
   if (!win) return null;
   const r = await dialog.showOpenDialog(win, { properties: ['openDirectory', 'createDirectory'] });
   return r.canceled ? null : r.filePaths[0];
@@ -83,6 +86,34 @@ ipcMain.handle('fs:read-text', async (_e, p) => {
   const fs = require('node:fs/promises');
   try {
     return { ok: true, text: await fs.readFile(p, 'utf8') };
+  } catch (err) {
+    return { ok: false, error: String(err.message || err) };
+  }
+});
+
+/**
+ * 导出文本（P4「导出结果」）。
+ * 一次性完成：弹保存框 → 写文件，避免渲染进程拿到路径后再回调。
+ * 返回 { ok, path } 或 { ok:false, canceled:true }。
+ */
+ipcMain.handle('fs:save-text', async (_e, { text, defaultName, filters } = {}) => {
+  if (!win) return { ok: false, error: '窗口不可用' };
+  const fs = require('node:fs/promises');
+  try {
+    const r = await dialog.showSaveDialog(win, {
+      defaultPath: defaultName || 'result.txt',
+      filters: filters || [
+        { name: 'CSV 表格', extensions: ['csv'] },
+        { name: '文本', extensions: ['txt'] },
+        { name: 'JSON', extensions: ['json'] },
+      ],
+    });
+    if (r.canceled || !r.filePath) return { ok: false, canceled: true };
+    // 加 BOM，Excel 直接双击打开 CSV 不乱码
+    const body =
+      /\.csv$/i.test(r.filePath) && !String(text).startsWith('\ufeff') ? '\ufeff' + text : String(text);
+    await fs.writeFile(r.filePath, body, 'utf8');
+    return { ok: true, path: r.filePath };
   } catch (err) {
     return { ok: false, error: String(err.message || err) };
   }
