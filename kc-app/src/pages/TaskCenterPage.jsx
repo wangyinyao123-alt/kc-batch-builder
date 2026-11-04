@@ -30,7 +30,7 @@ export default function TaskCenterPage() {
 
   return (
     <div className="page-scroll">
-      <div className="topbar" style={{ margin: '-24px -32px 24px', paddingLeft: 32, borderBottom: 'none' }}>
+      <div className="page-head">
         <h1>任务中心</h1>
         <span className="crumb">
           {tasks.length > 0

@@ -97,7 +97,7 @@ export default function TaskDetailPage() {
 
   return (
     <div className="page-scroll">
-      <div className="topbar" style={{ margin: '-24px -32px 0', paddingLeft: 32, borderBottom: 'none' }}>
+      <div className="page-head">
         <button className="btn btn-ghost btn-sm" onClick={() => setRoute('tasks')} style={{ marginRight: 8 }}>
           ← 返回
         </button>

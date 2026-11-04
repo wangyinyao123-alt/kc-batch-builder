@@ -194,7 +194,7 @@ export default function NewTaskPage() {
 
   return (
     <div className="page-scroll">
-      <div className="topbar" style={{ margin: '-24px -32px 24px', paddingLeft: 32, borderBottom: 'none' }}>
+      <div className="page-head">
         <h1>新建任务</h1>
         <span className="crumb">选择任务类型 → 填写参数 → 预检 → 执行</span>
       </div>
@@ -214,7 +214,9 @@ export default function NewTaskPage() {
                     className={`type-card ${type === t.key ? 'selected' : ''} ${disabled ? 'disabled' : ''}`}
                     onClick={() => !disabled && setType(t.key)}
                   >
-                    <div className="type-card-icon">{t.icon}</div>
+                    <div className="type-card-icon">
+                      {t.sticker ? <img src={t.sticker} alt="" /> : t.icon}
+                    </div>
                     <div className="type-card-name">{t.name}</div>
                     <div className="type-card-desc">{t.desc}</div>
                   </button>

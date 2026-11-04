@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Decor from '../components/Decor';
 
 export default function LoginPage({ onLogin }) {
   const [user, setUser] = useState('');
@@ -24,6 +25,9 @@ export default function LoginPage({ onLogin }) {
 
   return (
     <div className="login-wrap">
+      {/* 贴纸按 P1 设计稿坐标定位（DSL P1-login.json），在卡片下层不遮挡表单 */}
+      <Decor scene="p1" />
+
       <form className="login-card" onSubmit={submit}>
         <div className="login-brand">
           <div className="brand-mark">KC</div>

@@ -1,140 +1,292 @@
 /* ---------------------------------------------------------------- 布局 */
+/* 设计稿结构（来自 KC-App-Design/dsl/*.json 的 div.window）：
+   背景插画 → 白色柔化蒙层 → 内缩的应用窗口。
+   窗口 x=32 y=22 w=1216 h=756，3px #AD5E80 描边、直角、底色 #EBF7F2。
+   P2 蒙层 62%，P3/P4/P5 蒙层 66%。 */
 .app {
-  display: flex;
+  position: relative;
   height: 100vh;
+  overflow: hidden;
+  background: #fdf3f7;
+}
+
+.app::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url('/img/bg/background-sky-cat-1280x800.jpg') center / cover no-repeat;
+  z-index: 0;
+}
+
+.app::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.62);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.window {
+  position: absolute;
+  left: 32px;
+  top: 22px;
+  width: 1216px;
+  height: 756px;
+  z-index: 2;
+  background: #ebf7f2;
+  border: 3px solid #ad5e80;
+  box-shadow: 5px 5px 0 rgba(87, 55, 71, 0.12);
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
 }
 
-.sidebar {
-  width: 208px;
-  flex: 0 0 208px;
-  background: rgba(255, 255, 255, 0.72);
-  backdrop-filter: blur(18px);
-  border-right: 1px solid var(--c-border-muted);
-  display: flex;
-  flex-direction: column;
-  padding: 0 0 12px;
-  -webkit-app-region: drag;
-}
-
-.sidebar-head {
-  height: 76px;
+/* --- 顶栏 64px（DSL div.topbar y=3 h=64，底色 #F6D3E0） --- */
+.topbar {
+  flex: 0 0 64px;
+  height: 64px;
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 0 20px;
-  padding-top: 18px;
+  padding: 0 18px;
+  background: #f6d3e0;
+  border-bottom: 2px solid #f0b0c8;
+  -webkit-app-region: drag;
+  user-select: none;
 }
 
-.brand-mark {
-  width: 30px;
-  height: 30px;
+.tb-icon {
+  width: 34px;
+  height: 34px;
   border-radius: 9px;
-  background: linear-gradient(135deg, var(--c-accent), var(--c-accent-strong));
+  background: linear-gradient(135deg, #e99ab8, #b85f7c);
   display: grid;
   place-items: center;
   color: #fff;
   font-weight: 700;
-  font-size: 13px;
+  font-size: 12px;
   letter-spacing: 0.5px;
   flex: 0 0 auto;
 }
 
-.brand-name {
+.tb-brand {
   font-size: var(--fs-body-bold);
   font-weight: 700;
-  line-height: 1.25;
+  color: var(--c-text-primary);
+  white-space: nowrap;
 }
 
-.brand-sub {
-  font-size: var(--fs-micro);
-  color: var(--c-text-muted);
-}
-
-.nav {
-  padding: 8px 12px;
+.tb-nav {
+  display: flex;
+  gap: 4px;
+  margin-left: 14px;
   -webkit-app-region: no-drag;
 }
 
-.nav-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  height: 38px;
+.tb-nav-item {
+  position: relative;
+  height: 30px;
   padding: 0 12px;
+  border: none;
   border-radius: var(--r-control);
+  background: transparent;
   color: var(--c-text-secondary);
-  font-size: var(--fs-body-bold);
+  font-family: inherit;
+  font-size: var(--fs-caption);
+  font-weight: 700;
   cursor: pointer;
-  user-select: none;
   transition: background 0.14s, color 0.14s;
 }
 
-.nav-item:hover {
-  background: rgba(233, 154, 184, 0.12);
+.tb-nav-item:hover {
+  background: rgba(255, 255, 255, 0.55);
   color: var(--c-text-primary);
 }
 
-.nav-item.active {
-  background: var(--c-accent);
-  color: var(--c-text-on-accent);
-  font-weight: 700;
-  box-shadow: 0 4px 12px rgba(233, 154, 184, 0.32);
+.tb-nav-item.active {
+  background: #fff;
+  color: var(--c-accent-strong);
+  box-shadow: 0 2px 8px rgba(233, 154, 184, 0.35);
 }
 
-.nav-item .count {
-  margin-left: auto;
+.tb-count {
+  margin-left: 5px;
   font-size: var(--fs-micro);
-  background: rgba(87, 55, 71, 0.1);
-  padding: 1px 6px;
+  background: var(--c-accent);
+  color: #fff;
+  padding: 0 5px;
   border-radius: var(--r-pill);
 }
 
-.nav-item.active .count {
-  background: rgba(255, 255, 255, 0.28);
+.tb-spacer {
+  flex: 1;
 }
 
-.sidebar-foot {
-  margin-top: auto;
-  padding: 12px 20px 0;
-  font-size: var(--fs-micro);
-  color: var(--c-text-muted);
+.tb-conn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--fs-caption);
+  color: var(--c-text-secondary);
+}
+
+.tb-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #c9b3bd;
+}
+
+.tb-dot.on {
+  background: var(--c-success);
+  box-shadow: 0 0 0 3px rgba(73, 155, 114, 0.18);
+}
+
+.tb-sep {
+  width: 1px;
+  height: 22px;
+  background: rgba(173, 94, 128, 0.28);
+  margin: 0 4px;
+}
+
+.tb-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--c-accent-strong);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-size: var(--fs-caption);
+  font-weight: 700;
+}
+
+.tb-account {
+  font-size: var(--fs-caption);
+  color: var(--c-text-primary);
+  max-width: 110px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tb-switch {
+  height: 29px;
+  padding: 0 11px;
+  border: 1px solid rgba(173, 94, 128, 0.35);
+  border-radius: var(--r-control);
+  background: rgba(255, 255, 255, 0.7);
+  color: var(--c-text-secondary);
+  font-family: inherit;
+  font-size: var(--fs-caption);
+  cursor: pointer;
   -webkit-app-region: no-drag;
 }
 
-/* ---------------------------------------------------------------- 主区 */
-.main {
+.tb-switch:hover {
+  background: #fff;
+  color: var(--c-text-primary);
+}
+
+.tb-dots {
+  display: flex;
+  gap: 7px;
+  margin-left: 8px;
+}
+
+.tb-dots .wd {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: rgba(173, 94, 128, 0.35);
+}
+
+.tb-dots .wd:nth-child(1) { background: #e9a0b6; }
+.tb-dots .wd:nth-child(2) { background: #e7a64d; }
+.tb-dots .wd:nth-child(3) { background: #6b9edb; }
+
+/* --- 内容区 658px --- */
+.content {
   flex: 1;
-  min-width: 0;
+  min-height: 0;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  background:
-    radial-gradient(1100px 520px at 78% -12%, rgba(233, 154, 184, 0.16), transparent 62%),
-    radial-gradient(760px 460px at 4% 106%, rgba(107, 158, 219, 0.13), transparent 58%),
-    #fdf3f7;
+  background: #ffffff;
 }
 
-.topbar {
-  height: 68px;
-  flex: 0 0 68px;
+/* --- 底部状态栏 28px（DSL div.statusbar y=725 h=28，底色 #F3DCE5） --- */
+.statusbar {
+  flex: 0 0 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 16px;
+  background: #f3dce5;
+  border-top: 1px solid rgba(173, 94, 128, 0.3);
+  font-size: var(--fs-micro);
+  color: #775361;
+}
+
+.sb-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--c-success);
+}
+
+.sb-dot.busy {
+  background: var(--c-warning);
+  animation: sbPulse 1.1s ease-in-out infinite;
+}
+
+@keyframes sbPulse {
+  50% { opacity: 0.35; }
+}
+
+.sb-text {
+  font-weight: 700;
+}
+
+.sb-right {
+  margin-left: auto;
+}
+
+/* ---------------------------------------------------------------- 主区 */
+/* 窗口内 内容区 658px（DSL div.content y=67 h=658），实底，背景只从窗口外缘透出 */
+.content {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #fdf3f7;
+  position: relative;
+  z-index: 1;
+}
+
+/* 页内标题条（区别于顶栏 .topbar）：字号大、无拖拽、无底色 */
+.page-head {
+  height: 52px;
+  flex: 0 0 52px;
   display: flex;
   align-items: center;
   gap: 14px;
   padding: 0 var(--sp-page);
-  padding-top: 8px;
   border-bottom: 1px solid rgba(240, 176, 200, 0.5);
-  -webkit-app-region: drag;
 }
 
-.topbar h1 {
+.page-head h1 {
   font-size: var(--fs-h2);
   margin: 0;
   font-weight: 700;
   letter-spacing: -0.2px;
 }
 
-.topbar .crumb {
+.page-head .crumb {
   font-size: var(--fs-caption);
   color: var(--c-text-muted);
 }
@@ -953,15 +1105,55 @@
 }
 
 /* ---------------------------------------------------------------- 登录 */
+/* 背景层级按设计文档固定为：背景插画 → 白色柔化蒙层 → 页面内容。
+   P1 用粉色网格猫咪 + 44% 蒙层；其余页用天空云朵猫咪 + 62%~66% 蒙层。
+   图都是 1280×800 等比裁切的原图，cover 不拉伸。 */
 .login-wrap {
+  position: relative;
   height: 100vh;
   display: grid;
   place-items: center;
-  background:
-    radial-gradient(900px 600px at 20% 10%, rgba(233, 154, 184, 0.34), transparent 60%),
-    radial-gradient(700px 500px at 84% 88%, rgba(107, 158, 219, 0.24), transparent 62%),
-    #fdf3f7;
+  background: #fdf3f7;
   -webkit-app-region: drag;
+  overflow: hidden;
+}
+
+.login-wrap::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url('/img/bg/background-pink-grid-cat-1280x800.jpg') center / cover no-repeat;
+  z-index: 0;
+}
+
+/* P1 蒙层 44% */
+.login-wrap::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.44);
+  z-index: 1;
+}
+
+/* 四角贴纸：左上窗口猫、右上星星彩虹、左下行星、右下笔记本电脑。
+   绝对定位贴在卡片外留白区，pointer-events: none 不挡表单。 */
+.login-sticker {
+  position: absolute;
+  z-index: 2;
+  pointer-events: none;
+  user-select: none;
+  filter: drop-shadow(0 6px 14px rgba(87, 55, 71, 0.16));
+}
+
+.login-sticker.s-tl { left: 62px; top: 58px; width: 168px; }
+.login-sticker.s-tr { right: 58px; top: 46px; width: 156px; }
+.login-sticker.s-bl { left: 86px; bottom: 62px; width: 132px; }
+.login-sticker.s-br { right: 78px; bottom: 54px; width: 174px; }
+
+/* 卡片浮到蒙层之上 */
+.login-wrap > form {
+  position: relative;
+  z-index: 3;
 }
 
 .login-card {
@@ -1095,4 +1287,28 @@
 .log-line.is-error .log-text {
   color: var(--c-danger);
   font-weight: 600;
+}
+
+/* ------------------------------------------------ 画板装饰层（贴纸） */
+/* 贴纸按 1280×800 设计稿坐标百分比定位，等比跟随窗口缩放 */
+.decor {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 20;
+  overflow: hidden;
+}
+
+.type-card-icon img {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+  display: block;
+}
+
+.decor img {
+  position: absolute;
+  object-fit: contain;
+  image-rendering: auto;
+  opacity: 0.98;
 }

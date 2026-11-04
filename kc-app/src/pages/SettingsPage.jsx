@@ -26,7 +26,7 @@ export default function SettingsPage() {
 
   return (
     <div className="page-scroll">
-      <div className="topbar" style={{ margin: '-24px -32px 24px', paddingLeft: 32, borderBottom: 'none' }}>
+      <div className="page-head">
         <h1>设置</h1>
         <span className="crumb">凭据、服务地址与本地存储</span>
         <div className="topbar-actions">

@@ -1,4 +1,22 @@
 /* 设计令牌：直接映射 KC-App-Design/design-tokens.json */
+
+/* Noto Sans TC 随应用打包，不依赖系统字体，保证 macOS / Windows 一致。
+   字体文件来自 Google Fonts（OFL-1.1），放在 public/fonts/。 */
+@font-face {
+  font-family: 'Noto Sans TC';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/NotoSansTC-Regular.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Noto Sans TC';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/NotoSansTC-Bold.ttf') format('truetype');
+}
+
 :root {
   --font-ui: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif;
   --font-mono: 'JetBrains Mono', 'SF Mono', Menlo, monospace;

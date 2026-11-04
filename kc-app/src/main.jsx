@@ -9,6 +9,7 @@ import SettingsPage from './pages/SettingsPage';
 import TaskDetailPage from './pages/TaskDetailPage';
 import { loadState, saveState } from './store';
 import { installMockBridge } from './mockBridge';
+import Decor from './components/Decor';
 
 // 浏览器直开（vite dev）时注入假桥，方便评审；Electron 里有真 preload，不覆盖
 installMockBridge();
@@ -16,43 +17,66 @@ installMockBridge();
 export const AppCtx = createContext(null);
 export const useApp = () => useContext(AppCtx);
 
+// 设计稿没有左侧栏：导航收在顶栏里（顶栏 64px 高，见 DSL div.topbar）
+const DECOR_BY_ROUTE = { tasks: 'p2', detail: 'p4', new: 'p3', retry: 'p3', settings: 'p5' };
+
 const NAV = [
-  { key: 'tasks', label: '任务中心', icon: '◷' },
-  { key: 'new', label: '新建任务', icon: '＋' },
-  { key: 'settings', label: '设置', icon: '⚙' },
+  { key: 'tasks', label: '任务中心' },
+  { key: 'new', label: '新建任务' },
+  { key: 'settings', label: '设置' },
 ];
 
-function Sidebar({ route, setRoute, tasks }) {
+function TopBar({ route, setRoute, tasks, creds, onLogout }) {
   const runningCount = tasks.filter((t) => t.status === 'running').length;
   return (
-    <aside className="sidebar">
-      <div className="sidebar-head">
-        <div className="brand-mark">KC</div>
-        <div>
-          <div className="brand-name">内容生产助手</div>
-          <div className="brand-sub">Hikvision Content</div>
-        </div>
-      </div>
-      <nav className="nav">
+    <header className="topbar">
+      <div className="tb-icon">KC</div>
+      <div className="tb-brand">KC 批量建库工具</div>
+
+      <nav className="tb-nav">
         {NAV.map((n) => (
-          <div
+          <button
             key={n.key}
-            className={`nav-item ${route === n.key ? 'active' : ''}`}
+            className={`tb-nav-item ${route === n.key ? 'active' : ''}`}
             onClick={() => setRoute(n.key)}
           >
-            <span style={{ width: 16, textAlign: 'center' }}>{n.icon}</span>
-            <span>{n.label}</span>
-            {n.key === 'tasks' && runningCount > 0 && (
-              <span className="count">{runningCount}</span>
-            )}
-          </div>
+            {n.label}
+            {n.key === 'tasks' && runningCount > 0 && <span className="tb-count">{runningCount}</span>}
+          </button>
         ))}
       </nav>
-      <div className="sidebar-foot">
-        <div>v0.1.0 · 内网工具</div>
-        <div style={{ marginTop: 2 }}>ISHRemote 驱动</div>
+
+      <div className="tb-spacer" />
+
+      <div className="tb-conn">
+        <span className={`tb-dot ${creds ? 'on' : ''}`} />
+        <span>{creds ? '已连接' : '未连接'}</span>
       </div>
-    </aside>
+      <div className="tb-sep" />
+      <div className="tb-avatar">{(creds?.user || 'U').slice(0, 1).toUpperCase()}</div>
+      <div className="tb-account">{creds?.user || '未登录'}</div>
+      <button className="tb-switch" onClick={onLogout}>
+        切换 ▾
+      </button>
+      <div className="tb-dots">
+        <span className="wd" />
+        <span className="wd" />
+        <span className="wd" />
+      </div>
+    </header>
+  );
+}
+
+function StatusBar({ tasks }) {
+  const running = tasks.filter((t) => t.status === 'running').length;
+  return (
+    <footer className="statusbar">
+      <span className={`sb-dot ${running ? 'busy' : 'idle'}`} />
+      <span className="sb-text">
+        {running ? `正在执行 ${running} 个任务` : '就绪'}
+      </span>
+      <span className="sb-right">ISHRemote 驱动 · v0.1.0</span>
+    </footer>
   );
 }
 
@@ -110,15 +134,20 @@ function Shell() {
 
   return (
     <AppCtx.Provider value={ctx}>
+      {/* 设计稿结构：背景插画 → 白色柔化蒙层 → 内缩的应用窗口（x32 y22, 1216×756, 3px #AD5E80 描边） */}
       <div className="app">
-        <Sidebar route={route} setRoute={setRoute} tasks={tasks} />
-        <main className="main">
-          {route === 'tasks' && <TaskCenterPage />}
-          {route === 'detail' && <TaskDetailPage />}
-          {route === 'new' && <NewTaskPage />}
-          {route === 'retry' && <NewTaskPage />}
-          {route === 'settings' && <SettingsPage />}
-        </main>
+        <div className="window">
+          <Decor scene={DECOR_BY_ROUTE[route] || 'p2'} />
+          <TopBar route={route} setRoute={setRoute} tasks={tasks} creds={creds} onLogout={logout} />
+          <main className="content">
+            {route === 'tasks' && <TaskCenterPage />}
+            {route === 'detail' && <TaskDetailPage />}
+            {route === 'new' && <NewTaskPage />}
+            {route === 'retry' && <NewTaskPage />}
+            {route === 'settings' && <SettingsPage />}
+          </main>
+          <StatusBar tasks={tasks} />
+        </div>
       </div>
     </AppCtx.Provider>
   );
