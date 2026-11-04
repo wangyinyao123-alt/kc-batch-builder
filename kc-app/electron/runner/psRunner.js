@@ -37,9 +37,15 @@ function buildArgs(payload) {
   if (params.ignoreSsl) out.push('-IgnoreSslPolicyErrors');
 
   // 只读：列目录
+  // 路径参数名两个脚本不一样，写错时 PowerShell 不报错、只把值当位置参数丢掉：
+  //   导入脚本叫 $KcFolder，create 脚本叫 $FolderPath。
+  // FolderPicker 是用 taskType='topic' 调 listFolders 的（走 create 脚本），
+  // 所以这里必须按 taskType 分流，不能一律写死 -KcFolder。
   if (mode === 'listFolders') {
     out.push('-ListFolders');
-    if (params.folderPath) out.push('-FolderPath', params.folderPath);
+    if (params.folderPath) {
+      out.push(taskType === 'import' ? '-KcFolder' : '-FolderPath', params.folderPath);
+    }
     return out;
   }
 
@@ -49,10 +55,14 @@ function buildArgs(payload) {
     if (params.folderPath) out.push('-KcFolder', params.folderPath);
     if (params.importMode) out.push('-Mode', params.importMode); // Import | Update
     if (params.noCreate) out.push('-NoCreate');
+    // UI 的「自动创建目录」是正向开关，脚本侧是反向 switch（默认 true），必须取反
+    if (params.autoCreateFolder === false) out.push('-NoCreateFolder');
     if (params.noBackup) out.push('-NoBackup');
     if (params.recurse) out.push('-Recurse');
     if (params.noIndex) out.push('-NoIndex');
     if (params.ignoreStateGate) out.push('-IgnoreStateGate');
+    if (params.folderType) out.push('-FolderType', params.folderType);
+    if (params.keepLogs) out.push('-KeepLogs', String(params.keepLogs));
   }
 
   // ---------------------------------------------------------------- 新建对象
@@ -119,3 +129,8 @@ module.exports = function psRunner(payload) {
 
   return child;
 };
+
+// 导出内部函数供单测直接断言命令行参数，避免"参数名写错但 PowerShell 静默忽略"这类
+// 只在 Windows 真机上才暴露的问题只能靠人肉跑一遍才能发现。
+module.exports.buildArgs = buildArgs;
+module.exports.SCRIPTS = SCRIPTS;

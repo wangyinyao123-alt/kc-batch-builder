@@ -11,12 +11,10 @@ const FIXTURE_DIR = path.join(__dirname, '../../mock/fixtures');
 
 function pickFixture(payload) {
   const { taskType, mode } = payload;
-  const names = [
-    `${taskType}-${mode}.log`,
-    `${taskType}-${mode === 'commit' ? 'precheck' : 'commit'}.log`,
-    `${taskType}.log`,
-    'fallback.log',
-  ];
+  // 只认精确匹配。早先这里会在 commit 时回落到 precheck 的录制文件，
+  // 但 precheck 录制里没有 STEP 5/6/7，commit 会跑出一份"零进度零结果"的假日志，
+  // 让人误以为执行链路坏了。宁可回落到 synthesize() 生成完整流程。
+  const names = [`${taskType}-${mode}.log`, 'fallback.log'];
   for (const n of names) {
     const p = path.join(FIXTURE_DIR, n);
     if (fs.existsSync(p)) return p;
@@ -60,18 +58,22 @@ function synthesize(payload) {
     lines.push(`[OK] 目标目录最深已存在：${params.folderPath || 'General\\demo\\image'}（3/3 层）FolderId=10087 type=ISHIllustration`);
     lines.push(`STEP 4  预检（只读）`);
     lines.push(`[预检] 新建 3 / 更新 0 / 无变化 1 / 跳过 0 / 阻塞 0 / 失败 0 / 共 4`);
-    lines.push(`    TOCREATE  cover.png [1920x1080] <EDTPNG> <General\\demo\\image\\cover.png>`);
-    lines.push(`    TOCREATE  logo.svg <EDTSVG> <General\\demo\\image\\logo.svg>`);
-    lines.push(`    TOCREATE  bulb.webp <EDTWEBP> <General\\demo\\image\\bulb.webp>`);
-    lines.push(`    UNCHANGED sticker-01.png <EDTPNG> <General\\demo\\image\\sticker-01.png>`);
+    // 格式必须与真实脚本一致（kc-import-images-ui.ps1:1823）：
+    //   "    {0,-16} {1}{2}  <{3}>  {4}" -f State, Name, resTag, TypeShort, Note
+    // 只有类型一个尖括号，没有落点路径 —— 写成两个尖括号会让解析器全部匹配不上。
+    lines.push(`    TOCREATE         cover.png [1920x1080]  <EDTPNG>  新图`);
+    lines.push(`    TOCREATE         logo.svg  <EDTSVG>  新图`);
+    lines.push(`    TOCREATE         bulb.webp [800x600]  <EDTWEBP>  新图`);
+    lines.push(`    UNCHANGED        sticker-01.png  <EDTPNG>  SHA256 相同`);
     if (mode === 'commit') {
       lines.push(`STEP 5  执行`);
-      lines.push(`[1/3] cover.png  —— 建成 ObjectRef=GUID-COVER`);
-      lines.push(`[2/3] logo.svg  —— 建成 ObjectRef=GUID-LOGO`);
-      lines.push(`[3/3] bulb.webp  —— 建成 ObjectRef=GUID-BULB`);
+      lines.push(`[1/3] cover.png  —— 建成 ObjectRef=GUID-COVER IshRef=ISH-COVER 落点 FolderId=10087`);
+      lines.push(`[2/3] logo.svg  —— 建成 ObjectRef=GUID-LOGO IshRef=ISH-LOGO 落点 FolderId=10087`);
+      lines.push(`[3/3] bulb.webp  —— 建成 ObjectRef=GUID-BULB IshRef=ISH-BULB 落点 FolderId=10087`);
+      lines.push(`[OK] 回读 FolderId=10087：本轮 3 个，未见 0 个`);
       lines.push(`STEP 6  台账`);
       lines.push(`[OK] 台账追加 3 行，累计 128 行：logs\\kc-import-ledger.csv`);
-      lines.push(`STEP 7  结果`);
+      lines.push(`STEP 7  名称 / GUID 对照表`);
       lines.push(`[结果] 新建 3 / 更新 0 / 无变化 1 / 跳过 0 / 阻塞 0 / 失败 0 / 共 4`);
       lines.push(`[OK] 对照表已写出：logs\\demo_GUID_20261103-1600.csv`);
     }

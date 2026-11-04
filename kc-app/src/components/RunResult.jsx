@@ -7,9 +7,18 @@ import { STATE_UI } from '../store';
  */
 export default function RunResult({ run }) {
   const [tab, setTab] = useState('items');
-  const { items, artifacts, attach, events } = run;
+  const { items, results, artifacts, attach, events } = run;
 
-  const hasItems = items.length > 0;
+  // items 是预检快照（状态停在 TOCREATE/UNCHANGED），results 是执行结果。
+  // 执行完还照原样渲染 items 会出现"上方计数说 3 已创建、下面每行仍写待创建"的矛盾，
+  // 所以有执行结果时用执行结果覆盖同名的条目状态。
+  const execState = new Map((results || []).map((r) => [r.title, r.state]));
+  const rows = items.map((it) => {
+    const st = execState.get(it.title);
+    return st ? { ...it, state: st } : it;
+  });
+
+  const hasItems = rows.length > 0;
   const hasLog = events.length > 0;
 
   return (
@@ -23,7 +32,7 @@ export default function RunResult({ run }) {
             className={`filter-chip ${tab === 'items' ? 'active' : ''}`}
             onClick={() => setTab('items')}
           >
-            清单 {hasItems ? `(${items.length})` : ''}
+            清单 {hasItems ? `(${rows.length})` : ''}
           </button>
           <button
             className={`filter-chip ${tab === 'log' ? 'active' : ''}`}
@@ -79,7 +88,7 @@ export default function RunResult({ run }) {
 
           {hasItems && (
             <div className="item-list">
-              {items.map((it, i) => {
+              {rows.map((it, i) => {
                 const st = STATE_UI[it.state] || { label: it.state, cls: 'tag-gray' };
                 return (
                   <div className="item-row" key={i}>

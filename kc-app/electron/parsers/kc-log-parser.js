@@ -54,8 +54,12 @@ const RE = {
   resultSummary: /^\[结果\]\s*(.+)$/,
   resultNum: /(新建|创建|更新|无变化|跳过|阻塞|失败|共)\s*(\d+)/g,
 
-  // import：  TOCREATE  cover.png [1920x1080] <EDTPNG> <General\x\cover.png>
-  itemLineImport: /^ {2,}(\S+)\s+(.+?)\s+<(\w+)>\s+<(.+?)>\s*(.*)$/,
+  // import：  TOCREATE         cover.png [1920x1080]  <EDTPNG>  新图
+  // 脚本实参格式（kc-import-images-ui.ps1:1823）：
+  //   "    {0,-16} {1}{2}  <{3}>  {4}" -f State, Name, resTag, TypeShort, Note
+  // 只有一个尖括号（类型），Note 是纯文本。之前要求两个尖括号，导致
+  // 真实环境下所有预检条目都解析不出来（items 恒为 0）。
+  itemLineImport: /^ {2,}(\S+)\s+(.+?)(?:\s*\[[^\]]*\])?\s+<(\w*)>\s*(.*)$/,
   // create：  TOCREATE Topic:TASK 任务一  <General\demo\任务一>  (将新建)
   itemLineCreate: /^ {2,}(\S+)\s+(.+?)\s+<(.+?)>\s*(.*)$/,
   created:
@@ -186,8 +190,9 @@ function parseLine(line, st) {
         state: normState(im[1]),
         title: im[2].trim(),
         tag: im[3],
-        path: im[4].trim(),
-        note: (im[5] || '').trim(),
+        // 导入脚本的明细行不含落点路径（只有 name / 分辨率 / 类型 / 说明）
+        path: '',
+        note: (im[4] || '').trim(),
       };
       st.items.push(item);
       events.push({ type: 'item', ...item });

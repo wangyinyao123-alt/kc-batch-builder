@@ -197,6 +197,37 @@ export default function NewTaskPage() {
   // 当前类型是否已配置完整（用于「预检」按钮态与提示条）
   const readyMsg = canPrecheck ? '信息完整，可以预检' : '还差必填项，填完可预检';
 
+  // 缺哪些必填项 —— 提示条右侧要如实说缺什么。
+  // 早先这里是无条件显示「目录、目标路径与图片文件夹均已配置」，
+  // 于是和左边那句「还差必填项」自相矛盾（UI 上同时出现两句互斥文案）。
+  const missing = useMemo(() => {
+    const out = [];
+    if (!normalizeKcPath(folderPath)) out.push('KC 仓库目标路径');
+    if (type === 'import') {
+      if (!imageDir) out.push('本地图片文件夹');
+    } else if (type === 'pub') {
+      if (!pubTitle.trim()) out.push('Pub 标题');
+    } else if (sourceKind === 'xmlDir') {
+      if (!xmlDir) out.push('XML 目录');
+    } else if (sourceKind === 'mapXml') {
+      if (!mapXmlFile) out.push('Map XML 文件');
+    } else if (!titles.length) {
+      out.push('标题清单');
+    }
+    return out;
+  }, [type, folderPath, imageDir, pubTitle, sourceKind, xmlDir, mapXmlFile, titles.length]);
+
+  // 已配齐时按类型给出确认语
+  const configuredNote = useMemo(() => {
+    if (type === 'import') return '目录、目标路径与图片文件夹均已配置';
+    if (type === 'pub') return '标题、落点路径与输出格式均已配置';
+    if (sourceKind === 'xmlDir') return 'XML 目录与落点路径均已配置';
+    if (sourceKind === 'mapXml') return 'Map XML 与落点路径均已配置';
+    return '标题、落点路径与类型均已配置';
+  }, [type, sourceKind]);
+
+  const readyNote = missing.length ? `缺少：${missing.join('、')}` : configuredNote;
+
   // 各类型的参数按「左栏 / 右栏」拆分（DSL：两栏各 560，节距 30）
   const renderLeft = () => {
     if (type === 'import') {
@@ -615,13 +646,7 @@ export default function NewTaskPage() {
       <div className={`p3-ready ${canPrecheck ? 'ok' : 'wait'}`}>
         <span className="p3-readydot" />
         <span className="p3-readymain">{readyMsg}</span>
-        <span className="p3-readynote">
-          {type === 'import'
-            ? '目录、目标路径与图片文件夹均已配置'
-            : type === 'pub'
-            ? '标题、落点路径与输出格式均已配置'
-            : '来源、落点路径与类型均已配置'}
-        </span>
+        <span className="p3-readynote">{readyNote}</span>
       </div>
 
       {/* 操作区：分隔线 + 状态说明 + 预检 118×44 + 开始执行 132×50 */}

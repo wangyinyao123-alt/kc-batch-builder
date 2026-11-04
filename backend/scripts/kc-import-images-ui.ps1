@@ -1,4 +1,4 @@
-﻿# kc-import-images-ui.ps1  (UTF-8 with BOM)
+# kc-import-images-ui.ps1  (UTF-8 with BOM)
 # ============================================================================
 # KC 批量导入图片 · 弹窗版（单文件、无外部依赖，只依赖 ISHRemote 模块）
 #
@@ -111,6 +111,10 @@ param(
     [ValidateSet('Import', 'Update')]
     [string]$Mode = 'Import',
     [switch]$NoCreate,
+    # 补丁④：目标目录缺失时不自动建（UI「自动创建目录」开关取消勾选时传）。
+    # 与 kc-create-objects-ui.ps1 的 -NoCreateFolder 同名同义，两个脚本对 UI 保持一致的开关语义。
+    # 不传时行为不变：命令行模式默认 CreateFolder=$true。
+    [switch]$NoCreateFolder,
     [switch]$NoBackup,
     [switch]$IgnoreStateGate,
     # 名称 / GUID 对照表：界面上跑完会问一次（默认不导出）；
@@ -127,6 +131,12 @@ param(
     [switch]$Recurse,
     [switch]$IgnoreSslPolicyErrors,
     [switch]$NoAutoInstall,
+    # 补丁① 服务器地址可配置（P5 设置页用到）。
+    # 不传时仍连 kc-prod，行为与旧版完全一致。
+    [string]$WsBaseUrl = '',
+    # 补丁② 只读列目录（P3「浏览目录」按钮用到）：登录后列出目标路径的直接子文件夹，
+    # 输出一行 `KCJSON {...}` 然后 exit 0，不写 KC 任何东西。
+    [switch]$ListFolders,
     [switch]$Commit
 )
 
@@ -144,7 +154,8 @@ $logPath = Join-Path $logDir ("kc-import-$stamp.txt")
 $ledgerPath = Join-Path $logDir 'kc-import-ledger.csv'
 
 # 自动化模式判定放前面：后面的模块检查等早期步骤要用到
-$headless = [bool]($ImageDir -and $KcFolder)
+# 补丁②：-ListFolders 是纯只读模式，也必须走 headless（否则会弹输入窗、卡在无人值守）
+$headless = [bool](($ImageDir -and $KcFolder) -or $ListFolders)
 
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
@@ -1188,7 +1199,9 @@ function Write-KcErr([string]$label, $err) {
 function Get-KcCertDiag {
     # 主机名跟着 -WsBaseUrl 走，别写死：换域名/测试环境时这里最容易忘记改
     $h = 'kc-prod.hikvision.com'
-    try { if ($wsUrl) { $h = ([uri]$wsUrl).Host } } catch { }
+    # $script:wsUrl 在登录前是空串，这里必须自己兜底，否则 ([uri]'').Host 抛异常
+    # 被 catch 吞掉，诊断输出里的主机名会静默退回硬编码的 kc-prod —— 换环境时误导人。
+    try { $u = if ($script:wsUrl) { $script:wsUrl } else { 'https://kc-prod.hikvision.com/ISHWS/' }; $h = ([uri]$u).Host } catch { }
     $sb = New-Object System.Text.StringBuilder
     [void]$sb.AppendLine('---- 证书诊断（只读，不含账号信息）----')
     $tcp = $null
@@ -1254,7 +1267,7 @@ function Get-KcCertDiag {
 # ---------------------------------------------------------------- STEP 1 登录
 if ($headless) {
     Log '[..] 命令行已给全参数，跳过弹窗（自动化模式）'
-    $p = @{ ImageDir = $ImageDir; KcFolder = (Normalize-KcPath $KcFolder); Recurse = [bool]$Recurse; CreateFolder = $true; FolderType = $FolderType }
+    $p = @{ ImageDir = $ImageDir; KcFolder = (Normalize-KcPath $KcFolder); Recurse = [bool]$Recurse; CreateFolder = (-not $NoCreateFolder); FolderType = $FolderType }
 } else {
     $p = $null
 }
@@ -1300,7 +1313,11 @@ function Test-KcAuthError($err) {
 # 三级降级，每级失败都把完整错误链写进日志。
 # 上一版第 2 级用 `catch { $ish = $null }` 把异常吞了，结果只显示第 1 级的
 # 「发送请求时出错」，白丢一次定位机会 —— 别再这么写。
-$wsUrl = 'https://kc-prod.hikvision.com/ISHWS/'
+# 补丁①：服务器地址可配置。不传 -WsBaseUrl 时仍连 kc-prod（行为不变）。
+# 用 $script: 作用域是为了让函数内部（如 Get-KcCertDiag）也能读到。
+$script:wsUrl = if ($WsBaseUrl) { $WsBaseUrl } else { 'https://kc-prod.hikvision.com/ISHWS/' }
+try { if ($script:wsUrl) { $wsHost = ([uri]$script:wsUrl).Host } } catch { }
+Log ("[信息] 服务器：{0}" -f $wsHost)
 $ish = $null
 $lastErr = $null
 $win = $null
@@ -1324,9 +1341,9 @@ foreach ($step in $ladder) {
     $caught = $null
     try {
         if ($step.Flag) {
-            $ish = New-IshSession -WsBaseUrl $wsUrl -PSCredential $cred -IgnoreSslPolicyErrors -ErrorAction Stop
+            $ish = New-IshSession -WsBaseUrl $script:wsUrl -PSCredential $cred -IgnoreSslPolicyErrors -ErrorAction Stop
         } else {
-            $ish = New-IshSession -WsBaseUrl $wsUrl -PSCredential $cred -ErrorAction Stop
+            $ish = New-IshSession -WsBaseUrl $script:wsUrl -PSCredential $cred -ErrorAction Stop
         }
     } catch {
         $ish = $null
@@ -1397,6 +1414,39 @@ $diagTxt
         Show-Msg $brief.Trim() 'Error' | Out-Null
     }
     exit 1
+}
+
+# ---------------------------------------------------------------- 补丁② 只读：列目录（-ListFolders）
+# 给 Electron 的 P3「浏览目录」按钮用。纯只读：只 Get-IshFolder，不写 KC 任何东西。
+# 输出一行 `KCJSON {...}` 后 exit 0，主进程按前缀解析。
+# 位置放在登录成功之后，因为列目录需要 $ish 会话。
+if ($ListFolders) {
+    $probePath = Normalize-KcPath $KcFolder
+    if (-not $probePath) { $probePath = 'General' }
+    Head ("KC 列目录  @ " + $probePath)
+    $r = Resolve-KcFolderPath $ish $probePath
+    $segs = @($probePath -split '[\\/]' | Where-Object { $_ })
+    $missing = if ($r.Found -lt $segs.Count) { @($segs[$r.Found..($segs.Count - 1)]) } else { @() }
+    $kids = @()
+    $ftype = ''
+    $fid = ''
+    if ($r.Folder) {
+        $tmp = "$(Get-Prop $r.Folder @('IshFolderRef', 'IshRef'))"
+        if ($tmp) { $fid = $tmp }
+        $ftype = "$(Get-Prop $r.Folder @('IshFolderType'))"
+        $kids = @(Get-KcChildFolders $ish $fid)
+    }
+    $payload = [pscustomobject]@{
+        path       = $probePath
+        resolved   = [bool]$r.Folder
+        leaf       = $r.Leaf
+        missing    = @($missing)
+        folderType = $ftype
+        folderId   = $fid
+        children   = @($kids | ForEach-Object { [pscustomobject]@{ name = $_.Name; id = $_.Id; type = $_.Type } })
+    }
+    Log ('KCJSON ' + ($payload | ConvertTo-Json -Compress -Depth 5))
+    exit 0
 }
 
 # 登录成功后才问路径
@@ -1835,7 +1885,11 @@ if ($proceed) {
         }
     }
 
-    Start-Progress 'KC 批量导入图片'
+    # 补丁③：headless 时不弹原生进度窗 —— 否则 Electron 调用时屏幕上会多出一个
+    # 脚本自带的窗口，而进度已由主进程解析 stdout 的 [i/N] 行自己画。
+    # Update-Progress / Stop-Progress 对未初始化的 $script:pf 本来就是空操作，只拦 Start 一处就够。
+    # （上面两处 Start-Progress 已在 $showPg / $showPrecheckPg 里判过 headless，无需再包一层）
+    if (-not $script:headless) { Start-Progress 'KC 批量导入图片' }
     # 用 try/finally 兜住：进度窗 ControlBox=$false，异常跑出去就永远关不掉
     try {
         $i = 0
@@ -2089,11 +2143,6 @@ if ($headless) {
         try { Start-Process -FilePath 'explorer.exe' -ArgumentList ('/select,"' + $logPath + '"') } catch { }
     }
 }
-
-Clear-OldKcLog $logDir $KeepLogs
-Log "transcript : $logPath"
-Log ("logs dir   : {0}（保留最近 {1} 份 transcript）" -f $logDir, $KeepLogs)
-if ($fa -gt 0) { exit 1 } else { exit 0 }
 
 Clear-OldKcLog $logDir $KeepLogs
 Log "transcript : $logPath"

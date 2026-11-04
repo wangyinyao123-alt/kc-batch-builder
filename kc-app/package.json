@@ -9,7 +9,7 @@
     "build": "vite build",
     "start": "npm run build && electron .",
     "dev:electron": "concurrently -k \"vite\" \"wait-on tcp:5173 && cross-env KC_DEV=1 electron .\"",
-    "test": "node --test electron/parsers/kc-log-parser.test.js",
+    "test": "node --test electron/parsers/kc-log-parser.test.js electron/runner/psRunner.test.js electron/runner/import-safety.test.js",
     "dist:win": "npm run build && electron-builder --win --x64 --publish never",
     "dist:win:dir": "npm run build && electron-builder --win --x64 --dir --publish never"
   },
