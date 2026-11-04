@@ -99,3 +99,16 @@
 - 不再使用 Inter、Arial、Arial Narrow 或当前 Pixso 中不可写入的 Noto Sans SC 作为中文 UI 字体；纯图标符号可保留原字体。
 - P1 画板底层使用粉色网格猫咪背景；P2、P3、P4 使用天空云朵猫咪背景。背景均按 1280×800 等比裁切，不拉伸。
 - 背景层级固定为“背景插画 → 白色柔化蒙层 → 页面内容”。P1 蒙层 44%，P2 蒙层 62%，P3 蒙层 66%；P2 的 body 底色已清空，让背景通过窗口外缘可见。应用窗口、表格和表单保持实底，保证阅读和状态识别。
+
+## 实现层：kc-app（Electron 客户端，2026-11-04 起）
+
+设计与实现分居两处：`KC-App-Design/` 是 Pixso 设计源与交付包，`kc-app/` 是可运行应用。`backend/` 存两个 PowerShell 脚本的接口契约与脚本本体。
+
+- **技术栈**：Electron 33 + React 18 + Vite 6。1280×800 窗口，`titleBarStyle: hiddenInset`。选 Electron 而非 Tauri，是因为团队无 Rust 经验且本地文件操作是主干逻辑。
+- **两个脚本就是后端**：`kc-import-images-ui.ps1`（接口契约在 `backend/kc-import-contract.md`）与 `kc-create-objects-ui.ps1`（`backend/kc-create-contract.md`），脚本本体不随应用分发，由用户机持有。应用只负责拼命令行、解析 stdout 行协议、渲染结果。
+- **唯一字段映射点**：`kc-app/electron/runner/psRunner.js` 的 `buildArgs()`。改表单字段必须同步改这里，否则参数不会传给脚本。
+- **stdout 行协议**：`kc-app/electron/parsers/kc-log-parser.js` 把每行转成事件（`step`/`login`/`item`/`summary`/`progress`/`artifact`/`attach`/`exit` 等），经 IPC 推给渲染进程。协议依据两份契约文档第 3 节；脚本改输出格式时先改解析器再改 UI。
+- **两段式执行**：预检不带 `-Commit`（只读、零写入），执行才带。这是脚本固有设计，不是客户端加的限制。
+- **macOS 开发机走 mockRunner**：`KC_MOCK=1` 或非 win32 平台时回放合成的真实格式日志，保证界面全流程可点。Windows 上自动切 psRunner。
+- **密码存 localStorage**：内网单机工具的取舍。上生产应换 `safeStorage.encryptString`。
+- **UI 说明文字全部收进「?」悬浮提示**：表单只留标签和控件，对应设计稿 P3 的减法。`src/components/Hint.jsx` 提供 `Hint` 与 `Field`。
