@@ -2137,7 +2137,8 @@
 .p4-search input::placeholder { color: #c9a8b8; }
 .p4-searchic { font-size: 18px; font-weight: 700; color: #c08da3; line-height: 1; }
 
-.p4-chips { position: absolute; left: 15px; top: 48px; display: flex; gap: 8px; }
+/* DSL: chips y=387，卡片顶 323 + 64 → top 需 63（原 48 让 chips 高了 15px，撞上猫脸贴纸） */
+.p4-chips { position: absolute; left: 15px; top: 63px; display: flex; gap: 8px; }
 .p4-chip {
   width: 92px; height: 25px;
   border: 0; border-radius: 4px; cursor: pointer;
@@ -2735,3 +2736,91 @@
 }
 .p1-netmsg.ok { color: #3f8f6b; }
 .p1-netmsg.bad { color: #c04c68; }
+
+/* ---------------------------------------------- 顶栏按 DSL 绝对定位重构
+   设计稿顶栏 1210×64（x35..1245，y25..89），右簇坐标来自
+   KC-App-Design/dsl/P4-task-detail.json（P3/P4/P5 一致，P2 是旧稿偏移 57）。
+   全部用 left 绝对定位，不再靠 flex 挤压 —— flex 会让整簇右移 130px，
+   把「已连接」推到 x=967（设计稿 851），并让 x=280 的导航撞上像素星星贴纸。 */
+.topbar { position: relative; }
+
+/* 环境标签「测试」：DSL x=280 y=50 fs=11 */
+.tb-env {
+  position: absolute; left: 245px; top: 8px;
+  height: 20px; padding: 0 8px;
+  display: flex; align-items: center;
+  box-sizing: border-box;
+  background: rgba(255, 255, 255, .72);
+  border: 1px solid rgba(240, 176, 200, .8);
+  border-radius: 10px;
+  font-size: 11px; font-weight: 700; color: #b85f7c;
+}
+
+.topbar .tb-conn {
+  position: absolute; top: 0; height: 64px;
+  border: none; background: transparent;
+  padding: 0; cursor: pointer;
+  font-family: inherit;
+  -webkit-app-region: no-drag;
+}
+
+.topbar .tb-sep { position: absolute; top: 21px; margin: 0; }
+
+.topbar .tb-avatar {
+  position: absolute; top: 16px; margin: 0;
+  border: none; padding: 0; cursor: pointer;
+  font-family: inherit;
+}
+
+.topbar .tb-account {
+  position: absolute; top: 16px; width: 104px;
+  font-size: 13px; font-weight: 700; color: #5b3a4a;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+.topbar .tb-switch { position: absolute; top: 13px; margin: 0; }
+.topbar .tb-dots { position: absolute; top: 22px; margin: 0; display: flex; gap: 8px; }
+
+.topbar .tb-spacer { display: none; }
+.topbar .tb-nav { display: none; }
+
+/* ---------------------------------------------- 状态栏导航
+   DSL 状态栏 1210×28，y=755 只有「就绪」与右侧统计，中段空白。 */
+.sb-nav {
+  display: flex;
+  gap: 2px;
+  margin-left: 18px;
+  -webkit-app-region: no-drag;
+}
+
+.sb-nav-item {
+  height: 18px;
+  padding: 0 9px;
+  border: none;
+  border-radius: 9px;
+  background: transparent;
+  color: #9a6d7f;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: background .14s, color .14s;
+}
+
+.sb-nav-item:hover { background: rgba(255, 255, 255, .6); color: #5b3a4a; }
+
+.sb-nav-item.active {
+  background: #fff;
+  color: #b8557a;
+  box-shadow: 0 1px 4px rgba(233, 154, 184, .4);
+}
+
+.sb-count {
+  min-width: 12px; height: 12px; padding: 0 3px;
+  border-radius: 6px;
+  background: #e99ab8; color: #fff;
+  font-size: 9px; line-height: 12px; text-align: center;
+}

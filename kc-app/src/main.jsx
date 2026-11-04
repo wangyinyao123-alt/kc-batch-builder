@@ -17,7 +17,9 @@ installMockBridge();
 export const AppCtx = createContext(null);
 export const useApp = () => useContext(AppCtx);
 
-// 设计稿没有左侧栏：导航收在顶栏里（顶栏 64px 高，见 DSL div.topbar）
+// 设计稿没有左侧栏，也没有任何页面导航：顶栏里 x=280 处是环境标签「测试」，
+// 右侧账号簇在 x=835..1228。导航改放到底部状态栏（DSL 里那片区域是空文本区），
+// 避免挤进 x=390 的像素星星贴纸位置。
 const DECOR_BY_ROUTE = { tasks: 'p2', detail: 'p4', new: 'p3', retry: 'p3', settings: 'p5' };
 
 const NAV = [
@@ -26,6 +28,17 @@ const NAV = [
   { key: 'settings', label: '设置' },
 ];
 
+// 顶栏右簇在四个画板上位置不同（P2 是 778 起的旧稿，P3/P4/P5 是 835 起的新稿）。
+// 统一按新稿（多数派）绝对定位，坐标 = DSL 值 − 顶栏左缘 35。
+const TB_RIGHT = {
+  conn: 800,   // DSL 连接指示灯 x=835
+  sep: 881,    // DSL 连接分隔 x=916
+  avatar: 899, // DSL 用户头像 x=934
+  account: 942,// DSL 账号名 x=977
+  switcher: 1057, // DSL 切换按钮底 x=1092
+  dots: 1144,  // DSL 窗口控制点1 x=1179
+};
+
 function TopBar({ route, setRoute, tasks, creds, onLogout }) {
   const runningCount = tasks.filter((t) => t.status === 'running').length;
   return (
@@ -33,32 +46,34 @@ function TopBar({ route, setRoute, tasks, creds, onLogout }) {
       <div className="tb-icon">KC</div>
       <div className="tb-brand">KC 批量建库工具</div>
 
-      <nav className="tb-nav">
-        {NAV.map((n) => (
-          <button
-            key={n.key}
-            className={`tb-nav-item ${route === n.key ? 'active' : ''}`}
-            onClick={() => setRoute(n.key)}
-          >
-            {n.label}
-            {n.key === 'tasks' && runningCount > 0 && <span className="tb-count">{runningCount}</span>}
-          </button>
-        ))}
-      </nav>
+      {/* 环境标签：DSL 顶栏 x=280 y=50 的「测试」 */}
+      <div className="tb-env">测试</div>
 
-      <div className="tb-spacer" />
-
-      <div className="tb-conn">
+      <button
+        className="tb-conn"
+        style={{ left: TB_RIGHT.conn }}
+        onClick={() => setRoute('settings')}
+        title="连接设置"
+      >
         <span className={`tb-dot ${creds ? 'on' : ''}`} />
         <span>{creds ? '已连接' : '未连接'}</span>
+      </button>
+      <div className="tb-sep" style={{ left: TB_RIGHT.sep }} />
+      <button
+        className="tb-avatar"
+        style={{ left: TB_RIGHT.avatar }}
+        onClick={() => setRoute('settings')}
+        title="打开设置"
+      >
+        {(creds?.user || 'U').slice(0, 1).toUpperCase()}
+      </button>
+      <div className="tb-account" style={{ left: TB_RIGHT.account }}>
+        {creds?.user || '未登录'}
       </div>
-      <div className="tb-sep" />
-      <div className="tb-avatar">{(creds?.user || 'U').slice(0, 1).toUpperCase()}</div>
-      <div className="tb-account">{creds?.user || '未登录'}</div>
-      <button className="tb-switch" onClick={onLogout}>
+      <button className="tb-switch" style={{ left: TB_RIGHT.switcher }} onClick={onLogout}>
         切换 ▾
       </button>
-      <div className="tb-dots">
+      <div className="tb-dots" style={{ left: TB_RIGHT.dots }}>
         <span className="wd" />
         <span className="wd" />
         <span className="wd" />
@@ -67,7 +82,7 @@ function TopBar({ route, setRoute, tasks, creds, onLogout }) {
   );
 }
 
-function StatusBar({ tasks }) {
+function StatusBar({ tasks, route, setRoute }) {
   const running = tasks.filter((t) => t.status === 'running').length;
   return (
     <footer className="statusbar">
@@ -75,7 +90,20 @@ function StatusBar({ tasks }) {
       <span className="sb-text">
         {running ? `正在执行 ${running} 个任务` : '就绪'}
       </span>
-      <span className="sb-right">ISHRemote 驱动 · v0.1.0</span>
+      {/* 页面导航：DSL 状态栏中段为空白，放这里不会与任何贴纸相交 */}
+      <nav className="sb-nav">
+        {NAV.map((n) => (
+          <button
+            key={n.key}
+            className={`sb-nav-item ${route === n.key ? 'active' : ''}`}
+            onClick={() => setRoute(n.key)}
+          >
+            {n.label}
+            {n.key === 'tasks' && running > 0 && <span className="sb-count">{running}</span>}
+          </button>
+        ))}
+      </nav>
+      <span className="sb-right">ISHRemote 驱动 · v0.2.3</span>
     </footer>
   );
 }
@@ -146,7 +174,7 @@ function Shell() {
             {route === 'retry' && <NewTaskPage />}
             {route === 'settings' && <SettingsPage />}
           </main>
-          <StatusBar tasks={tasks} />
+          <StatusBar tasks={tasks} route={route} setRoute={setRoute} />
         </div>
       </div>
     </AppCtx.Provider>
