@@ -14,3 +14,6 @@ release/
 .home-*/
 .npm-cache/
 build/icon.png
+
+# 打包缓存（electron / electron-builder / wine 下载物，几百 MB，不入库）
+.cache/

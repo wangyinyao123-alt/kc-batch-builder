@@ -11,15 +11,74 @@ let win = null;
 /** @type {Map<string, import('node:child_process').ChildProcess>} */
 const running = new Map();
 
+// ---------------------------------------------------------------- 启动日志
+// Windows 上双击启动失败时看不到任何提示（无控制台），必须落盘才能诊断。
+// 优先写桌面（用户一眼就能找到并截图发回来），失败再退回 userData。
+let logFile = null;
+function resolveLogFile() {
+  if (logFile) return logFile;
+  const fs = require('node:fs');
+  const name = `KC-启动日志-${new Date().toISOString().slice(0, 10)}.log`;
+  const candidates = [];
+  try {
+    candidates.push(path.join(app.getPath('desktop'), name));
+  } catch {
+    /* 无桌面目录（部分服务器版 Windows）时跳过 */
+  }
+  candidates.push(path.join(app.getPath('userData'), 'crash.log'));
+  for (const c of candidates) {
+    try {
+      fs.appendFileSync(c, '', 'utf8');
+      logFile = c;
+      return c;
+    } catch {
+      /* 换下一个候选位置 */
+    }
+  }
+  return null;
+}
+
+function crashLog(tag, err) {
+  try {
+    const fs = require('node:fs');
+    const f = resolveLogFile();
+    if (!f) return;
+    const line =
+      `[${new Date().toISOString()}] [${tag}] ` +
+      (err ? `${err.stack || err.message || err}` : '') +
+      '\n';
+    fs.appendFileSync(f, line, 'utf8');
+  } catch {
+    /* 日志本身失败不能影响主流程 */
+  }
+}
+
+// 启动全程打点：卡在哪一步，日志里就能看出来
+crashLog('boot', `version=${app.getVersion()} packaged=${app.isPackaged} platform=${process.platform} arch=${process.arch}`);
+crashLog('boot', `exe=${process.execPath}`);
+crashLog('boot', `resources=${process.resourcesPath}`);
+
+process.on('uncaughtException', (err) => {
+  crashLog('uncaughtException', err);
+  dialog.showErrorBox('KC 内容生产助手 启动失败', String(err?.stack || err));
+  app.exit(1);
+});
+process.on('unhandledRejection', (err) => crashLog('unhandledRejection', err));
+
+// 注意：这里刻意不加 app.requestSingleInstanceLock()。
+// 锁文件建不了（%APPDATA% 被杀软锁、目录权限不足）时它返回 false，
+// 若按常规写法直接 app.quit()，用户看到的就是「双击没反应」——比多开更糟。
+
 function createWindow() {
   win = new BrowserWindow({
     width: 1280,
     height: 800,
     minWidth: 1080,
     minHeight: 720,
-    backgroundColor: '#111826',
+    backgroundColor: '#fdf3f7',
     title: 'KC 内容生产助手',
-    titleBarStyle: 'hiddenInset',
+    // hiddenInset 只有 macOS 有；Windows 用默认边框，否则标题栏按钮会消失
+    titleBarStyle: process.platform === 'darwin' ? 'hiddenInset' : 'default',
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
@@ -28,11 +87,28 @@ function createWindow() {
     },
   });
 
+  // 加载失败必须可见：白屏是最难远程诊断的故障
+  win.webContents.on('did-fail-load', (_e, code, desc, validUrl) => {
+    crashLog('did-fail-load', `${code} ${desc} ${validUrl}`);
+    dialog.showErrorBox('页面加载失败', `${code} ${desc}\n${validUrl}`);
+  });
+  win.webContents.on('render-process-gone', (_e, details) => {
+    crashLog('render-process-gone', JSON.stringify(details));
+  });
+  win.webContents.on('did-finish-load', () => crashLog('did-finish-load', win.webContents.getURL()));
+
+  crashLog('createWindow', `dev=${isDev}`);
   if (isDev) {
     win.loadURL(DEV_URL);
     win.webContents.openDevTools({ mode: 'detach' });
   } else {
-    win.loadFile(path.join(__dirname, '../dist/index.html'));
+    const indexHtml = path.join(__dirname, '../dist/index.html');
+    const fs = require('node:fs');
+    crashLog('loadFile', `${indexHtml} exists=${fs.existsSync(indexHtml)}`);
+    win.loadFile(indexHtml).catch((err) => {
+      crashLog('loadFile-failed', err);
+      dialog.showErrorBox('无法加载界面', String(err?.message || err));
+    });
   }
 
   win.on('closed', () => {
@@ -45,6 +121,9 @@ app.whenReady().then(() => {
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });
+}).catch((err) => {
+  crashLog('whenReady', err);
+  dialog.showErrorBox('初始化失败', String(err?.stack || err));
 });
 
 app.on('window-all-closed', () => {
