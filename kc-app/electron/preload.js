@@ -7,6 +7,9 @@ contextBridge.exposeInMainWorld('kc', {
   readText: (p) => ipcRenderer.invoke('fs:read-text', p),
   saveText: (payload) => ipcRenderer.invoke('fs:save-text', payload),
 
+  /** 连通性探测：返回 { ok, status, note, code, error, url, ms } */
+  ping: (url, ignoreSsl) => ipcRenderer.invoke('net:ping', { url, ignoreSsl }),
+
   startRun: (payload) => ipcRenderer.invoke('run:start', payload),
   cancelRun: (id) => ipcRenderer.invoke('run:cancel', id),
 

@@ -132,6 +132,92 @@ app.on('window-all-closed', () => {
 
 // ---------------------------------------------------------------- IPC
 
+/**
+ * 连通性探测：真正发一次 HTTP 请求到 KC 服务器。
+ *
+ * 判定口径很重要：KC 的接口未经认证会返回 401/403，这**说明服务器是通的**，
+ * 不能当成失败。只有 DNS 解析失败、连接被拒、超时、证书错误才算连不上。
+ * 返回 { ok, status, code, error, url, ms }，UI 据此分开提示「地址错」「证书问题」
+ * 和「网络不通」，而不是笼统一句「请检查网络」。
+ */
+ipcMain.handle('net:ping', async (_e, { url, ignoreSsl } = {}) => {
+  const started = Date.now();
+  const target = String(url || '').trim();
+  if (!/^https?:\/\//i.test(target)) {
+    return { ok: false, code: 'E_URL', error: '地址必须以 http:// 或 https:// 开头', url: target };
+  }
+
+  let cur = target;
+  // 跟随最多 3 次跳转，手工处理以便在 ignoreSsl 时逐跳放行
+  for (let hop = 0; hop < 3; hop++) {
+    const res = await new Promise((resolve) => {
+      let u;
+      try {
+        u = new URL(cur);
+      } catch {
+        resolve({ kind: 'error', code: 'E_URL', error: '地址格式不正确' });
+        return;
+      }
+      const mod = u.protocol === 'https:' ? require('node:https') : require('node:http');
+      const req = mod.request(
+        {
+          hostname: u.hostname,
+          port: u.port || (u.protocol === 'https:' ? 443 : 80),
+          path: u.pathname + u.search,
+          method: 'GET',
+          timeout: 8000,
+          rejectUnauthorized: !ignoreSsl,
+          headers: { 'User-Agent': `kc-batch-builder/${app.getVersion()}`, Accept: '*/*' },
+        },
+        (r) => {
+          r.resume(); // 不读响应体，只要状态码
+          resolve({ kind: 'response', status: r.statusCode, location: r.headers.location });
+        }
+      );
+      req.on('timeout', () => {
+        req.destroy();
+        resolve({ kind: 'error', code: 'ETIMEDOUT', error: '连接超时（8 秒无响应）' });
+      });
+      req.on('error', (err) => {
+        const code = err.code || 'ENETWORK';
+        const map = {
+          ENOTFOUND: '域名解析失败：检查地址里主机名是否正确',
+          ECONNREFUSED: '服务器拒绝连接：端口未开放或服务未启动',
+          ECONNRESET: '连接被重置：可能被防火墙或代理拦截',
+          ETIMEDOUT: '连接超时：网络不通或被安全策略阻断',
+          EAI_AGAIN: 'DNS 暂时不可用：检查网络或 VPN',
+          DEPTH_ZERO_SELF_SIGNED_CERT: '证书是自签的，请勾选「忽略证书错误」',
+          SELF_SIGNED_CERT_IN_CHAIN: '证书链含自签证书，请勾选「忽略证书错误」',
+          UNABLE_TO_VERIFY_LEAF_SIGNATURE: '证书无法验证，请勾选「忽略证书错误」',
+          CERT_HAS_EXPIRED: '服务器证书已过期',
+        };
+        resolve({ kind: 'error', code, error: map[code] || err.message || String(err) });
+      });
+      req.end();
+    });
+
+    if (res.kind === 'error') {
+      return { ok: false, code: res.code, error: res.error, url: cur, ms: Date.now() - started };
+    }
+    if (res.status >= 300 && res.status < 400 && res.location) {
+      cur = new URL(res.location, cur).href;
+      continue;
+    }
+    return {
+      ok: true,
+      status: res.status,
+      url: cur,
+      // 401/403 代表服务在线只是要认证，如实说明避免用户误判
+      note:
+        res.status === 401 || res.status === 403
+          ? `服务器可达（HTTP ${res.status}，需要登录后才会返回数据）`
+          : `服务器可达（HTTP ${res.status}）`,
+      ms: Date.now() - started,
+    };
+  }
+  return { ok: false, code: 'E_REDIRECT', error: '跳转次数过多（超过 3 次）', url: cur, ms: Date.now() - started };
+});
+
 /** 选目录 */
 ipcMain.handle('dialog:pick-dir', async () => {
   // 自动化测试钩子：系统弹窗无法被脚本点击，端到端用例用环境变量直接喂路径。

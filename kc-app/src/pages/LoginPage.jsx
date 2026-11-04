@@ -16,14 +16,43 @@ const STICKERS = [
   { cls: 'p1-st-laptop', src: './img/stickers/login-laptop-sticker.png', x: 835, y: 645, w: 166, h: 120 },
 ];
 
+// 与设置页 DEFAULT_WS 保持一致：首次进登录页必须带真实服务器地址，
+// 否则用户直接点登录会一路失败，却误以为是自己的网络问题。
+const DEFAULT_WS = 'https://kc-prod.hikvision.com/ISHWS/';
+
 export default function LoginPage({ onLogin }) {
-  const [ws, setWs] = useState('https://kc.example.com');
+  const [ws, setWs] = useState(DEFAULT_WS);
   const [user, setUser] = useState('');
   const [password, setPassword] = useState('');
   const [remember, setRemember] = useState(true);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState('');
   const [fatal, setFatal] = useState(null); // {title, reason, code, path}
+  const [netState, setNetState] = useState(null); // {ok, text}
+
+  /** 不登录也能先确认服务器地址是否可达——避免把「地址填错」误当成网络故障 */
+  const testNet = async () => {
+    const target = ws.trim();
+    if (!/^https?:\/\//i.test(target)) {
+      setNetState({ ok: false, text: '地址必须以 http:// 或 https:// 开头' });
+      return;
+    }
+    if (!window.kc?.ping) {
+      setNetState({ ok: false, text: '当前环境不支持连通性测试' });
+      return;
+    }
+    setNetState({ ok: null, text: '正在连接…' });
+    try {
+      const r = await window.kc.ping(target, false);
+      setNetState(
+        r?.ok
+          ? { ok: true, text: `${r.note || '连接正常'}${r.ms ? `，${r.ms}ms` : ''}` }
+          : { ok: false, text: `${r?.code || 'E_UNKNOWN'}：${r?.error || '连接失败'}` }
+      );
+    } catch (e) {
+      setNetState({ ok: false, text: String(e?.message || e) });
+    }
+  };
 
   const submit = (e) => {
     e.preventDefault();
@@ -73,13 +102,22 @@ export default function LoginPage({ onLogin }) {
         {err && <div className="p1-err">{err}</div>}
 
         <label className="p1-label l1">服务器地址</label>
+        {/* 测试按钮塞进输入框右端，不改动绝对定位的 448×44 几何 */}
         <input
-          className="p1-input i1"
+          className="p1-input i1 p1-input-hasbtn"
           value={ws}
           onChange={(e) => setWs(e.target.value)}
-          placeholder="https://kc.example.com"
+          placeholder="https://kc-prod.hikvision.com/ISHWS/"
           spellCheck={false}
         />
+        <button type="button" className="p1-nettest" onClick={testNet}>
+          {netState?.ok === null ? '连接中…' : '测试连接'}
+        </button>
+        {netState && (
+          <div className={`p1-netmsg ${netState.ok === true ? 'ok' : netState.ok === false ? 'bad' : ''}`}>
+            {netState.text}
+          </div>
+        )}
 
         <label className="p1-label l2">用户名</label>
         <input

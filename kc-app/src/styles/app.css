@@ -2707,3 +2707,31 @@
   background: transparent; color: inherit;
   font-size: 10px; font-weight: 700; cursor: pointer;
 }
+
+/* 登录页连通性测试：按钮贴在服务器地址输入框右端，
+   提示语落在地址框与用户名标签之间的 12px 空隙里，
+   不改动任何已有的绝对定位坐标。 */
+.p1-input-hasbtn { padding-right: 88px; }
+
+.p1-nettest {
+  position: absolute; left: 393px; top: 236px;
+  width: 78px; height: 44px;
+  box-sizing: border-box;
+  border: none; border-left: 1px solid rgba(240, 176, 200, .6);
+  border-radius: 0 7px 7px 0;
+  background: #fdf0f5;
+  font-family: inherit; font-size: 12px; font-weight: 700; color: #b85f7c;
+  cursor: pointer;
+}
+.p1-nettest:hover { background: #fbe3ed; }
+.p1-nettest:active { background: #f8d5e4; }
+
+.p1-netmsg {
+  position: absolute; left: 35px; top: 283px;
+  width: 448px; height: 16px;
+  font-size: 10.5px; line-height: 16px;
+  color: #8f6478;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.p1-netmsg.ok { color: #3f8f6b; }
+.p1-netmsg.bad { color: #c04c68; }

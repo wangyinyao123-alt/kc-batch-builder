@@ -49,10 +49,19 @@ export default function SettingsPage() {
   const testConn = async () => {
     setTesting(true);
     try {
-      const ok = await window.kc.ping?.(draft.wsBaseUrl);
-      flash(ok ? `连接正常：${draft.wsBaseUrl}` : '连接失败，请检查地址与网络');
-    } catch {
-      flash('连接失败，请检查地址与网络');
+      if (!window.kc?.ping) {
+        flash('当前环境不支持连通性测试（仅在桌面客户端可用）');
+        return;
+      }
+      const r = await window.kc.ping(draft.wsBaseUrl, draft.ignoreSsl);
+      if (r?.ok) {
+        flash(`连接正常：${r.note || draft.wsBaseUrl}${r.ms ? `，${r.ms}ms` : ''}`);
+      } else {
+        // 把具体错误码和原因带出来，别让用户对着「请检查网络」瞎猜
+        flash(`连接失败（${r?.code || 'E_UNKNOWN'}）：${r?.error || '原因未知'}`);
+      }
+    } catch (e) {
+      flash(`连接失败：${String(e?.message || e)}`);
     } finally {
       setTesting(false);
     }
