@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { useApp } from '../main';
 import { TASK_STATUS_UI, TASK_TYPES, STATE_UI } from '../store';
+import { DangerDialog } from '../components/KcDialog';
 
 /**
  * P4 任务详情（独立页，取代原弹窗）。
@@ -25,6 +26,7 @@ export default function TaskDetailPage() {
   const [onlyFailed, setOnlyFailed] = useState(false);
   const [toast, setToast] = useState('');
   const [q, setQ] = useState('');
+  const [askCancel, setAskCancel] = useState(false);
 
   const failedResults = useMemo(
     () => (task?.results || []).filter((r) => r.state === 'FAILED'),
@@ -287,11 +289,7 @@ export default function TaskDetailPage() {
             >
               暂停
             </button>
-            <button
-              className="p4-b"
-              disabled={!running}
-              onClick={() => flash('取消需要脚本侧支持；请在新任务页执行时使用「中止」')}
-            >
+            <button className="p4-b" disabled={!running} onClick={() => setAskCancel(true)}>
               取消
             </button>
             <button className="p4-b is-primary" disabled={failedCount === 0} onClick={retryFailed}>
@@ -311,6 +309,26 @@ export default function TaskDetailPage() {
         </div>
 
         {toast && <div className="p4-toast">{toast}</div>}
+
+        {askCancel && (
+          <DangerDialog
+            name={task.name}
+            typeLabel={task.typeName || meta.name || task.type}
+            statusLabel={TASK_STATUS_UI[task.status]?.label || task.status}
+            progress={`已完成 ${finished} / ${total}`}
+            dir={task.folderPath || '尚未写入任何目录'}
+            counts={{
+              created: finished,
+              running: task.status === 'running' ? 1 : 0,
+              waiting: Math.max(0, total - finished - (task.status === 'running' ? 1 : 0)),
+            }}
+            onCancel={() => setAskCancel(false)}
+            onConfirm={() => {
+              setAskCancel(false);
+              flash('真实中止需要 runner 暴露 stop 通道；当前先记录意图，下次执行前会先清理未完成项。');
+            }}
+          />
+        )}
       </div>
     </div>
   );

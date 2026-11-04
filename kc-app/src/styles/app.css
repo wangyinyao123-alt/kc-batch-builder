@@ -2438,3 +2438,272 @@
   font-size: 11px; padding: 8px 16px; border-radius: 999px;
   white-space: nowrap;
 }
+
+/* ============================================================ P1 登录 */
+/* 画板 1280×800；卡片 520×610 @ (380,95)；输入 448×44 @ x416；登录按钮 448×48 @ y593。
+   所有绝对坐标直接取自 KC-App-Design/dsl/P1-login.json。 */
+.p1 {
+  position: relative;
+  width: 1280px; height: 800px;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+  background: #fdf3f7;
+}
+.p1-bg {
+  position: absolute; inset: 0;
+  background: url('/img/bg/background-pink-grid-cat-1280x800.jpg') center / cover no-repeat;
+}
+.p1-veil { position: absolute; inset: 0; background: rgba(255, 255, 255, 0.44); }
+
+/* 窗口标题栏 36 高 */
+.p1-titlebar {
+  position: absolute; left: 0; top: 0; right: 0; height: 36px;
+  background: rgba(255, 255, 255, .55);
+  border-bottom: 1px solid rgba(240, 196, 212, .7);
+  -webkit-app-region: drag;
+}
+.p1-versionbar {
+  position: absolute; left: 380px; top: 705px; width: 520px; height: 35px;
+  background: rgba(255, 255, 255, .42);
+  border-radius: 8px;
+}
+
+/* 五张贴纸（x/y/w/h 全部来自 DSL） */
+.p1-st { position: absolute; pointer-events: none; user-select: none; }
+.p1-st-wincat { left: 115px; top: 14px; width: 286px; height: 235px; }
+.p1-st-planet { left: 610px; top: 41px; width: 152px; height: 135px; }
+.p1-st-bubble { left: 894px; top: 358px; width: 365px; height: 181px; }
+.p1-st-star   { left: 750px; top: 226px; width: 135px; height: 102px; }
+.p1-st-laptop { left: 835px; top: 645px; width: 166px; height: 120px; }
+
+/* 登录卡 520×610 */
+.p1-card {
+  position: relative;
+  width: 520px; height: 610px;
+  background: rgba(255, 255, 255, .95);
+  border: 1px solid rgba(240, 176, 200, .55);
+  border-radius: 12px;
+  box-shadow: 0 18px 48px rgba(87, 55, 71, .14);
+  box-sizing: border-box;
+  -webkit-app-region: no-drag;
+}
+
+/* 品牌条 514×56 @ (383,98) → 卡内 (3,3) */
+.p1-brandbar {
+  position: absolute; left: 2px; top: 2px;
+  width: 514px; height: 56px;
+  display: flex; align-items: center; gap: 10px;
+  padding: 0 20px; box-sizing: border-box;
+  background: rgba(253, 240, 245, .92);
+  border-radius: 10px 10px 0 0;
+}
+.p1-mark {
+  width: 26px; height: 26px; border-radius: 6px;
+  display: grid; place-items: center;
+  background: #e99ab8; color: #fff;
+  font-size: 11px; font-weight: 700; letter-spacing: .02em;
+}
+.p1-brandname { font-size: 18px; font-weight: 700; color: #4a2c3a; }
+
+/* 首次使用提示 448×34 @ (416,173) → 卡内 (36,78) */
+.p1-firstuse {
+  position: absolute; left: 35px; top: 77px;
+  width: 448px; height: 34px;
+  display: flex; align-items: center; padding: 0 14px;
+  box-sizing: border-box;
+  background: #fdf0f5; border-radius: 6px;
+  font-size: 12px; color: #b2859a;
+}
+
+.p1-title {
+  position: absolute; left: 35px; top: 126px; margin: 0;
+  font-size: 28px; font-weight: 700; line-height: 34px; color: #4a2c3a;
+}
+.p1-sub {
+  position: absolute; left: 35px; top: 170px; margin: 0;
+  width: 448px; font-size: 12px; line-height: 16px; color: #b98fa4;
+}
+.p1-err {
+  position: absolute; left: 35px; top: 188px;
+  width: 448px; height: 26px;
+  display: flex; align-items: center; padding: 0 12px;
+  box-sizing: border-box;
+  background: #ffecef; border-radius: 5px;
+  font-size: 11px; color: #c04c68;
+}
+
+.p1-label {
+  position: absolute; left: 35px;
+  font-size: 12px; font-weight: 700; line-height: 16px; color: #8f6478;
+}
+.p1-label.l1 { top: 214px; }
+.p1-label.l2 { top: 293px; }
+.p1-label.l3 { top: 372px; }
+
+.p1-input {
+  position: absolute; left: 35px;
+  width: 448px; height: 44px;
+  box-sizing: border-box;
+  padding: 0 14px;
+  border: 1px solid rgba(240, 176, 200, .6);
+  border-radius: 7px;
+  background: #fff;
+  font-family: inherit; font-size: 13px; color: #5b3846;
+}
+.p1-input:focus { outline: none; border-color: #e99ab8; box-shadow: 0 0 0 3px rgba(233, 154, 184, .16); }
+.p1-input::placeholder { color: #c9a8b8; }
+.p1-input.i1 { top: 236px; }
+.p1-input.i2 { top: 315px; }
+.p1-input.i3 { top: 394px; }
+
+.p1-remember {
+  position: absolute; left: 59px; top: 459px;
+  display: flex; align-items: center; gap: 9px;
+  font-size: 12px; color: #8f6478;
+  cursor: pointer;
+}
+.p1-remember input { accent-color: #e99ab8; }
+
+.p1-submit {
+  position: absolute; left: 35px; top: 497px;
+  width: 448px; height: 48px;
+  border: 0; border-radius: 8px;
+  background: #e99ab8;
+  font-family: inherit; font-size: 16px; font-weight: 700; color: #fff;
+  cursor: pointer;
+}
+.p1-submit:hover:not(:disabled) { background: #e28cad; }
+.p1-submit:disabled { background: #f0cdd9; cursor: default; }
+
+.p1-foot {
+  position: absolute; left: 35px; top: 563px;
+  width: 448px; text-align: center;
+  font-size: 11px; line-height: 15px; color: #b98fa4;
+}
+
+/* ============================================================ D1 弹窗
+   几何全部取自 KC-App-Design/dsl/D1-dialog.json。
+   遮罩铺满应用窗口（32,22,1216×756），两种弹窗各自定尺定位：
+   危险确认 590×486，报错 424×302。内部元素绝对定位，不随内容伸缩。 */
+.d1-mask {
+  position: fixed;
+  left: 32px; top: 22px; width: 1216px; height: 756px;
+  background: rgba(87, 55, 71, 0.54);
+  border-radius: 12px;
+  z-index: 900;
+}
+
+/* ---- 危险确认 590×486 ---- */
+.d1-danger {
+  position: absolute; left: 84px; top: 120px;
+  width: 590px; height: 486px;
+  background: #fffafc;
+  border: 1px solid #e5bfd0;
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(87, 55, 71, 0.14);
+}
+.d1-sticker-a { position: absolute; left: 24px; top: 28px; width: 48px; height: 48px; pointer-events: none; }
+.d1-sticker-b { position: absolute; left: 502px; top: 120px; width: 42px; height: 48px; pointer-events: none; }
+
+.d1-tag {
+  position: absolute; left: 86px; top: 27px;
+  height: 18px; padding: 0 10px;
+  display: inline-flex; align-items: center;
+  background: #f9e7ee; border-radius: 12px;
+  font-size: 10px; font-weight: 700; color: #b85f7c;
+}
+.d1-title {
+  position: absolute; left: 86px; top: 47px; margin: 0;
+  font-size: 21px; font-weight: 700; color: #573747;
+}
+.d1-sub {
+  position: absolute; left: 23px; top: 82px; margin: 0;
+  width: 510px; font-size: 12px; color: #6c4859; line-height: 22px;
+}
+.d1-summary {
+  position: absolute; left: 23px; top: 113px;
+  width: 542px; height: 72px;
+  background: #f9e7ee; border-radius: 10px;
+}
+.d1-sum-name { position: absolute; left: 19px; top: 10px; font-size: 13px; font-weight: 700; color: #573747; }
+.d1-sum-meta { position: absolute; left: 19px; top: 32px; font-size: 10px; font-weight: 700; color: #9d5170; }
+.d1-sum-dir  { position: absolute; left: 19px; top: 52px; font-size: 9px; color: #7d6773; }
+
+.d1-impact-title { position: absolute; left: 23px; top: 202px; font-size: 13px; font-weight: 700; color: #573747; }
+
+.d1-row {
+  position: absolute; left: 23px; width: 542px; height: 36px;
+  background: #f0fbf6; border-radius: 7px;
+}
+.d1-row.r1 { top: 231px; }
+.d1-row.r2 { top: 273px; background: #fff1f3; }
+.d1-row.r3 { top: 315px; background: #f8f5f7; }
+.d1-dot { position: absolute; left: 14px; top: 12px; width: 10px; height: 10px; border-radius: 999px; }
+.d1-dot.ok { background: #499b72; }
+.d1-dot.warn { background: #e86178; }
+.d1-dot.muted { background: #b7a3ad; }
+.d1-row-t { position: absolute; left: 34px; top: 6px; font-size: 11px; font-weight: 700; color: #573747; }
+.d1-row-d { position: absolute; left: 145px; top: 6px; font-size: 10px; color: #6c4859; }
+
+.d1-hint {
+  position: absolute; left: 23px; top: 364px;
+  width: 542px; height: 34px;
+  display: flex; align-items: center; padding-left: 15px;
+  background: #fff0f3; border-radius: 7px;
+  font-size: 10px; font-weight: 700; color: #b74863;
+}
+.d1-btn-keep, .d1-btn-kill {
+  position: absolute; top: 415px; height: 42px;
+  border-radius: 8px; font-size: 12px; font-weight: 700;
+  cursor: pointer;
+}
+.d1-btn-keep { left: 293px; width: 124px; background: #fff; border: 1px solid #dfa7bd; color: #6c4859; }
+.d1-btn-kill { left: 429px; width: 136px; background: #e86178; border: 1px solid #e86178; color: #fff; }
+
+/* ---- 报错 424×302 ---- */
+.d1-error {
+  position: absolute; left: 716px; top: 191px;
+  width: 424px; height: 302px;
+  background: #fffafc;
+  border: 1px solid #e5bfd0;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(87, 55, 71, 0.14);
+}
+.d1-sticker-c { position: absolute; left: 313px; top: 18px; width: 72px; height: 47px; pointer-events: none; }
+
+.d1-err-icon {
+  position: absolute; left: 23px; top: 23px;
+  width: 32px; height: 32px; border-radius: 16px;
+  display: grid; place-items: center;
+  background: #fff0f3;
+  font-size: 15px; font-weight: 700; color: #b74863;
+}
+.d1-err-title { position: absolute; left: 67px; top: 25px; font-size: 18px; font-weight: 700; color: #573747; }
+.d1-err-reason {
+  position: absolute; left: 23px; top: 71px; margin: 0;
+  width: 350px; font-size: 11px; color: #6c4859; line-height: 22px;
+}
+.d1-err-detail {
+  position: absolute; left: 23px; top: 130px;
+  width: 376px; height: 60px;
+  background: #fff1f3; border-radius: 8px;
+}
+.d1-err-code { position: absolute; left: 16px; top: 9px; font-size: 10px; font-weight: 700; color: #b74863; }
+.d1-err-path { position: absolute; left: 16px; top: 29px; font-size: 10px; color: #7d6773; }
+.d1-err-aux { position: absolute; left: 23px; top: 204px; font-size: 10px; color: #7d6773; }
+.d1-err-line { position: absolute; left: 23px; top: 232px; width: 376px; height: 1px; background: #e5bfd0; }
+
+.d1-err-copy, .d1-err-ok {
+  position: absolute; top: 244px; height: 38px;
+  border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer;
+}
+.d1-err-copy { left: 139px; width: 116px; background: #fff; border: 1px solid #dfa7bd; color: #6c4859; }
+.d1-err-ok { left: 267px; width: 132px; background: #e99ab8; border: 1px solid #e99ab8; color: #fff; }
+
+/* 预检/执行横幅里的「查看详情」 */
+.p3-banner-more {
+  margin-left: 10px; padding: 0 10px; height: 20px;
+  border: 1px solid currentColor; border-radius: 6px;
+  background: transparent; color: inherit;
+  font-size: 10px; font-weight: 700; cursor: pointer;
+}

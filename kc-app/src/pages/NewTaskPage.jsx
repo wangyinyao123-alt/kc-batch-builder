@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
+import { ErrorDialog } from '../components/KcDialog';
 import { useApp } from '../main';
 import { TASK_TYPES, STATE_UI, normalizeKcPath, parseTitles, uid } from '../store';
 import FolderPicker from '../components/FolderPicker';
@@ -189,6 +190,7 @@ export default function NewTaskPage() {
   };
 
   const loginFailed = run.login && !run.login.ok;
+  const [showErr, setShowErr] = useState(false);
   const precheckDone = run.phase === 'ready' || run.summary?.precheck;
   const commitDone = run.phase === 'done' && run.summary?.result;
 
@@ -553,6 +555,9 @@ export default function NewTaskPage() {
             <div className="p3-banner err">
               <strong>登录失败：</strong>
               {run.login.error}
+              <button className="p3-banner-more" onClick={() => setShowErr(true)}>
+                查看详情
+              </button>
             </div>
           )}
 
@@ -669,6 +674,21 @@ export default function NewTaskPage() {
           </button>
         )}
       </div>
+
+      {showErr && loginFailed && (
+        <ErrorDialog
+          title="无法连接 KC 服务器"
+          reason={`${run.login.error}。请确认地址、网络与账号后重试。`}
+          codeLabel={run.login.code ? `${run.login.code} · 连接失败` : 'E101 · 连接失败'}
+          path={settings?.wsBaseUrl || 'https://kc-prod.hikvision.com/ISHWS/'}
+          onCopy={() => {
+            const txt = `${run.login.code || 'E101'} | ${run.login.error} | ${settings?.wsBaseUrl || ''}`;
+            navigator.clipboard?.writeText(txt);
+            setShowErr(false);
+          }}
+          onClose={() => setShowErr(false)}
+        />
+      )}
     </div>
   );
 }
