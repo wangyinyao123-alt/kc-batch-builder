@@ -14,7 +14,7 @@ const FOLDER_TYPE_LABEL = {
  * KC 目录选择器：文本框手贴 + 下拉浏览（走脚本 -ListFolders）。
  * props: { value, onChange, requiredType, hint }
  */
-export default function FolderPicker({ value, onChange, requiredType, disabled }) {
+export default function FolderPicker({ value, onChange, requiredType, disabled, bare }) {
   const { creds, settings } = useApp();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -92,6 +92,59 @@ export default function FolderPicker({ value, onChange, requiredType, disabled }
 
   const crumbs = node ? node.path.split(/\\/).filter(Boolean) : [];
 
+  if (bare) {
+    return (
+      <div className="folder-picker bare" ref={wrapRef}>
+        <button
+          type="button"
+          className="p3-browse"
+          onClick={openPicker}
+          disabled={disabled || !creds}
+          title="浏览 KC 目录"
+        >
+          浏览仓库
+        </button>
+        {open && (
+          <div className="folder-dropdown">
+            <div className="folder-path-bar">
+              {crumbs.map((c, i) => (
+                <span key={i} className="folder-crumb" onClick={() => navTo(crumbs.slice(0, i + 1).join('\\'))}>
+                  {c}
+                  {i < crumbs.length - 1 ? ' \\' : ''}
+                </span>
+              ))}
+            </div>
+            {loading && <div className="folder-empty">读取中…</div>}
+            {!loading && err && <div className="folder-empty" style={{ color: 'var(--c-danger)' }}>{err}</div>}
+            {!loading && !err && node && (
+              <>
+                {node.children && node.children.length > 0 ? (
+                  node.children.map((c) => (
+                    <div key={c.id || c.name} className="folder-option" onClick={() => navTo(`${node.path}\\${c.name}`)}>
+                      <span>📁</span>
+                      <span>{c.name}</span>
+                      <span className="ftype">{FOLDER_TYPE_LABEL[c.type] || c.type || '—'}</span>
+                    </div>
+                  ))
+                ) : (
+                  <div className="folder-empty">这层没有子目录</div>
+                )}
+                <div
+                  className="folder-option"
+                  style={{ borderTop: '1px solid rgba(240,176,200,.4)', marginTop: 4, color: 'var(--c-accent-dark)' }}
+                  onClick={() => { onChange(node.path); setOpen(false); }}
+                >
+                  <span>✓</span>
+                  <span>使用当前路径：{node.path}</span>
+                </div>
+              </>
+            )}
+          </div>
+        )}
+      </div>
+    );
+  }
+
   return (
     <div className="folder-picker" ref={wrapRef}>
       <div className="row">
@@ -101,7 +154,7 @@ export default function FolderPicker({ value, onChange, requiredType, disabled }
           disabled={disabled}
           onChange={(e) => onChange(e.target.value)}
           onBlur={() => onChange(normalizeKcPath(value))}
-          placeholder="General\...\image"
+          placeholder="General\\...\\image"
         />
         <button
           type="button"

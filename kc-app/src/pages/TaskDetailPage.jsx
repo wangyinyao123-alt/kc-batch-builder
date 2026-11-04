@@ -24,6 +24,7 @@ export default function TaskDetailPage() {
   const [tab, setTab] = useState('results');
   const [onlyFailed, setOnlyFailed] = useState(false);
   const [toast, setToast] = useState('');
+  const [q, setQ] = useState('');
 
   const failedResults = useMemo(
     () => (task?.results || []).filter((r) => r.state === 'FAILED'),
@@ -34,6 +35,23 @@ export default function TaskDetailPage() {
     [task]
   );
   const failedCount = Math.max(failedResults.length, failedItems.length);
+  const okCount = (task?.results || []).filter((r) =>
+    ['SUCCESS', 'CREATED', 'UPDATED', 'UNCHANGED'].includes(r.state)
+  ).length;
+  const shown = useMemo(() => {
+    let out = task?.results || [];
+    if (onlyFailed) out = out.filter((r) => r.state === 'FAILED');
+    const kw = q.trim().toLowerCase();
+    if (kw) {
+      out = out.filter(
+        (r) =>
+          String(r.title || '').toLowerCase().includes(kw) ||
+          String(r.objectRef || '').toLowerCase().includes(kw) ||
+          String(r.error || '').toLowerCase().includes(kw)
+      );
+    }
+    return out;
+  }, [task, onlyFailed, q]);
 
   if (!task) {
     return (
@@ -97,199 +115,203 @@ export default function TaskDetailPage() {
 
   return (
     <div className="page-scroll">
-      <div className="page-head">
-        <button className="btn btn-ghost btn-sm" onClick={() => setRoute('tasks')} style={{ marginRight: 8 }}>
-          ← 返回
-        </button>
-        <h1 style={{ fontSize: 'var(--fs-h2)' }}>{task.title}</h1>
-        <span className={`tag ${st.cls}`}>{st.label}</span>
-        <span className="tag tag-gray">{meta.name}</span>
-        <div className="topbar-actions">
-          <span className="micro muted">{fmtTime(task.createdAt, true)}</span>
-        </div>
-      </div>
+      <div className="p4">
+        <div className="p4-crumb">PIXEL WORKSPACE / TASKS / DETAIL</div>
 
-      {toast && (
-        <div className="banner banner-info" style={{ marginBottom: 16 }}>
-          <span>✓</span>
-          <span>{toast}</span>
-        </div>
-      )}
-
-      {/* 进度区 */}
-      <section className="card card-pad mb16">
-        <div className="flex between center" style={{ marginBottom: 10 }}>
-          <div className="row gap10 center">
-            <span style={{ fontSize: 20 }}>{meta.icon}</span>
-            <div>
-              <div style={{ fontWeight: 600, fontSize: 'var(--fs-h3)' }}>
-                {finished} / {total || '—'}
-                <span className="micro muted" style={{ marginLeft: 8, fontWeight: 400 }}>
-                  已完成
-                </span>
-              </div>
-              <div className="micro muted">{currentStepLabel(task, running)}</div>
-            </div>
-          </div>
-          <div className="micro muted">{pct}%</div>
-        </div>
-        <div className="progress-track" style={{ height: 8 }}>
-          <div
-            className={`progress-fill ${running ? 'running' : ''}`}
-            style={{ width: `${pct}%` }}
-          />
-        </div>
-
-        <div className="metric-grid" style={{ marginTop: 16, marginBottom: 0 }}>
-          {[
-            { k: 'created', label: '新建', cls: 'create' },
-            { k: 'updated', label: '更新', cls: 'create' },
-            { k: 'unchanged', label: '无变化', cls: 'skip' },
-            { k: 'skipped', label: '跳过', cls: 'skip' },
-            { k: 'blocked', label: '阻塞', cls: 'block' },
-            { k: 'failed', label: '失败', cls: 'fail' },
-          ].map((cell) => (
-            <div
-              key={cell.k}
-              className={`metric ${cell.cls}`}
-              style={cell.k === 'failed' && Number(c[cell.k]) > 0 ? { outline: '2px solid var(--c-danger)' } : undefined}
-            >
-              <div className="metric-num">{c[cell.k] ?? 0}</div>
-              <div className="metric-label">{cell.label}</div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {task.error && (
-        <div className="banner banner-error">
-          <span>⚠</span>
-          <span>{task.error}</span>
-        </div>
-      )}
-      {task.warns && task.warns.length > 0 && (
-        <div className="banner banner-warn">
-          <span>⚠</span>
-          <span>{task.warns[task.warns.length - 1]}</span>
-        </div>
-      )}
-      {failedCount > 0 && (
-        <div className="banner banner-error" style={{ alignItems: 'center' }}>
-          <span>✕</span>
-          <span className="grow">
-            {failedCount} 项未成功 ·{' '}
-            {failedResults[0]?.error || failedItems[0]?.note || '查看下方清单了解原因'}
-          </span>
-          <button className="btn btn-sm" onClick={retryFailed}>
-            只重试这些
+        <div className="p4-head">
+          <button className="p4-back" onClick={() => setRoute('tasks')}>
+            ← 返回任务
           </button>
-        </div>
-      )}
-
-      {/* 三标签页 */}
-      <section className="card card-pad">
-        <div className="flex between center" style={{ marginBottom: 12 }}>
-          <div className="filters" style={{ marginBottom: 0 }}>
-            {TABS.map((t) => {
-              const n =
-                t.key === 'precheck'
-                  ? task.items?.length || 0
-                  : t.key === 'log'
-                  ? task.events?.length || 0
-                  : task.results?.length || 0;
-              return (
-                <button
-                  key={t.key}
-                  className={`filter-chip ${tab === t.key ? 'active' : ''}`}
-                  onClick={() => setTab(t.key)}
-                >
-                  {t.label} {n > 0 ? n : ''}
-                </button>
-              );
-            })}
+          <div className="p4-titlebox">
+            <h1 className="p4-title">{task.title}</h1>
+            <div className="p4-meta">
+              {task.code || task.id} · 创建于 {fmtTime(task.createdAt, true)}
+            </div>
           </div>
-          {tab === 'results' && failedCount > 0 && (
-            <label className="row gap6 center micro muted" style={{ cursor: 'pointer' }}>
-              <input
-                type="checkbox"
-                checked={onlyFailed}
-                onChange={(e) => setOnlyFailed(e.target.checked)}
-              />
-              只看失败
-            </label>
-          )}
+          <span className="p4-typepill">{meta.name}</span>
+          <span className={`p4-statuspill is-${task.status}`}>{st.label}</span>
         </div>
 
-        {tab === 'precheck' && <PrecheckPanel task={task} />}
-        {tab === 'log' && <LogPanel task={task} />}
-        {tab === 'results' && (
-          <ResultsPanel task={task} onlyFailed={onlyFailed} onReveal={() => setRoute('tasks')} />
+        {task.folderPath && (
+          <div className="p4-dir">
+            目标目录 <span className="p4-dirpath">{task.folderPath}</span>
+          </div>
         )}
-      </section>
 
-      {/* 底部操作 */}
-      <div className="flex between center mt16" style={{ paddingBottom: 24 }}>
-        <div className="row gap8">
-          <button
-            className="btn btn-sm"
-            disabled={!running}
-            title={running ? '中止当前执行' : '任务不在运行中'}
-            onClick={() => flash('中止需要脚本侧支持；当前版本请在新任务页执行时使用「中止」')}
-          >
-            暂停
-          </button>
-          <button
-            className="btn btn-sm btn-danger"
-            disabled={!running}
-            onClick={() => flash('取消需要脚本侧支持；当前版本请在新任务页执行时使用「中止」')}
-          >
-            取消
-          </button>
-          <button className="btn btn-sm" disabled={failedCount === 0} onClick={retryFailed}>
-            只重试失败项（{failedCount}）
-          </button>
+        <section className="p4-prog">
+          <div className="p4-prog-state">{running ? currentStepLabel(task, true) : statusLine(task)}</div>
+          <div className="p4-prog-num">
+            {finished} <span className="p4-prog-slash">/</span> {total || '—'}
+          </div>
+          <div className="p4-prog-unit">已处理</div>
+          <div className="p4-prog-pct">{pct}%</div>
+          <div className="p4-prog-track">
+            <div className={`p4-prog-fill ${running ? 'is-running' : ''}`} style={{ width: `${pct}%` }} />
+          </div>
+          <div className="p4-prog-note">{progNote(task, total, failedCount)}</div>
+          <div className="p4-prog-note2">{progNote2(task, c)}</div>
+        </section>
+
+        <div className="p4-tabbar">
+          {TABS.map((t) => {
+            const n =
+              t.key === 'precheck'
+                ? task.items?.length || 0
+                : t.key === 'log'
+                ? task.events?.length || 0
+                : task.results?.length || 0;
+            return (
+              <button
+                key={t.key}
+                className={`p4-tab ${tab === t.key ? 'is-on' : ''}`}
+                onClick={() => setTab(t.key)}
+              >
+                {t.label}
+                {n > 0 && <span className="p4-tabn">{n}</span>}
+              </button>
+            );
+          })}
         </div>
-        <div className="row gap8">
-          <button className="btn btn-sm" onClick={exportResults} disabled={!task.results?.length}>
-            导出结果
-          </button>
-          <button
-            className="btn btn-sm"
-            disabled={!task.folderPath}
-            title={task.folderPath || '没有记录落点'}
-            onClick={() => window.kc.reveal(task.folderPath)}
-          >
-            打开落点
-          </button>
-          <button className="btn btn-sm btn-ghost" onClick={() => removeTask(task.id, setTasks, setRoute)}>
-            删除记录
-          </button>
+
+        {task.error && <div className="p4-errbar">✕ {task.error}</div>}
+
+        <section className="p4-card">
+          {tab === 'results' && (
+            <>
+              <div className="p4-cardhead">
+                <div className="p4-cardtitle">
+                  结果清单 · {task.results?.length || 0} 项
+                </div>
+                <label className="p4-search">
+                  <input
+                    value={q}
+                    onChange={(e) => setQ(e.target.value)}
+                    placeholder="搜索对象或路径"
+                  />
+                  <span className="p4-searchic">⌕</span>
+                </label>
+              </div>
+
+              <div className="p4-chips">
+                {[
+                  { k: 'all', label: '全部' },
+                  { k: 'ok', label: '成功' },
+                  { k: 'bad', label: '失败' },
+                ].map((it) => {
+                  const n =
+                    it.k === 'ok'
+                      ? okCount
+                      : it.k === 'bad'
+                      ? failedCount
+                      : task.results?.length || 0;
+                  return (
+                    <button
+                      key={it.k}
+                      className={`p4-chip is-${it.k} ${onlyFailed === (it.k === 'bad') && (it.k !== 'all' || !onlyFailed) ? 'is-on' : ''}`}
+                      onClick={() => setOnlyFailed(it.k === 'bad')}
+                    >
+                      {it.label} {n}
+                    </button>
+                  );
+                })}
+              </div>
+
+              <div className="p4-list">
+                {shown.length === 0 && <div className="p4-empty">没有匹配的结果。</div>}
+                {shown.map((r, i) => {
+                  const good = r.state === 'SUCCESS' || r.state === 'CREATED' || r.state === 'UPDATED' || r.state === 'UNCHANGED';
+                  const s = STATE_UI[r.state] || { label: r.state, cls: 'tag-gray' };
+                  return (
+                    <div className="p4-row" key={i}>
+                      <span className={`p4-rowic ${good ? 'is-ok' : 'is-bad'}`}>
+                        {good ? '✓' : '✕'}
+                      </span>
+                      <span className="p4-rowtitle" title={r.title}>
+                        {r.title}
+                      </span>
+                      <span className="p4-rowpath" title={r.objectRef || ''}>
+                        {r.objectRef || '—'}
+                      </span>
+                      <span className={`p4-rowerr ${good ? 'is-ok' : 'is-bad'}`} title={r.error || ''}>
+                        {good ? s.label : r.error || '未成功'}
+                      </span>
+                      <button
+                        className="p4-rowact"
+                        disabled={!r.objectRef}
+                        onClick={() => r.objectRef && flash('对象定位需要在 KC 客户端打开')}
+                      >
+                        查看
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {failedCount > 0 && (
+                <aside className="p4-side">
+                  <div className="p4-side-t">需要处理</div>
+                  <div className="p4-side-d">{failedCount} 个失败项等待处理</div>
+                  <div className="p4-side-line" />
+                  <div className="p4-side-k">重试范围</div>
+                  <div className="p4-side-v">仅包含失败项</div>
+                  <div className="p4-side-h">已成功项不会重复创建</div>
+                  <div className="p4-side-tip">可查看原因后再重试</div>
+                </aside>
+              )}
+            </>
+          )}
+
+          {tab === 'precheck' && (
+            <div className="p4-pad">
+              <PrecheckPanel task={task} />
+            </div>
+          )}
+          {tab === 'log' && (
+            <div className="p4-pad">
+              <LogPanel task={task} />
+            </div>
+          )}
+        </section>
+
+        <div className="p4-divider" />
+
+        <div className="p4-foot">
+          <div className="p4-foot-note">
+            {task.folderPath ? `输出已保存至  ${task.folderPath}` : '任务尚未产生输出目录'}
+          </div>
+          <div className="p4-foot-btns">
+            <button
+              className="p4-b"
+              disabled={!running}
+              onClick={() => flash('中止需要脚本侧支持；请在新任务页执行时使用「中止」')}
+            >
+              暂停
+            </button>
+            <button
+              className="p4-b"
+              disabled={!running}
+              onClick={() => flash('取消需要脚本侧支持；请在新任务页执行时使用「中止」')}
+            >
+              取消
+            </button>
+            <button className="p4-b is-primary" disabled={failedCount === 0} onClick={retryFailed}>
+              只重试失败项 ({failedCount})
+            </button>
+            <button className="p4-b" onClick={exportResults} disabled={!task.results?.length}>
+              导出结果
+            </button>
+            <button
+              className="p4-b"
+              disabled={!task.folderPath}
+              onClick={() => window.kc.reveal(task.folderPath)}
+            >
+              打开落点
+            </button>
+          </div>
         </div>
+
+        {toast && <div className="p4-toast">{toast}</div>}
       </div>
-
-      {task.params && (
-        <details style={{ paddingBottom: 24 }}>
-          <summary className="label" style={{ cursor: 'pointer', marginBottom: 8 }}>
-            本次参数
-          </summary>
-          <pre
-            className="mono"
-            style={{
-              fontSize: 10,
-              lineHeight: 1.6,
-              background: 'var(--c-surface-muted)',
-              border: '1px solid rgba(240,176,200,.5)',
-              borderRadius: 6,
-              padding: 10,
-              margin: 0,
-              overflow: 'auto',
-              maxHeight: 240,
-            }}
-          >
-            {JSON.stringify(redact(task.params), null, 2)}
-          </pre>
-        </details>
-      )}
     </div>
   );
 }
@@ -569,4 +591,36 @@ function fmtTime(ts, full = false) {
   const p = (n) => String(n).padStart(2, '0');
   const base = `${d.getMonth() + 1}/${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`;
   return full ? `${d.getFullYear()}/${base}:${p(d.getSeconds())}` : base;
+}
+
+function statusLine(task) {
+  if (task.status === 'done') return '全部完成';
+  if (task.status === 'partial') return '执行已结束';
+  if (task.status === 'failed') return '执行失败';
+  if (task.status === 'running') return '执行中';
+  return '未开始';
+}
+
+function progNote(task, total, failed) {
+  if (task.status === 'running') return `正在处理第 ${total} 项`;
+  if (failed > 0) return `已汇总结果，${failed} 项需处理`;
+  if (task.status === 'done') return `已汇总结果，全部成功`;
+  if (task.status === 'canceled') return '已取消，结果已保存';
+  return '等待执行';
+}
+
+function progNote2(task, c) {
+  const parts = [];
+  const started = task.startedAt || task.createdAt;
+  const ended = task.endedAt;
+  if (started && ended && ended > started) {
+    const sec = Math.round((ended - started) / 1000);
+    const m = String(Math.floor(sec / 60)).padStart(2, '0');
+    const ss = String(sec % 60).padStart(2, '0');
+    parts.push(`耗时 ${m}:${ss}`);
+  }
+  const ok = (c.created || 0) + (c.updated || 0) + (c.unchanged || 0) + (c.skipped || 0);
+  if (ok) parts.push(`成功 ${ok} 项`);
+  if (c.failed) parts.push(`失败 ${c.failed} 项`);
+  return parts.join('  ·  ');
 }

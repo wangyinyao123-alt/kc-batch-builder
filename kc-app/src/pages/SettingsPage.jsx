@@ -1,164 +1,212 @@
 import React, { useState } from 'react';
 import { useApp } from '../main';
-import { Field, Hint } from '../components/Hint';
+import { Hint } from '../components/Hint';
 import Modal from '../components/Modal';
 
 const DEFAULT_WS = 'https://kc-prod.hikvision.com/ISHWS/';
+const APP_VERSION = 'v1.6.0';
 
+/**
+ * P5 设置（按 KC-App-Design/dsl/P5-settings.json 重写）。
+ * 布局：左栏 550 宽三张卡（服务器连接 174 / 本机安全 118 / 日志 128），
+ *      右栏 570 宽两张卡（白名单 328 / 关于 106），底部隔线 + 右对齐两按钮。
+ */
 export default function SettingsPage() {
   const { creds, settings, setSettings, logout } = useApp();
   const [draft, setDraft] = useState(settings);
   const [confirmLogout, setConfirmLogout] = useState(false);
-  const [saved, setSaved] = useState(false);
+  const [toast, setToast] = useState('');
+  const [testing, setTesting] = useState(false);
+  const [whitelist, setWhitelist] = useState(
+    settings.whitelist || ['/KC/Products', '/KC/Shared/Publication', '/KC/Archive']
+  );
+  const [newPath, setNewPath] = useState('');
 
-  const dirty = JSON.stringify(draft) !== JSON.stringify(settings);
+  const dirty = JSON.stringify({ ...draft, whitelist }) !== JSON.stringify({ ...settings, whitelist: settings.whitelist || ['/KC/Products', '/KC/Shared/Publication', '/KC/Archive'] });
 
-  const patch = (k, v) => {
-    setDraft((d) => ({ ...d, [k]: v }));
-    setSaved(false);
+  const flash = (m) => {
+    setToast(m);
+    setTimeout(() => setToast(''), 2400);
   };
+  const patch = (k, v) => setDraft((d) => ({ ...d, [k]: v }));
 
   const save = () => {
-    setSettings(draft);
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2200);
+    setSettings({ ...draft, whitelist });
+    flash('设置已保存，下一次新建任务生效');
+  };
+
+  const reset = () => {
+    setDraft({
+      wsBaseUrl: DEFAULT_WS,
+      ignoreSsl: false,
+      keepLogs: 20,
+      maxTasks: 200,
+    });
+    setWhitelist(['/KC/Products', '/KC/Shared/Publication', '/KC/Archive']);
+    flash('已恢复默认值，记得点保存设置');
+  };
+
+  const testConn = async () => {
+    setTesting(true);
+    try {
+      const ok = await window.kc.ping?.(draft.wsBaseUrl);
+      flash(ok ? `连接正常：${draft.wsBaseUrl}` : '连接失败，请检查地址与网络');
+    } catch {
+      flash('连接失败，请检查地址与网络');
+    } finally {
+      setTesting(false);
+    }
+  };
+
+  const addPath = () => {
+    const p = newPath.trim();
+    if (!p) return;
+    if (whitelist.includes(p)) {
+      flash('该路径已在白名单中');
+      return;
+    }
+    setWhitelist([...whitelist, p]);
+    setNewPath('');
   };
 
   return (
     <div className="page-scroll">
-      <div className="page-head">
-        <h1>设置</h1>
-        <span className="crumb">凭据、服务地址与本地存储</span>
-        <div className="topbar-actions">
-          <button className="btn btn-primary" onClick={save} disabled={!dirty}>
-            {saved ? '已保存' : dirty ? '保存修改' : '无改动'}
-          </button>
+      <div className="p5">
+        <div className="p5-crumb">PIXEL WORKSPACE / SETTINGS</div>
+
+        <div className="p5-head">
+          <h1 className="p5-title">设置</h1>
+          <div className="p5-sub">管理连接、本机安全与默认落点</div>
+          <div className="p5-tip">保存后在下一次任务中生效</div>
         </div>
-      </div>
 
-      <div className="two-col">
-        <div className="stack">
-          <section className="card card-pad">
-            <h2 className="card-title">连接</h2>
-            <p className="card-desc">
-              KC 服务地址与证书策略。改动只影响本机下一次脚本调用。
-            </p>
-
-            <Field
-              label="WS 服务地址"
-              hint={`KC 的 ISHWS 端点。默认 ${DEFAULT_WS}\n测试环境或代理环境改成实际地址。必须以 / 结尾或省略，脚本会自动补。`}
-            >
+        <div className="p5-cols">
+          {/* ---------------- 左栏 550 ---------------- */}
+          <div className="p5-col">
+            <section className="p5-card h174">
+              <div className="p5-ct">服务器连接</div>
+              <div className="p5-cd">编辑服务器地址后，可先测试连接</div>
+              <div className="p5-l">KC 服务器地址</div>
               <input
-                className="input mono"
+                className="p5-input"
                 value={draft.wsBaseUrl}
                 onChange={(e) => patch('wsBaseUrl', e.target.value)}
                 placeholder={DEFAULT_WS}
               />
-            </Field>
-
-            <label className="check">
-              <input
-                type="checkbox"
-                checked={Boolean(draft.ignoreSsl)}
-                onChange={(e) => patch('ignoreSsl', e.target.checked)}
-              />
-              <span>忽略证书校验</span>
-              <Hint text="本机未装 KC 根证书时勾选。仅限内网使用 —— 勾选后传输不再防中间人。" />
-            </label>
-
-            <div className="flex gap10 mt16">
-              <button className="btn btn-sm" onClick={() => patch('wsBaseUrl', DEFAULT_WS)}>
-                恢复默认地址
+              <button className="p5-test" onClick={testConn} disabled={testing}>
+                {testing ? '测试中…' : '测试连接'}
               </button>
-            </div>
-          </section>
+              <div className="p5-note">当前连接：测试环境</div>
+              <img className="p5-st-netcat" src="./img/stickers/p5-net-cat.png" alt="" />
+            </section>
 
-          <section className="card card-pad">
-            <h2 className="card-title">本地存储</h2>
-            <p className="card-desc">
-              所有数据只存在这台机器上，不上传任何服务器。
-            </p>
+            <section className="p5-card h118">
+              <div className="p5-ct">本机安全</div>
+              <div className="p5-cd">凭据只在此设备上加密保存</div>
+              <div className="p5-rowlabel">记住密码</div>
+              <button
+                className={`p5-switch ${draft.savePass ? 'is-on' : ''}`}
+                onClick={() => patch('savePass', !draft.savePass)}
+                aria-pressed={Boolean(draft.savePass)}
+              >
+                <span className="p5-knob" />
+              </button>
+              <div className="p5-rowexp">保持登录状态，随时可在这里关闭</div>
+            </section>
 
-            <Field label="保留任务记录条数" hint="超出后自动丢弃最旧的记录。0 表示不限制。">
-              <input
-                className="input"
-                type="number"
-                min={0}
-                max={2000}
-                value={draft.maxTasks ?? 200}
-                onChange={(e) => patch('maxTasks', Number(e.target.value) || 0)}
-              />
-            </Field>
+            <section className="p5-card h128">
+              <div className="p5-ct">日志</div>
+              <div className="p5-cd">到期后自动清除本地日志</div>
+              <div className="p5-rowlabel">日志保留天数</div>
+              <select
+                className="p5-select"
+                value={draft.keepLogs ?? 30}
+                onChange={(e) => patch('keepLogs', Number(e.target.value))}
+              >
+                {[7, 14, 30, 60, 90].map((d) => (
+                  <option key={d} value={d}>
+                    {d} 天
+                  </option>
+                ))}
+              </select>
+              <div className="p5-rowexp">默认值适合日常排查</div>
+              <img className="p5-st-notes" src="./img/stickers/p5-notes.png" alt="" />
+            </section>
+          </div>
 
-            <Field label="保留日志份数" hint="脚本每次运行会写一份 transcript 到 logs\\ 目录，这里控制保留最近几份。">
-              <input
-                className="input"
-                type="number"
-                min={1}
-                max={500}
-                value={draft.keepLogs ?? 20}
-                onChange={(e) => patch('keepLogs', Number(e.target.value) || 20)}
-              />
-            </Field>
-          </section>
-        </div>
-
-        <div className="stack">
-          <section className="card card-pad">
-            <h2 className="card-title">当前账号</h2>
-            {creds ? (
-              <>
-                <div className="row gap10" style={{ marginBottom: 14 }}>
-                  <div
-                    style={{
-                      width: 36,
-                      height: 36,
-                      borderRadius: 999,
-                      background: 'var(--c-accent)',
-                      color: '#fff',
-                      display: 'grid',
-                      placeItems: 'center',
-                      fontWeight: 700,
-                    }}
-                  >
-                    {(creds.user || '?').slice(0, 1).toUpperCase()}
+          {/* ---------------- 右栏 570 ---------------- */}
+          <div className="p5-col">
+            <section className="p5-card h328">
+              <div className="p5-ct">默认落点白名单</div>
+              <div className="p5-cd">任务只能写入以下 KC 路径</div>
+              <div className="p5-wlcount">{whitelist.length} 个允许目录</div>
+              <div className="p5-wl">
+                {whitelist.map((p, i) => (
+                  <div className="p5-wlrow" key={i}>
+                    <span className="p5-wlpath">{p}</span>
+                    <button
+                      className="p5-wlrm"
+                      onClick={() => setWhitelist(whitelist.filter((_, j) => j !== i))}
+                    >
+                      移除
+                    </button>
                   </div>
-                  <div style={{ minWidth: 0 }}>
-                    <div style={{ fontWeight: 700, fontSize: 'var(--fs-body-bold)' }}>{creds.user}</div>
-                    <div className="micro muted">凭据保存在本机</div>
-                  </div>
-                </div>
-                <button className="btn btn-danger wfull" onClick={() => setConfirmLogout(true)}>
-                  退出并清除凭据
+                ))}
+                {whitelist.length === 0 && <div className="p5-wlempty">还没有允许目录</div>}
+              </div>
+              <div className="p5-wlexp">限制写入范围，有助于避免误建</div>
+              <div className="p5-addrow">
+                <button className="p5-addbtn" onClick={addPath}>
+                  + 添加路径
                 </button>
-              </>
-            ) : (
-              <p className="micro muted" style={{ margin: 0 }}>
-                未登录
-              </p>
-            )}
-          </section>
+                <input
+                  className="p5-addinput"
+                  value={newPath}
+                  onChange={(e) => setNewPath(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && addPath()}
+                  placeholder="/KC/新目录，回车加入"
+                />
+              </div>
+              <img className="p5-st-folder" src="./img/stickers/p2-pixel-folder-cat-sticker.png" alt="" />
+            </section>
 
-          <section className="card card-pad">
-            <h2 className="card-title">关于</h2>
-            <div className="stack" style={{ gap: 8, fontSize: 'var(--fs-caption)' }}>
-              <Row k="版本" v="v0.1.0" />
-              <Row k="驱动" v="ISHRemote 9.0" />
-              <Row k="脚本" v="kc-import-images / kc-create-objects" />
-              <Row k="运行平台" v={navigator.platform || '—'} />
-            </div>
-            <p className="micro muted mt16" style={{ marginBottom: 0, lineHeight: 1.6 }}>
-              本工具只在本机调用 PowerShell 脚本，凭据与任务记录不上传。执行前建议先在测试目录跑一次预检。
-            </p>
-          </section>
+            <section className="p5-card h106">
+              <div className="p5-ct">关于应用</div>
+              <div className="p5-about">KC 批量建库工具 · {APP_VERSION}</div>
+              <div className="p5-about2">已是最新版本</div>
+              <button className="p5-update" onClick={() => flash('已是最新版本')}>
+                检查更新
+              </button>
+              <img className="p5-st-plant" src="./img/stickers/p2-cat-plant.png" alt="" />
+            </section>
+          </div>
         </div>
+
+        <div className="p5-divider" />
+
+        <div className="p5-foot">
+          <div className="p5-footnote">更改会在下一次新建任务中生效</div>
+          <div className="p5-footbtns">
+            <button className="p5-b-ghost" onClick={() => setConfirmLogout(true)}>
+              退出登录
+            </button>
+            <button className="p5-b-ghost" onClick={reset}>
+              恢复默认
+            </button>
+            <button className="p5-b-primary" onClick={save} disabled={!dirty}>
+              {dirty ? '保存设置' : '已保存'}
+            </button>
+          </div>
+        </div>
+
+        {toast && <div className="p5-toast">{toast}</div>}
       </div>
 
       {confirmLogout && (
         <Modal
           title="退出并清除凭据"
           body="将删除本机保存的账号密码。已创建的任务记录会保留。下次使用需要重新登录。"
-          confirmText="退出"
+          confirmText="退出并清除"
           danger
           onCancel={() => setConfirmLogout(false)}
           onConfirm={() => {
@@ -167,17 +215,6 @@ export default function SettingsPage() {
           }}
         />
       )}
-    </div>
-  );
-}
-
-function Row({ k, v }) {
-  return (
-    <div className="flex between center">
-      <span className="muted">{k}</span>
-      <span className="mono" style={{ fontSize: 'var(--fs-micro)' }}>
-        {v}
-      </span>
     </div>
   );
 }
