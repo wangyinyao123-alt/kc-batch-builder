@@ -152,6 +152,11 @@ png→EDTPNG, jpg/jpeg→EDTJPEG, gif→EDTGIF, bmp→EDTBMP, tif/tiff→EDTTIF,
 
 ## 8. 脚本补丁状态（用户持 canonical 版本，UI 侧按"已合入"对接）
 
+> **2026-11-04 更新**：本仓库从未存过 `kc-import-images-ui.ps1` 副本（10-29 用户提供后只做了契约拆解），
+> 因此无法"逐字改完落盘"。三个补丁已写成可直接粘贴的片段：
+> **`backend/scripts/kc-import-patch-abc.ps1`** —— 每个补丁都标了"插入位置 + 参考代码 + 验证命令"，
+> 写法照抄同作者的 `kc-create-objects-ui.ps1`（已实测），接到用户手里的 10-29 版即可。
+
 | 补丁 | 内容 | 状态（2026-10-29 用户口径） |
 |---|---|---|
 | ① `-WsBaseUrl` | P5 服务器地址可配置，默认 `https://kc-prod.hikvision.com/ISHWS/` | 用户已同意；如手边脚本尚无此参数，按下方案例合入 |
