@@ -1,6 +1,6 @@
 {
   "name": "kc-app",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "description": "KC 内容生产助手 — Electron 客户端",
   "main": "electron/main.js",
@@ -45,7 +45,8 @@
         "from": "../backend/scripts",
         "to": "scripts",
         "filter": [
-          "**/*"
+          "**/*",
+          "!kc-import-patch-*.ps1"
         ]
       }
     ],
