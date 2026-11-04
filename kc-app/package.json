@@ -1,0 +1,26 @@
+{
+  "name": "kc-app",
+  "version": "0.1.0",
+  "private": true,
+  "description": "KC 内容生产助手 — Electron 客户端",
+  "main": "electron/main.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "start": "npm run build && electron .",
+    "dev:electron": "concurrently -k \"vite\" \"wait-on tcp:5173 && cross-env KC_DEV=1 electron .\"",
+    "test": "node --test electron/parsers/kc-log-parser.test.js"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "concurrently": "^9.1.2",
+    "cross-env": "^7.0.3",
+    "electron": "^33.4.11",
+    "vite": "^6.0.7",
+    "wait-on": "^8.0.1"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  }
+}

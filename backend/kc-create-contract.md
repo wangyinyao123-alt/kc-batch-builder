@@ -11,7 +11,7 @@
 | 覆盖 | 导入图片（Update 模式=改） | 新建 Topic/Map/Pub（纯新建，不更新不删除） |
 | 挂接 | 无 | Topic→Map（改 map XML，强制备份）、Map→Pub（写 FISHMASTERREF） |
 | 文件夹类型闸门 | ISHIllustration | ISHModule / ISHMasterDoc / ISHPublication；**自动建容器**（Topics\ / Maps\ / Publications\） |
-| `-ListFolders` / `-WsBaseUrl` | 用户口径已支持 | **本脚本没有这两个参数**（$wsUrl 写死 kc-prod）——沿用"补丁建议"状态，待用户确认是否同样已改 |
+| `-ListFolders` / `-WsBaseUrl` | 用户口径已支持 | **2026-11-03 已合入本仓脚本**（见第 10 节补丁记录） |
 
 **红线（脚本自审 AST 强制）**：只允许白名单内的 `*-Ish*` cmdlet（Add-IshFolder / Add-IshDocumentObj / Add-IshPublicationOutput / Set-IshDocumentObj / Set-IshPublicationOutput + 只读查询）。不删、不移动；唯一的"改"是挂接且强制备份。Electron 侧不需要做任何事，但要知道脚本会自审，被改过的脚本会直接 ABORT。
 
@@ -102,7 +102,7 @@ $script:headless = [bool]($Type -and $FolderPath -and ($Title -or $XmlDir -or $M
 注意：headless 下挂接"不可用被跳过"也算 exit 1（比 import 严格），UI 应把"挂接跳过"作为结果区醒目提示。
 
 ### headless 下的进度
-与 import 打补丁前一样：**STEP 5 的 `Start-Progress` 没有 headless 判断**——Electron 调用会额外弹脚本自带进度窗。同 import 补丁③，建议加 `if (-not $headless)`（未与用户确认过本脚本的补丁状态，接入前问一次）。
+**2026-11-03 已打补丁**：STEP 5 与 STEP 1 的两处 `Start-Progress` 均包在 `if (-not $script:headless)` 内，Electron 调用不再弹脚本自带进度窗（见第 10 节）。
 
 ## 4. 单项状态机
 
@@ -152,9 +152,31 @@ $script:headless = [bool]($Type -and $FolderPath -and ($Title -or $XmlDir -or $M
 - `logs\kc-create-ledger.csv` 滚动台账（CREATED/FAILED/ATTACHED/ATTACH_FAILED，只记真写入）
 - `backup\<时间戳>\` 挂接前 map XML 备份
 
-## 9. 待确认项（接入前问用户）
+## 9. 待确认项（2026-11-03 已全部关闭）
 
-1. 本脚本的 `-WsBaseUrl` / `-ListFolders` 是否也已像 import 脚本一样改好？（当前版本两者都没有）
-2. STEP 5 `Start-Progress` 的 headless 判断是否需要补（同 import 补丁③）？
-3. Topic→Map 挂接依赖 `scripts\templates\*.xml` 样例——Electron 打包时这份样例随应用带，还是由用户在设置里指定？（脚本用的是**自己所在目录**的 templates\，Electron 场景下脚本会被放到应用资源目录，样例放一起即可，但要用户给一份真实样例）
-4. Map→Pub 挂接（FISHMASTERREF）头注标注"API 尚未实测"——首次真实使用前需要一次小批量实测，UI 要不要在该选项旁加"未实测"提示？
+1. ~~`-WsBaseUrl` / `-ListFolders` 是否已改~~ → **已改，见第 10 节**。
+2. ~~STEP 5 `Start-Progress` 的 headless 判断~~ → **已补（两处）**。
+3. ~~templates 样例~~ → **用户已提供两份真实 map XML**，存于 `backend/scripts/templates/`（`sample-map-basic.ditamap`、`sample-map-content-reuse.ditamap`）。Electron 打包时随脚本一起放应用资源目录。
+4. ~~Map→Pub 挂接未实测~~ → **用户决定暂不开发该功能**，UI 中该入口保留"暂未开放"标记，不进入验收范围。
+
+## 10. 脚本补丁记录（2026-11-03，已合入本仓 `scripts/kc-create-objects-ui.ps1`）
+
+| # | 补丁 | 落点（行号为补丁后） | 内容 |
+|---|---|---|---|
+| ① | `-WsBaseUrl` | param 块 L82；L1159 | 新增 `[string]$WsBaseUrl = ''`；`$script:wsUrl = if ($WsBaseUrl) { $WsBaseUrl } else { 'https://kc-prod.hikvision.com/ISHWS/' }`。默认行为不变 |
+| ② | `-ListFolders` | param L81；headless 判定 L3087；分支 L3121–3152 | 新增 `[switch]$ListFolders`；headless 判定加 `$ListFolders -or`；登录后立即进入只读分支：`Resolve-KcFolderPath` 解析路径 → `Get-KcChildFolders` 列子目录 → 输出单行 `KCJSON {json}` → `exit 0` |
+| ③ | headless 拦 `Start-Progress` | L532（STEP 1）、L2919（STEP 5） | `Start-Progress 'KC 新建对象'` → `if (-not $script:headless) { Start-Progress 'KC 新建对象' }` |
+
+### ② 的 `KCJSON` 输出（与 import 契约第 8 节补丁②同协议）
+
+```
+KCJSON {"path":"General\x","resolved":true,"leaf":"x","missing":[],"folderType":"ISHModule","folderId":"12345","children":[{"name":"image","id":"...","type":"ISHIllustration"}]}
+```
+
+- `resolved=false` + `missing:[...]` → 路径尚不存在，UI 展示"将自动创建"清单
+- `folderType` 与任务类型不匹配（Topic 要 ISHModule / Map 要 ISHMasterDoc / Pub 要 ISHPublication）→ UI 立即提示，不让用户提交到错层
+- 只读分支**不写任何东西**，`exit 0`
+
+### 自审影响
+
+AST 自审白名单只校验 `*-Ish*` cmdlet。`-ListFolders` 分支只调 `Resolve-KcFolderPath`（内部 `Get-IshFolder`）与 `Get-KcChildFolders`（内部 `Get-IshFolder`），两个都在白名单内，**自审不受影响**。

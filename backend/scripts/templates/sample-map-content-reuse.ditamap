@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE map PUBLIC "-//OASIS//DTD DITA Map//EN" "map.dtd"[]>
+<map id="GUID-BA01E02A-AD16-41B2-B516-CAF4942F819B" xml:lang="zh-CN" xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/">
+  <title id="GUID-C34BA4E7-B81F-4DEB-A9ED-7227A3E299E7">内容复用指南</title>
+  <topichead>
+    <topicmeta>
+      <navtitle>快速开始</navtitle>
+    </topicmeta>
+    <topicref href="GUID-465FC81E-3C4A-4A7A-8F92-3A06D848EF31" format="dita">
+      <topicmeta />
+    </topicref>
+    <topicref href="GUID-BABD9F7B-1E09-4871-B087-E9A299879D8B" format="dita">
+      <topicmeta />
+    </topicref>
+  </topichead>
+  <topichead>
+    <topicmeta>
+      <navtitle>学习内容复用机制</navtitle>
+    </topicmeta>
+    <topicref href="GUID-FB4822C9-9E5E-4366-AE8E-6CA95F31EE63" format="dita" chunk="to-content">
+      <topicmeta />
+      <topicref href="GUID-C4B35043-351C-4902-8046-38C98777FD4A" format="dita" toc="no">
+        <topicmeta />
+      </topicref>
+      <topicref href="GUID-69180221-AEE5-4FD3-B16A-176CB9743ABD" format="dita" toc="no">
+        <topicmeta />
+        <topicref href="GUID-C076C833-BEC0-4C0B-B6F4-1D6B610249C4" format="dita" toc="no">
+          <topicmeta />
+        </topicref>
+        <topicref href="GUID-CB017EA1-4927-4CD4-9E11-DD9100FC9941" format="dita" toc="no">
+          <topicmeta />
+        </topicref>
+        <topicref href="GUID-3C4CC64B-7276-4A2A-92C6-68E08739E0FF" format="dita" toc="no">
+          <topicmeta />
+        </topicref>
+      </topicref>
+      <topicref href="GUID-F0F42266-433C-4449-AECF-15C5CA94C637" format="dita" toc="no">
+        <topicmeta />
+      </topicref>
+      <topicref href="GUID-253E2AB8-2466-4362-8FC9-B98627C35256" format="dita" toc="no">
+        <topicmeta />
+      </topicref>
+    </topicref>
+    <topicref href="GUID-0179C01A-DDBB-4739-859F-CEA75EE1243D" format="dita">
+      <topicmeta />
+    </topicref>
+    <topicref href="GUID-56BD0B76-0CBF-4859-9DA3-3BF88B89D4F7" format="dita">
+      <topicmeta />
+    </topicref>
+    <topicref href="GUID-857A91F5-3221-432D-B693-CBE214DEA0A8" format="dita">
+      <topicmeta />
+    </topicref>
+  </topichead>
+  <topicref href="GUID-6DB9749D-420F-474F-917B-171E4C26E2E1" format="dita" chunk="to-content">
+    <topicmeta />
+    <topicref href="GUID-AF69A751-621E-4523-BEA8-CA59232ADFCA" format="dita" toc="no">
+      <topicmeta />
+    </topicref>
+    <topicref href="GUID-563E6F88-7B43-4FE1-A8BF-882592E6164E" format="dita" toc="no">
+      <topicmeta />
+    </topicref>
+  </topicref>
+  <topichead>
+    <topicmeta>
+      <navtitle>参考信息</navtitle>
+    </topicmeta>
+    <topicref href="GUID-8137B1B8-27BE-4DBA-8CA2-E7C7BC3A8388" format="dita" outputclass="folder-only">
+      <topicmeta />
+      <topicref href="GUID-50FAFA68-E6DD-4E29-A998-B519F6F2D24F" format="dita">
+        <topicmeta />
+      </topicref>
+    </topicref>
+    <topicref href="GUID-464C5CC5-41AB-4097-A7B3-481554470FEC" format="dita" outputclass="folder-only">
+      <topicmeta />
+      <topicref href="GUID-BC6EF4C5-3244-401C-9726-706D8BB211CD" format="dita">
+        <topicmeta />
+      </topicref>
+    </topicref>
+  </topichead>
+</map>

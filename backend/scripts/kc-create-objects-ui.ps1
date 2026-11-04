@@ -1,4 +1,4 @@
-﻿# kc-create-objects-ui.ps1  (UTF-8 with BOM - do not remove the BOM)
+# kc-create-objects-ui.ps1  (UTF-8 with BOM - do not remove the BOM)
 # ============================================================================
 # KC 新建对象 · 统一弹窗版（Topic / Map / Pub）
 #
@@ -78,6 +78,8 @@ param(
     [switch]$Commit,
     [switch]$IgnoreSslPolicyErrors,
     [switch]$NoAutoInstall,
+    [switch]$ListFolders,
+    [string]$WsBaseUrl = '',
     [int]$KeepLogs = 20
 )
 
@@ -527,7 +529,7 @@ function Ensure-KcModule {
     } else {
         Log '[..] 本机未找到 ISHRemote，尝试自动安装（需能访问 PowerShell Gallery）'
         if ($showPg) {
-            Start-Progress 'KC 新建对象'
+            if (-not $script:headless) { Start-Progress 'KC 新建对象' }
             Update-Progress '正在安装依赖 ISHRemote（首次约十几秒）…'
         }
         try {
@@ -1154,7 +1156,7 @@ if ($IshUser -and $IshPassword) {
 
 Head 'STEP 1  登录 KC'
 
-$script:wsUrl = 'https://kc-prod.hikvision.com/ISHWS/'
+$script:wsUrl = if ($WsBaseUrl) { $WsBaseUrl } else { 'https://kc-prod.hikvision.com/ISHWS/' }
 $ish = $null
 $lastErr = $null
 $win = $null
@@ -2914,7 +2916,7 @@ function Invoke-KcExecute($cfg) {
     $n = @($script:plan | Where-Object { $_.State -eq 'TOCREATE' }).Count
     $i = 0
 
-    Start-Progress 'KC 新建对象'
+    if (-not $script:headless) { Start-Progress 'KC 新建对象' }
     try {
         foreach ($x in $script:plan) {
             if ($x.State -ne 'TOCREATE') { continue }
@@ -3079,7 +3081,7 @@ $headline
 }
 
 # ================================================================ MAIN
-$script:headless = [bool]($Type -and $FolderPath -and ($Title -or $XmlDir -or $MapXmlFile -or $SourceFile -or $SourceText))
+$script:headless = [bool]($ListFolders -or ($Type -and $FolderPath -and ($Title -or $XmlDir -or $MapXmlFile -or $SourceFile -or $SourceText)))
 
 Ensure-KcModule
 
@@ -3115,6 +3117,35 @@ Head ("KC 新建对象  @ " + (Get-Date -Format o))
 Log ("[OK] 自审通过（AST）：调用 {0} 个 -> {1}" -f $called.Count, ($called -join ', '))
 
 Invoke-KcLogin
+
+# ---------------------------------------------------------------- 只读：列目录（-ListFolders）
+if ($ListFolders) {
+    $probePath = Normalize-KcPath $FolderPath
+    Head ("KC 列目录  @ " + $probePath)
+    $r = Resolve-KcFolderPath $script:ish $probePath
+    $segs = @($probePath -split '[\\/]' | Where-Object { $_ })
+    $missing = if ($r.Found -lt $segs.Count) { @($segs[$r.Found..($segs.Count - 1)]) } else { @() }
+    $kids = @()
+    $ftype = ''
+    $fid = ''
+    if ($r.Folder) {
+        $tmp = "$(Get-Prop $r.Folder @('IshFolderRef', 'IshRef'))"
+        if ($tmp) { $fid = $tmp }
+        $ftype = "$(Get-Prop $r.Folder @('IshFolderType'))"
+        $kids = @(Get-KcChildFolders $script:ish $fid)
+    }
+    $payload = [pscustomobject]@{
+        path       = $probePath
+        resolved   = [bool]$r.Folder
+        leaf       = $r.Leaf
+        missing    = @($missing)
+        folderType = $ftype
+        folderId   = $fid
+        children   = @($kids | ForEach-Object { [pscustomobject]@{ name = $_.Name; id = $_.Id; type = $_.Type } })
+    }
+    Log ('KCJSON ' + ($payload | ConvertTo-Json -Compress -Depth 5))
+    exit 0
+}
 
 # ---------------------------------------------------------------- 只读：OutputFormat / Map 类型
 try {

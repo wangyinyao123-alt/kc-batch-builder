@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE map PUBLIC "-//OASIS//DTD DITA Map//EN" "map.dtd"[]>
+<map id="GUID-58ADECCC-34C0-46CA-B882-2F914565B5E6" xml:lang="zh-CN" xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/">
+  <title id="GUID-5C873D01-E13E-4770-A130-9629673EAE33">测试map</title>
+  <topicref href="GUID-3FB69310-C781-4140-B8A5-9A2315626EBA" format="dita">
+    <topicmeta></topicmeta>
+    <topicref href="GUID-0E9FFDAB-A6B1-49E7-9CD2-0A757E90D5EE" format="dita">
+      <topicmeta></topicmeta>
+    </topicref>
+    <topicref href="GUID-932D50C5-81A5-4F7C-8584-B9E5F86B9E86" format="dita">
+      <topicmeta></topicmeta>
+    </topicref>
+  </topicref>
+</map>
