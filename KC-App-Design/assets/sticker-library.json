@@ -5,7 +5,8 @@
     "watercolor": "sticker-sheet-pink-handdrawn-2026.png",
     "pixel_kawaii": "sticker-sheet-pixel-kawaii-2026.png",
     "extra_a": "window-panel-components.png",
-    "extra_b": "background-pink-grid-cat.png; background-sky-cat.png; codex-clipboard-0fe63c42-c4f1-4270-9ecd-ee4caba3a276.png"
+    "extra_b": "background-pink-grid-cat.png; background-sky-cat.png; codex-clipboard-0fe63c42-c4f1-4270-9ecd-ee4caba3a276.png",
+    "进度条": "progress-bars-sheet.webp"
   },
   "source_root": "../../_design-archive/ui-reference/",
   "note": "file 字段相对 assets/ 目录；source 字段指向的原始贴纸大表已移至 _design-archive/ui-reference/。",
@@ -1971,18 +1972,238 @@
         137
       ],
       "kind": "smooth"
+    },
+    {
+      "category": "进度条",
+      "name": "blue-01",
+      "label": "睡猫云朵条",
+      "file": "stickers/进度条/blue-01.png",
+      "source": "progress-bars-sheet.webp",
+      "source_box": [
+        807,
+        25,
+        1472,
+        197
+      ],
+      "size": [
+        666,
+        173
+      ],
+      "dominant": "#a0dff0",
+      "decoration": "sleeping-cat",
+      "shape": "bar",
+      "note": "左端睡着的粉灰猫，右端粉色爪印，条内浅蓝云朵"
+    },
+    {
+      "category": "进度条",
+      "name": "coral-01",
+      "label": "爱心条",
+      "file": "stickers/进度条/coral-01.png",
+      "source": "progress-bars-sheet.webp",
+      "source_box": [
+        63,
+        831,
+        798,
+        949
+      ],
+      "size": [
+        736,
+        119
+      ],
+      "dominant": "#efa1b0",
+      "decoration": "hearts",
+      "shape": "bar",
+      "note": "左端大爱心 + 右侧三枚小爱心，粉色连续渐变"
+    },
+    {
+      "category": "进度条",
+      "name": "cream-01",
+      "label": "奶白星条",
+      "file": "stickers/进度条/cream-01.png",
+      "source": "progress-bars-sheet.webp",
+      "source_box": [
+        819,
+        438,
+        1489,
+        576
+      ],
+      "size": [
+        671,
+        139
+      ],
+      "dominant": "#f5e1c1",
+      "decoration": "cat-star",
+      "shape": "bar",
+      "note": "左端粉白猫头，右端内嵌黄色五角星，条身奶白紫描边，条外右上另有黄星与蓝色闪光"
+    },
+    {
+      "category": "进度条",
+      "name": "gold-01",
+      "label": "闪电条",
+      "file": "stickers/进度条/gold-01.png",
+      "source": "progress-bars-sheet.webp",
+      "source_box": [
+        882,
+        831,
+        1487,
+        961
+      ],
+      "size": [
+        606,
+        131
+      ],
+      "dominant": "#f4cf70",
+      "decoration": "lightning",
+      "shape": "bar",
+      "note": "左端黄色闪电，右端外爆闪，黄→浅黄渐变，右侧留有未填充段"
+    },
+    {
+      "category": "进度条",
+      "name": "peach-01",
+      "label": "蜜桃星条",
+      "file": "stickers/进度条/peach-01.png",
+      "source": "progress-bars-sheet.webp",
+      "source_box": [
+        51,
+        629,
+        748,
+        765
+      ],
+      "size": [
+        698,
+        137
+      ],
+      "dominant": "#f5dcb0",
+      "decoration": "star",
+      "shape": "bar",
+      "note": "左端大黄五角星压在边框上，右端内嵌粉五角星，浅黄到近白渐变"
+    },
+    {
+      "category": "进度条",
+      "name": "pink-01",
+      "label": "猫心条纹条",
+      "file": "stickers/进度条/pink-01.png",
+      "source": "progress-bars-sheet.webp",
+      "source_box": [
+        54,
+        55,
+        746,
+        193
+      ],
+      "size": [
+        693,
+        139
+      ],
+      "dominant": "#f0b0c1",
+      "decoration": "cat-heart",
+      "shape": "bar",
+      "note": "左端猫头，右端爱心，粉色斜条纹填充"
+    },
+    {
+      "category": "进度条",
+      "name": "pink-02",
+      "label": "猫心条",
+      "file": "stickers/进度条/pink-02.png",
+      "source": "progress-bars-sheet.webp",
+      "source_box": [
+        819,
+        251,
+        1472,
+        385
+      ],
+      "size": [
+        654,
+        135
+      ],
+      "dominant": "#efa1b2",
+      "decoration": "cat-heart",
+      "shape": "bar",
+      "note": "左端猫脸，右端内嵌粉色爱心"
+    },
+    {
+      "category": "进度条",
+      "name": "pink-03",
+      "label": "LOADING 面板",
+      "file": "stickers/进度条/pink-03.png",
+      "source": "progress-bars-sheet.webp",
+      "source_box": [
+        844,
+        617,
+        1483,
+        793
+      ],
+      "size": [
+        640,
+        177
+      ],
+      "dominant": "#f0c0d0",
+      "decoration": "loading-panel",
+      "shape": "panel",
+      "note": "带粗边框的圆角面板，含猫脸、上方 LOADING... 文字、右上三个圆形指示灯，条内有渐变与斜向高光，填充约 3/4"
+    },
+    {
+      "category": "进度条",
+      "name": "purple-01",
+      "label": "紫猫爪条",
+      "file": "stickers/进度条/purple-01.png",
+      "source": "progress-bars-sheet.webp",
+      "source_box": [
+        54,
+        413,
+        748,
+        585
+      ],
+      "size": [
+        695,
+        173
+      ],
+      "dominant": "#d0aff1",
+      "decoration": "cat-paw",
+      "shape": "bar",
+      "note": "左端灰白猫（粉色脸部细节），右端粉色爪印，淡紫渐变，条上方有橙色小闪光"
+    },
+    {
+      "category": "进度条",
+      "name": "rainbow-01",
+      "label": "彩虹七段条",
+      "file": "stickers/进度条/rainbow-01.png",
+      "source": "progress-bars-sheet.webp",
+      "source_box": [
+        54,
+        250,
+        748,
+        384
+      ],
+      "size": [
+        695,
+        135
+      ],
+      "dominant": "multi",
+      "decoration": "rainbow",
+      "shape": "bar",
+      "note": "七段相邻的马卡龙色块，左端猫脸，右端黄色星星，粉色描边轨道；主色不适用（多色分段）",
+      "palette": [
+        "#f2a7c3",
+        "#f6c9a0",
+        "#f7e08a",
+        "#bfe6a8",
+        "#a8dcf0",
+        "#b8b8f0",
+        "#d8a8f0"
+      ]
     }
   ],
   "summary": {
-    "total_assets": 115,
+    "total_assets": 125,
     "categories": {
       "handdrawn": 23,
       "pixel": 22,
       "watercolor": 17,
       "pixel_kawaii": 21,
       "extra_a": 15,
-      "extra_b": 17
+      "extra_b": 17,
+      "进度条": 10
     },
-    "last_updated": "2026-10-23"
+    "last_updated": "2026-11-04"
   }
 }
